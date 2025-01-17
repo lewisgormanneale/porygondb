@@ -13,7 +13,7 @@ export class PokedexEffects {
             ofType(loadPokedex),
             mergeMap((action) =>
                 this.http.get<PokedexResponse>(`https://pokeapi.co/api/v2/pokemon?offset=${action.offset}&limit=${action.limit}`).pipe(
-                    map(response => loadPokedexSuccess({pokedex: response.results})),
+                    map(response => loadPokedexSuccess({pokedex: response.results, totalCount: response.count})),
                     catchError(error => of(loadPokedexFailure({error})))
                 )
             )

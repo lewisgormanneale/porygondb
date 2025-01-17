@@ -1,9 +1,17 @@
 @if (pokedex$| async; as pokedex) {
-    <ul>
-        @for (pokemon of pokedex; track pokemon) {
-            <li>
-                {{ pokemon.name }}
-            </li>
-        }
-    </ul>
+    <div class="pokedex-container">
+        <div class="pokedex-content">
+            <mat-grid-list cols="8" rowHeight="1:1">
+                @for (pokemon of pokedex; track pokemon) {
+                    <mat-grid-tile>{{ pokemon.name }}</mat-grid-tile>
+                }
+            </mat-grid-list>
+        </div>
+        <mat-paginator [length]="totalCount$ | async"
+                       [pageSize]="50"
+                       [pageSizeOptions]="[50, 100, 150]"
+                       (page)="onPageChange($event)"
+                       aria-label="Select page">
+        </mat-paginator>
+    </div>
 }

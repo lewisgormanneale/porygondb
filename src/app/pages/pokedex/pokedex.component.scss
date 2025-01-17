@@ -1,0 +1,14 @@
+.pokedex-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px);
+}
+
+.pokedex-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+mat-paginator {
+  flex-shrink: 0;
+}
