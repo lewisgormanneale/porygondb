@@ -26,8 +26,6 @@ export class PokedexComponent implements OnInit {
     constructor(private store: Store<AppState>) {
         this.pokedex$ = this.store.select(state => state.pokedex.pokedex);
         this.totalCount$ = this.store.select(state => state.pokedex.totalCount);
-        console.log(this.pokedex$);
-        console.log(this.totalCount$);
     }
 
     ngOnInit(): void {
