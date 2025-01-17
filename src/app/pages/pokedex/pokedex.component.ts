@@ -21,6 +21,10 @@ export class PokedexComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.store.dispatch(loadPokedex());
+        this.store.dispatch(loadPokedex({offset: 0, limit: 50}));
+    }
+
+    loadNextPage(offset: number): void {
+        this.store.dispatch(loadPokedex({offset, limit: 50}));
     }
 }
