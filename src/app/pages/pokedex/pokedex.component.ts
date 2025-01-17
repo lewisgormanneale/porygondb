@@ -7,7 +7,9 @@ import {PokedexResult} from "../../models/pokedex.model";
 import {AsyncPipe} from "@angular/common";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {MatGridListModule} from "@angular/material/grid-list";
-import {MatLine} from "@angular/material/core";
+import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardImage} from "@angular/material/card";
+import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
     selector: 'app-pokedex',
@@ -15,7 +17,14 @@ import {MatLine} from "@angular/material/core";
         AsyncPipe,
         MatPaginator,
         MatGridListModule,
-        MatLine
+        MatCard,
+        MatCardHeader,
+        MatCardContent,
+        MatCardActions,
+        MatButton,
+        MatCardImage,
+        MatIcon,
+        MatIconButton
     ],
     templateUrl: 'pokedex.component.html',
     styleUrl: 'pokedex.component.scss'

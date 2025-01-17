@@ -1,13 +1,26 @@
 @if (pokedex$| async; as pokedex) {
     <div class="pokedex-container">
         <div class="pokedex-content">
-            <mat-grid-list cols="8" rowHeight="1:1" gutterSize="10px">
+            <mat-grid-list cols="6" gutterSize="10px">
                 @for (pokemon of pokedex; track pokemon) {
                     <mat-grid-tile>
-                        <mat-grid-tile-header>
-                            <h2 mat-line>{{ pokemon.name }}</h2>
-                        </mat-grid-tile-header>
-                        <img [src]="pokemon.details?.sprites?.front_default" alt="{{ pokemon.name }}">
+                        <mat-card appearance="outlined">
+                            <mat-card-header>
+                                <span>
+                                {{ pokemon.name }}
+                                </span>
+                            </mat-card-header>
+                            <img [src]="pokemon.details?.sprites?.front_default" alt="{{ pokemon.name }}"
+                                 mat-card-image>
+                            <mat-card-content>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-icon-button>
+                                    <mat-icon>favorite</mat-icon>
+                                </button>
+                                <button mat-button>View</button>
+                            </mat-card-actions>
+                        </mat-card>
                     </mat-grid-tile>
                 }
             </mat-grid-list>
