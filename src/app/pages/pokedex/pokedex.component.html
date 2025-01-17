@@ -1,9 +1,14 @@
 @if (pokedex$| async; as pokedex) {
     <div class="pokedex-container">
         <div class="pokedex-content">
-            <mat-grid-list cols="8" rowHeight="1:1">
+            <mat-grid-list cols="8" rowHeight="1:1" gutterSize="10px">
                 @for (pokemon of pokedex; track pokemon) {
-                    <mat-grid-tile>{{ pokemon.name }}</mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-grid-tile-header>
+                            <h2 mat-line>{{ pokemon.name }}</h2>
+                        </mat-grid-tile-header>
+                        <img [src]="pokemon.details?.sprites?.front_default" alt="{{ pokemon.name }}">
+                    </mat-grid-tile>
                 }
             </mat-grid-list>
         </div>

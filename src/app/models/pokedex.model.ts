@@ -8,4 +8,15 @@ export interface PokedexResponse {
 export interface PokedexResult {
     name: string;
     url: string;
+    details?: PokemonDetails;
+}
+
+
+export interface PokemonDetails {
+    id: number;
+    name: string;
+    sprites: {
+        front_default: string;
+    };
+    // Add other properties as needed
 }
