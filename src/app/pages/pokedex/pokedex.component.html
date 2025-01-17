@@ -1,0 +1,9 @@
+@if (pokedex$| async; as pokedex) {
+    <ul>
+        @for (pokemon of pokedex; track pokemon) {
+            <li>
+                {{ pokemon.name }}
+            </li>
+        }
+    </ul>
+}
