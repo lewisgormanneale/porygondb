@@ -2,16 +2,17 @@
     <div class="pokedex-container">
         <div class="pokedex-cards">
             @for (pokemon of pokedex; track pokemon.details?.id) {
-                <mat-card class="pokedex-card">
+                <mat-card>
                     <mat-card-header>
                         <mat-card-title>{{ pokemon.details?.names?.[7]?.name }}</mat-card-title>
                         <mat-card-subtitle>Types</mat-card-subtitle>
                     </mat-card-header>
-                    <img [src]="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' + pokemon.details?.id + '.png'"
-                         alt="{{ pokemon.details?.names?.[7]?.name }}"
-                         mat-card-image
-                    >
                     <mat-card-content>
+                        <img [src]="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' + pokemon.details?.id + '.png'"
+                             alt="{{ pokemon.details?.names?.[7]?.name }}"
+                             mat-card-image
+                             width="150"
+                        >
                     </mat-card-content>
                     <mat-card-actions [align]="'end'">
                         <button mat-button>VIEW</button>
