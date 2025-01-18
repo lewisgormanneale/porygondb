@@ -1,7 +1,7 @@
 @if (pokedex$| async; as pokedex) {
     <div class="pokedex-container">
         <div class="pokedex-cards">
-            @for (pokemon of pokedex; track pokemon) {
+            @for (pokemon of pokedex; track pokemon.details?.id) {
                 <mat-card class="pokedex-card">
                     <mat-card-header>
                         <mat-card-title>{{ pokemon.details?.names?.[7]?.name }}</mat-card-title>
