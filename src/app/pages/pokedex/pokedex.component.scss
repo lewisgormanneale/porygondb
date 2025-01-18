@@ -21,15 +21,7 @@
   padding: 10px;
 }
 
-.pokedex-card {
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  height: 300px; /* Set a fixed height */
-  display: flex;
-  flex-direction: column;
-}
-
 mat-card {
-  flex: 1;
   display: flex;
   flex-direction: column;
 }
