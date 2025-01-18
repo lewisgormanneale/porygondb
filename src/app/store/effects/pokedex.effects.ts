@@ -4,7 +4,7 @@ import {forkJoin, of} from 'rxjs';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {loadPokedex, loadPokedexFailure, loadPokedexSuccess} from '../actions/pokedex.actions';
-import {PokedexResponse, PokemonDetails} from "../../models/pokedex.model";
+import {PokedexResponse, PokemonSpeciesDetails} from "../../models/pokedex.model";
 
 @Injectable()
 export class PokedexEffects {
@@ -12,10 +12,10 @@ export class PokedexEffects {
         this.actions$.pipe(
             ofType(loadPokedex),
             mergeMap((action) =>
-                this.http.get<PokedexResponse>(`https://pokeapi.co/api/v2/pokemon?offset=${action.offset}&limit=${action.limit}`).pipe(
+                this.http.get<PokedexResponse>(`https://pokeapi.co/api/v2/pokemon-species?offset=${action.offset}&limit=${action.limit}`).pipe(
                     mergeMap(response => {
                         const detailRequests = response.results.map(pokemon =>
-                            this.http.get<PokemonDetails>(pokemon.url)
+                            this.http.get<PokemonSpeciesDetails>(pokemon.url)
                         );
                         return forkJoin(detailRequests).pipe(
                             map(details => loadPokedexSuccess({

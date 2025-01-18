@@ -6,25 +6,16 @@ import {loadPokedex} from "../../store/actions/pokedex.actions";
 import {PokedexResult} from "../../models/pokedex.model";
 import {AsyncPipe} from "@angular/common";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {MatGridListModule} from "@angular/material/grid-list";
-import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardImage} from "@angular/material/card";
-import {MatButton, MatIconButton} from "@angular/material/button";
-import {MatIcon} from "@angular/material/icon";
+import {MatCardModule} from "@angular/material/card";
+import {MatButton} from "@angular/material/button";
 
 @Component({
     selector: 'app-pokedex',
     imports: [
         AsyncPipe,
         MatPaginator,
-        MatGridListModule,
-        MatCard,
-        MatCardHeader,
-        MatCardContent,
-        MatCardActions,
+        MatCardModule,
         MatButton,
-        MatCardImage,
-        MatIcon,
-        MatIconButton
     ],
     templateUrl: 'pokedex.component.html',
     styleUrl: 'pokedex.component.scss'

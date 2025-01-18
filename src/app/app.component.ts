@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatIcon, MatIconRegistry} from "@angular/material/icon";
-import {MatIconAnchor, MatIconButton} from "@angular/material/button";
+import {MatIconAnchor} from "@angular/material/button";
 import {RouterOutlet} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
 
@@ -11,7 +11,6 @@ import {DomSanitizer} from "@angular/platform-browser";
         RouterOutlet,
         MatToolbar,
         MatIcon,
-        MatIconButton,
         MatIconAnchor
     ],
     templateUrl: './app.component.html',
