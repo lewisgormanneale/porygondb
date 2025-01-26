@@ -6,7 +6,7 @@
 
 .pokedex-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 10px;
   overflow-y: auto;
   padding: 20px;
@@ -21,4 +21,9 @@ mat-card-content {
 
 mat-paginator {
   flex-shrink: 0;
+}
+
+mat-card-title {
+  font-size: 1em;
+  text-wrap: nowrap;
 }
