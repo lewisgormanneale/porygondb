@@ -5,9 +5,8 @@
     <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title
-          >#{{ pokemon.details?.id }} {{ pokemon.details?.names?.[7]?.name }}
+          >{{ pokemon.details?.names?.[7]?.name }}
         </mat-card-title>
-        <mat-card-subtitle> </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <img
@@ -18,8 +17,6 @@
           "
           alt="{{ pokemon.details?.names?.[7]?.name }}"
           mat-card-image
-          width="110"
-          height="110"
         />
       </mat-card-content>
       <mat-card-actions [align]="'end'">
