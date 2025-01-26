@@ -26,6 +26,8 @@ export class PokedexComponent implements OnInit {
   pokedex$: Observable<PokedexResult[]>;
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
+  pageIndex: number = 0;
+  pageSize: number = 25;
 
   constructor(private store: Store<AppState>) {
     this.pokedex$ = this.store.select((state) => state.pokedex.pokedex);
@@ -34,11 +36,13 @@ export class PokedexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadPokedex({ offset: 0, limit: 50 }));
+    this.store.dispatch(loadPokedex({ offset: 0, limit: 25 }));
   }
 
   onPageChange(event: PageEvent): void {
-    const offset = event.pageIndex * event.pageSize;
-    this.store.dispatch(loadPokedex({ offset, limit: event.pageSize }));
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    const offset = this.pageIndex * this.pageSize;
+    this.store.dispatch(loadPokedex({ offset, limit: this.pageSize }));
   }
 }
