@@ -1,4 +1,8 @@
-@if (pokedex$| async; as pokedex) {
+@if (loading$ | async) {
+<div class="loading-container">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+} @else { @if (pokedex$| async; as pokedex) {
 <div class="pokedex-container">
   <div class="pokedex-cards">
     @for (pokemon of pokedex; track pokemon.details?.id) {
@@ -9,15 +13,17 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <img
-          [src]="
-            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-            pokemon.details?.id +
-            '.png'
-          "
-          alt="{{ pokemon.details?.names?.[7]?.name }}"
-          mat-card-image
-        />
+        <div class="image-container">
+          <img
+            [src]="
+              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
+              pokemon.details?.id +
+              '.png'
+            "
+            alt="{{ pokemon.details?.names?.[7]?.name }}"
+            mat-card-image
+          />
+        </div>
       </mat-card-content>
       <mat-card-actions [align]="'end'">
         <button mat-button>VIEW</button>
@@ -35,4 +41,4 @@
   >
   </mat-paginator>
 </div>
-}
+} }
