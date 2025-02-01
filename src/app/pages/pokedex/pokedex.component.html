@@ -6,29 +6,7 @@
 <div class="pokedex-container">
   <div class="pokedex-cards">
     @for (pokemon of pokedex; track pokemon.details?.id) {
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <mat-card-title
-          >{{ pokemon.details?.names?.[7]?.name }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="image-container">
-          <img
-            [src]="
-              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-              pokemon.details?.id +
-              '.png'
-            "
-            alt="{{ pokemon.details?.names?.[7]?.name }}"
-            mat-card-image
-          />
-        </div>
-      </mat-card-content>
-      <mat-card-actions [align]="'end'">
-        <button mat-button>VIEW</button>
-      </mat-card-actions>
-    </mat-card>
+    <app-pokedex-card [pokemon]="pokemon"></app-pokedex-card>
     }
   </div>
   <mat-paginator

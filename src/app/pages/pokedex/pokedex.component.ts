@@ -6,18 +6,16 @@ import { loadPokedex } from "../../store/actions/pokedex.actions";
 import { PokedexResult } from "../../models/pokedex.model";
 import { AsyncPipe } from "@angular/common";
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
-import { MatCardModule } from "@angular/material/card";
-import { MatButtonModule } from "@angular/material/button";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { PokedexCardComponent } from "./components/pokedex-card/pokedex-card.component";
 
 @Component({
   selector: "app-pokedex",
   imports: [
     AsyncPipe,
     MatPaginatorModule,
-    MatCardModule,
-    MatButtonModule,
     MatProgressBarModule,
+    PokedexCardComponent,
   ],
   templateUrl: "pokedex.component.html",
   styleUrl: "pokedex.component.scss",
