@@ -1,4 +1,5 @@
 mat-card {
+  height: 100%;
   mat-card-title {
     font-size: 1em;
     text-wrap: nowrap;
@@ -19,12 +20,6 @@ mat-card {
 
       mat-progress-spinner {
         position: absolute;
-      }
-
-      [mat-card-image] {
-        display: block;
-        width: 100%;
-        height: auto;
       }
     }
   }
