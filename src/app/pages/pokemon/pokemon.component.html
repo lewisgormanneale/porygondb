@@ -1,0 +1,7 @@
+@if (loading$ | async) {
+<div class="loading-container">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+} @else { @if (pokemon$| async; as pokemon) {
+<p>{{ pokemon.name }}z</p>
+} }

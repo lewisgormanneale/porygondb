@@ -8,10 +8,8 @@ import {
   loadPokedexFailure,
   loadPokedexSuccess,
 } from "../actions/pokedex.actions";
-import {
-  PokedexResponse,
-  PokemonSpeciesDetails,
-} from "../../models/pokedex.model";
+import { PokedexResponse } from "../../models/pokedex.model";
+import { PokemonSpeciesDetails } from "src/app/models/pokemon.model";
 
 @Injectable()
 export class PokedexEffects {
@@ -25,15 +23,15 @@ export class PokedexEffects {
           )
           .pipe(
             mergeMap((response) => {
-              const detailRequests = response.results.map((pokemon) =>
+              const speciesDetailRequests = response.results.map((pokemon) =>
                 this.http.get<PokemonSpeciesDetails>(pokemon.url)
               );
-              return forkJoin(detailRequests).pipe(
-                map((details) =>
+              return forkJoin(speciesDetailRequests).pipe(
+                map((speciesDetails) =>
                   loadPokedexSuccess({
                     pokedex: response.results.map((result, index) => ({
                       ...result,
-                      details: details[index],
+                      speciesDetails: speciesDetails[index],
                     })),
                     totalCount: response.count,
                   })

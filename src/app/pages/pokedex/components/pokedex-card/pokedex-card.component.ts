@@ -4,6 +4,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { PokedexResult } from "src/app/models/pokedex.model";
+import { RouterModule } from "@angular/router";
 
 @Component({
   selector: "app-pokedex-card",
@@ -12,6 +13,7 @@ import { PokedexResult } from "src/app/models/pokedex.model";
     MatButtonModule,
     MatProgressSpinnerModule,
     NgOptimizedImage,
+    RouterModule,
   ],
   templateUrl: "pokedex-card.component.html",
   styleUrl: "pokedex-card.component.scss",

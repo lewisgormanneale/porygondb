@@ -1,6 +1,8 @@
 <mat-card appearance="outlined">
   <mat-card-header>
-    <mat-card-title>{{ pokemon.details?.names?.[7]?.name }} </mat-card-title>
+    <mat-card-title
+      >{{ pokemon.speciesDetails?.names?.[7]?.name }}
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div class="image-container">
@@ -11,10 +13,10 @@
       <img
         [ngSrc]="
           'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-          pokemon.details?.id +
+          pokemon.speciesDetails?.id +
           '.png'
         "
-        alt="{{ pokemon.details?.names?.[7]?.name }}"
+        alt="{{ pokemon.speciesDetails?.names?.[7]?.name }}"
         mat-card-image
         width="100"
         height="100"
@@ -23,6 +25,6 @@
     </div>
   </mat-card-content>
   <mat-card-actions [align]="'end'">
-    <button mat-button>VIEW</button>
+    <a mat-raised-button [routerLink]="'pokemon/' + pokemon.name">View</a>
   </mat-card-actions>
 </mat-card>

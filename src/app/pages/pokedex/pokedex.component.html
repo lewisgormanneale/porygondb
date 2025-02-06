@@ -5,7 +5,7 @@
 } @else { @if (pokedex$| async; as pokedex) {
 <div class="pokedex-container">
   <div class="pokedex-cards">
-    @for (pokemon of pokedex; track pokemon.details?.id) {
+    @for (pokemon of pokedex; track pokemon.speciesDetails?.id) {
     <app-pokedex-card [pokemon]="pokemon"></app-pokedex-card>
     }
   </div>
