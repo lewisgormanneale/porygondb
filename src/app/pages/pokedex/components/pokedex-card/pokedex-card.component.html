@@ -6,21 +6,24 @@
   </mat-card-header>
   <mat-card-content>
     <div class="image-container">
-      <!-- <mat-progress-spinner
+      @if (imageLoading()) {
+      <mat-progress-spinner
         mode="indeterminate"
-        diameter="40"
-      ></mat-progress-spinner> -->
+        diameter="50"
+      ></mat-progress-spinner>
+      }
       <img
-        [ngSrc]="
+        [src]="
           'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
           pokemon.speciesDetails?.id +
           '.png'
         "
+        [hidden]="imageLoading()"
+        (load)="onImageLoad()"
         alt="{{ pokemon.speciesDetails?.names?.[7]?.name }}"
         mat-card-image
         width="100"
         height="100"
-        priority
       />
     </div>
   </mat-card-content>
