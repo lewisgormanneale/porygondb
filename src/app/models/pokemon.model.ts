@@ -10,12 +10,18 @@ export interface PokemonResult {
 export interface PokemonSpeciesDetails {
   id: number;
   name: string;
+  genera: PokemonSpeciesGenera[];
   names: PokemonSpeciesName[];
   varieties: PokemonSpeciesVariety[];
 }
 
 export interface PokemonSpeciesName {
   name: string;
+  language: PokeApiLanguage;
+}
+
+export interface PokemonSpeciesGenera {
+  genus: string;
   language: PokeApiLanguage;
 }
 

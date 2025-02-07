@@ -9,6 +9,7 @@ import { PokemonResult } from "src/app/models/pokemon.model";
 import { loadPokemon } from "src/app/store/actions/pokemon.actions";
 import { AppState } from "src/app/store/app.state";
 import { LocalisePipe } from "../../pipes/localise.pipe";
+import { MatCardModule } from "@angular/material/card";
 
 @Component({
   imports: [
@@ -17,6 +18,7 @@ import { LocalisePipe } from "../../pipes/localise.pipe";
     NgOptimizedImage,
     MatTabsModule,
     LocalisePipe,
+    MatCardModule,
   ],
   selector: "app-pokemon",
   templateUrl: "pokemon.component.html",
