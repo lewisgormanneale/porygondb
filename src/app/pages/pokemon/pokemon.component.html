@@ -2,6 +2,29 @@
 <div class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-} @else { @if (pokemon$| async; as pokemon) {
-<p>{{ pokemon.name }}z</p>
-} }
+} @else { @if (pokemon$| async; as pokemon) { @if ( pokemon.speciesDetails) {
+<div class="pokemon-container">
+  <section class="general-info">
+    <p>{{ pokemon.speciesDetails.names | localise : "en" }}</p>
+    <img
+      [ngSrc]="
+        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
+        pokemon.speciesDetails.id +
+        '.png'
+      "
+      alt="{{ pokemon.speciesDetails.names | localise : 'en' }}"
+      width="400"
+      height="400"
+      priority
+    />
+  </section>
+  <section class="additional-info">
+    <mat-tab-group>
+      <mat-tab label="Stats"> Stats </mat-tab>
+      <mat-tab label="Moves"> Moves </mat-tab>
+      <mat-tab label="Locations"> Locations </mat-tab>
+    </mat-tab-group>
+  </section>
+</div>
+
+} } }

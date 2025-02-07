@@ -1,0 +1,22 @@
+.pokemon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .general-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .pokemon-name {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    .pokemon-image {
+      width: 200px;
+      height: 200px;
+    }
+  }
+  .additional-info {
+    width: 100%;
+    max-width: 500px;
+  }
+}

@@ -1,3 +1,5 @@
+import { PokeApiLanguage } from "./pokeapi.model";
+
 export interface PokemonResult {
   name: string;
   url: string;
@@ -14,7 +16,7 @@ export interface PokemonSpeciesDetails {
 
 export interface PokemonSpeciesName {
   name: string;
-  url: string;
+  language: PokeApiLanguage;
 }
 
 export interface PokemonSpeciesVariety {
@@ -25,5 +27,4 @@ export interface PokemonSpeciesVariety {
 export interface PokemonDetails {
   id: number;
   name: string;
-  names: PokemonSpeciesName[];
 }

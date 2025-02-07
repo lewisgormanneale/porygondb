@@ -3,7 +3,7 @@ import { PokemonSpeciesDetails } from "./pokemon.model";
 export interface PokedexResult {
   name: string;
   url: string;
-  speciesDetails?: PokemonSpeciesDetails;
+  speciesDetails: PokemonSpeciesDetails;
 }
 
 export interface PokedexResponse {

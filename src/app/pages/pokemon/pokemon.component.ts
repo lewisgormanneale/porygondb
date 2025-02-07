@@ -1,15 +1,23 @@
-import { AsyncPipe } from "@angular/common";
+import { AsyncPipe, NgOptimizedImage } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { PokemonResult } from "src/app/models/pokemon.model";
 import { loadPokemon } from "src/app/store/actions/pokemon.actions";
 import { AppState } from "src/app/store/app.state";
+import { LocalisePipe } from "../../pipes/localise.pipe";
 
 @Component({
-  imports: [AsyncPipe, MatProgressBarModule],
+  imports: [
+    AsyncPipe,
+    MatProgressBarModule,
+    NgOptimizedImage,
+    MatTabsModule,
+    LocalisePipe,
+  ],
   selector: "app-pokemon",
   templateUrl: "pokemon.component.html",
   styleUrl: "pokemon.component.scss",
