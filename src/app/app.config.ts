@@ -9,6 +9,7 @@ import { provideStore } from "@ngrx/store";
 import { provideEffects } from "@ngrx/effects";
 import { PokedexEffects } from "./store/effects/pokedex.effects";
 import { appReducers } from "./store/app.state";
+import { PokemonEffects } from "./store/effects/pokemon.effects";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,5 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideStore(appReducers),
     provideEffects([PokedexEffects]),
+    provideEffects([PokemonEffects]),
   ],
 };

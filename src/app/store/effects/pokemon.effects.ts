@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { forkJoin, of } from "rxjs";
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { catchError, map, mergeMap, tap } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import {
   PokemonDetails,
@@ -33,7 +33,7 @@ export class PokemonEffects {
                   loadPokemonSuccess({
                     pokemon: {
                       url: speciesDetails.varieties[0].pokemon.url,
-                      name: "hi",
+                      name: action.name,
                       speciesDetails,
                       varietyDetails,
                     },

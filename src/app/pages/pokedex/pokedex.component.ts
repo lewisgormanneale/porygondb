@@ -10,13 +10,13 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { PokedexCardComponent } from "./components/pokedex-card/pokedex-card.component";
 
 @Component({
-  selector: "app-pokedex",
   imports: [
     AsyncPipe,
     MatPaginatorModule,
     MatProgressBarModule,
     PokedexCardComponent,
   ],
+  selector: "app-pokedex",
   templateUrl: "pokedex.component.html",
   styleUrl: "pokedex.component.scss",
 })
