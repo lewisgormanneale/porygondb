@@ -1,22 +1,30 @@
+@use "@angular/material" as mat;
+
 .pokemon-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 20px;
   .general-info {
     display: flex;
     flex-direction: column;
     align-items: center;
-    .pokemon-name {
-      font-size: 2rem;
+    .pokemon-id-avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--mat-sys-primary-container);
+      font-size: 13px;
       font-weight: bold;
-    }
-    .pokemon-image {
-      width: 200px;
-      height: 200px;
+      color: var(--mat-sys-primary-text);
     }
   }
   .additional-info {
     width: 100%;
     max-width: 500px;
+    margin-top: 20px;
   }
 }

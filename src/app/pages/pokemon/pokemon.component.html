@@ -7,6 +7,9 @@
   <section class="general-info">
     <mat-card appearance="outlined">
       <mat-card-header>
+        <div mat-card-avatar class="pokemon-id-avatar">
+          #{{ pokemon.speciesDetails.id }}
+        </div>
         <mat-card-title
           >{{ pokemon.speciesDetails.names | localise : "en" : "name" }}
         </mat-card-title>
@@ -14,21 +17,28 @@
           pokemon.speciesDetails.genera | localise : "en" : "genus"
         }}</mat-card-subtitle>
       </mat-card-header>
-      <img
-        [ngSrc]="
-          'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-          pokemon.speciesDetails.id +
-          '.png'
-        "
-        alt="{{ pokemon.speciesDetails.names | localise : 'en' : 'name' }}"
-        width="400"
-        height="400"
-        priority
-      />
+      <mat-card-content>
+        <img
+          [ngSrc]="
+            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
+            pokemon.speciesDetails.id +
+            '.png'
+          "
+          alt="{{ pokemon.speciesDetails.names | localise : 'en' : 'name' }}"
+          mat-card-image
+          width="400"
+          height="400"
+          priority
+        />
+      </mat-card-content>
     </mat-card>
+    <mat-card-footer></mat-card-footer>
   </section>
   <section class="additional-info">
     <mat-tab-group>
+      <mat-tab label="General">
+        Color, Egg Groups, Base Happiness, Capture Rate etc.
+      </mat-tab>
       <mat-tab label="Stats"> Stats </mat-tab>
       <mat-tab label="Moves"> Moves </mat-tab>
       <mat-tab label="Locations"> Locations </mat-tab>
