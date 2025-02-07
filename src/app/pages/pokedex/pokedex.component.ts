@@ -8,6 +8,9 @@ import { AsyncPipe } from "@angular/common";
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { PokedexCardComponent } from "./components/pokedex-card/pokedex-card.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
+import { MatInputModule } from "@angular/material/input";
 
 @Component({
   imports: [
@@ -15,6 +18,9 @@ import { PokedexCardComponent } from "./components/pokedex-card/pokedex-card.com
     MatPaginatorModule,
     MatProgressBarModule,
     PokedexCardComponent,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
   ],
   selector: "app-pokedex",
   templateUrl: "pokedex.component.html",

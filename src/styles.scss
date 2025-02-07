@@ -1,5 +1,5 @@
-@use '@angular/material' as mat;
-@use 'sass:map';
+@use "@angular/material" as mat;
+@use "sass:map";
 
 * {
   margin: 0;
@@ -18,10 +18,12 @@ body {
 }
 
 :root {
-  @include mat.toolbar-overrides((
-          container-background-color: var(--mat-sys-primary-container),
-          container-text-color: var(--mat-sys-primary-text),
-  ));
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-primary-container),
+      container-text-color: var(--mat-sys-primary-text),
+    )
+  );
 }
 
 /* width */
