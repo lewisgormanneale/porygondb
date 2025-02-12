@@ -1,14 +1,7 @@
-import { PokemonSpeciesDetails } from "./pokemon.model";
+import { PokemonSpecies } from "pokenode-ts";
 
 export interface PokedexResult {
   name: string;
   url: string;
-  speciesDetails: PokemonSpeciesDetails;
-}
-
-export interface PokedexResponse {
-  count: number;
-  next: string;
-  previous: string | null;
-  results: PokedexResult[];
+  speciesDetails: PokemonSpecies;
 }

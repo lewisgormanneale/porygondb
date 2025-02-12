@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { PokeApiLanguage } from "../models/pokeapi.model";
+import { NamedAPIResource } from "pokenode-ts";
 
 interface Localisable {
-  language: PokeApiLanguage;
+  language: NamedAPIResource;
   [key: string]: any;
 }
 

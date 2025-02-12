@@ -10,6 +10,7 @@ import { loadPokemon } from "src/app/store/actions/pokemon.actions";
 import { AppState } from "src/app/store/app.state";
 import { LocalisePipe } from "../../pipes/localise.pipe";
 import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   imports: [
@@ -19,6 +20,7 @@ import { MatCardModule } from "@angular/material/card";
     MatTabsModule,
     LocalisePipe,
     MatCardModule,
+    MatIconModule,
   ],
   selector: "app-pokemon",
   templateUrl: "pokemon.component.html",
