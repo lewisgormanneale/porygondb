@@ -2,7 +2,8 @@
 <div class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-} @else { @if (pokemon$| async; as pokemon) { @if ( pokemon.speciesDetails) {
+} @else { @if (pokemon$| async; as pokemon) { @if ( pokemon.speciesDetails &&
+pokemon.varietyDetails) {
 <div class="pokemon-container">
   <section class="general-info">
     <mat-card appearance="outlined">
@@ -18,6 +19,11 @@
         }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
+        <mat-chip-set aria-label="Types">
+          @for (type of pokemon.varietyDetails[0].types; track type.slot) {
+          <mat-chip>{{ type.type.name | titlecase }}</mat-chip>
+          }
+        </mat-chip-set>
         <img
           [ngSrc]="
             'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +

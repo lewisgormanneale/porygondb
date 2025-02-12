@@ -1,4 +1,4 @@
-import { AsyncPipe, NgOptimizedImage } from "@angular/common";
+import { AsyncPipe, NgOptimizedImage, TitleCasePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTabsModule } from "@angular/material/tabs";
@@ -11,6 +11,7 @@ import { AppState } from "src/app/store/app.state";
 import { LocalisePipe } from "../../pipes/localise.pipe";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
+import { MatChipsModule } from "@angular/material/chips";
 
 @Component({
   imports: [
@@ -21,6 +22,8 @@ import { MatIconModule } from "@angular/material/icon";
     LocalisePipe,
     MatCardModule,
     MatIconModule,
+    MatChipsModule,
+    TitleCasePipe,
   ],
   selector: "app-pokemon",
   templateUrl: "pokemon.component.html",
