@@ -4,22 +4,24 @@
 </div>
 } @else { @if (pokedex$| async; as pokedex) {
 <div class="pokedex-container">
-  <div class="pokedex-options">
-    <mat-form-field subscriptSizing="dynamic">
-      <mat-label>Pokédex</mat-label>
-      <select matNativeControl>
-        <option value="national">National</option>
-        <option value="volvo">Sinnoh</option>
-        <option value="saab">Hoenn</option>
-        <option value="mercedes">Johto</option>
-        <option value="audi">Kanto</option>
-      </select>
-    </mat-form-field>
-  </div>
-  <div class="pokedex-cards">
-    @for (pokemon of pokedex; track pokemon.speciesDetails?.id) {
-    <app-pokedex-card [pokemon]="pokemon"></app-pokedex-card>
-    }
+  <div>
+    <div class="pokedex-options">
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Pokédex</mat-label>
+        <select matNativeControl>
+          <option value="national">National</option>
+          <option value="volvo">Sinnoh</option>
+          <option value="saab">Hoenn</option>
+          <option value="mercedes">Johto</option>
+          <option value="audi">Kanto</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="pokedex-cards">
+      @for (pokemon of pokedex; track pokemon.speciesDetails?.id) {
+      <app-pokedex-card [pokemon]="pokemon"></app-pokedex-card>
+      }
+    </div>
   </div>
   <mat-paginator
     [length]="totalCount$ | async"
