@@ -90,16 +90,10 @@
       "defaultConfiguration": "development"
     },
     "test": {
-      "executor": "@angular-devkit/build-angular:karma",
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "polyfills": ["zone.js", "zone.js/testing"],
-        "tsConfig": "apps/porygondb/tsconfig.spec.json",
-        "assets": [
-          "apps/porygondb/src/favicon.ico",
-          "apps/porygondb/src/assets"
-        ],
-        "styles": ["apps/porygondb/src/styles.scss"],
-        "scripts": []
+        "jestConfig": "apps/porygondb/jest.config.ts"
       }
     },
     "extract-i18n": {

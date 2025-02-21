@@ -1,19 +1,16 @@
-import { AsyncPipe, NgOptimizedImage, TitleCasePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { AppState, loadPokemon, PokemonResult } from 'shared-data-access';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { LocalisePipe } from 'shared-utils';
+import { PokemonStore } from 'pokemon-data-access';
 
 @Component({
   imports: [
-    AsyncPipe,
     MatProgressBarModule,
     NgOptimizedImage,
     MatTabsModule,
@@ -21,24 +18,21 @@ import { LocalisePipe } from 'shared-utils';
     MatCardModule,
     MatIconModule,
     MatChipsModule,
-    TitleCasePipe,
   ],
   selector: 'app-pokemon',
   templateUrl: 'pokemon.component.html',
   styleUrl: 'pokemon.component.scss',
+  providers: [PokemonStore],
 })
 export class PokemonComponent implements OnInit {
-  pokemon$: Observable<PokemonResult>;
-  loading$: Observable<boolean>;
-  pokemonName = '';
+  pokemonName: string;
+  readonly pokemonStore = inject(PokemonStore);
 
-  constructor(private store: Store<AppState>, private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute) {
     this.pokemonName = this.route.snapshot.paramMap.get('name') || '';
-    this.pokemon$ = this.store.select((state) => state.pokemon.pokemon);
-    this.loading$ = this.store.select((state) => state.pokemon.loading);
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadPokemon({ name: this.pokemonName }));
+    this.pokemonStore.loadByName(this.pokemonName);
   }
 }

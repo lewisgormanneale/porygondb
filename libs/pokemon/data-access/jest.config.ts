@@ -1,9 +1,8 @@
-/* eslint-disable */
 export default {
-  displayName: 'porygondb',
-  preset: '../../jest.preset.js',
+  displayName: 'pokemon-data-access',
+  preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/porygondb',
+  coverageDirectory: '../../../coverage/libs/pokemon/data-access',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
