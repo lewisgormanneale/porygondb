@@ -1,0 +1,37 @@
+@if (loading$ | async) {
+<div class="loading-container">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+} @else { @if (pokedex$| async; as pokedex) {
+<div class="pokedex-container">
+  <div>
+    <div class="pokedex-options">
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Pokédex</mat-label>
+        <select matNativeControl>
+          <option value="national">National</option>
+          <option value="volvo">Sinnoh</option>
+          <option value="saab">Hoenn</option>
+          <option value="mercedes">Johto</option>
+          <option value="audi">Kanto</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="pokedex-cards">
+      @for (pokemon of pokedex; track pokemon.speciesDetails?.id) {
+      <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card>
+      }
+    </div>
+  </div>
+  <mat-paginator
+    [length]="totalCount$ | async"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [showFirstLastButtons]="true"
+    [pageSizeOptions]="[25, 50, 100]"
+    (page)="onPageChange($event)"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>
+} }
