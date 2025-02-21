@@ -4,7 +4,6 @@ import baseConfig from '../../../eslint.config.mjs';
 
 export default [
   ...baseConfig,
-  ...baseConfig,
   ...nx.configs['flat/angular'],
   ...nx.configs['flat/angular-template'],
   {

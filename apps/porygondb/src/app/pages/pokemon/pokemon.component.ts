@@ -1,4 +1,4 @@
-import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
