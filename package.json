@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "nx run porygondb:serve",
-    "build": "nx build",
+    "start": "nx serve porygondb",
+    "build": "nx build porygondb",
     "watch": "nx build --watch --configuration development",
     "test": "nx test"
   },
