@@ -5,11 +5,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState, loadPokemon, PokemonResult } from 'data-access';
-import { LocalisePipe } from '../../pipes/localise.pipe';
+import { AppState, loadPokemon, PokemonResult } from 'shared-data-access';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { LocalisePipe } from 'shared-utils';
 
 @Component({
   imports: [
@@ -30,7 +30,7 @@ import { MatChipsModule } from '@angular/material/chips';
 export class PokemonComponent implements OnInit {
   pokemon$: Observable<PokemonResult>;
   loading$: Observable<boolean>;
-  pokemonName: string = '';
+  pokemonName = '';
 
   constructor(private store: Store<AppState>, private route: ActivatedRoute) {
     this.pokemonName = this.route.snapshot.paramMap.get('name') || '';

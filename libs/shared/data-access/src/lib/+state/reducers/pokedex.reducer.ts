@@ -4,7 +4,7 @@ import {
   loadPokedexFailure,
   loadPokedexSuccess,
 } from '../actions/pokedex.actions';
-import { PokedexResult } from 'data-access';
+import { PokedexResult } from 'shared-data-access';
 
 export interface PokedexState {
   pokedex: PokedexResult[];

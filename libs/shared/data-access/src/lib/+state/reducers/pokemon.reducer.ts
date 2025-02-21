@@ -4,7 +4,7 @@ import {
   loadPokemonFailure,
   loadPokemonSuccess,
 } from '../actions/pokemon.actions';
-import { PokemonResult } from 'data-access';
+import { PokemonResult } from 'shared-data-access';
 
 export interface PokemonState {
   pokemon: PokemonResult;

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { PokedexResult } from 'data-access';
+import { PokedexResult } from 'shared-data-access';
 
 export const loadPokedex = createAction(
   '[Pokedex] Load Pokedex',

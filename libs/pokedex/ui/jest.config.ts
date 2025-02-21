@@ -1,8 +1,8 @@
 export default {
-  displayName: 'pokedex',
-  preset: '../../jest.preset.js',
+  displayName: 'pokedex-ui',
+  preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/libs/pokedex',
+  coverageDirectory: '../../../coverage/libs/pokedex/ui',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

@@ -19,7 +19,7 @@
     </div>
     <div class="pokedex-cards">
       @for (pokemon of pokedex; track pokemon.speciesDetails?.id) {
-      <app-pokedex-card [pokemon]="pokemon"></app-pokedex-card>
+      <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card>
       }
     </div>
   </div>

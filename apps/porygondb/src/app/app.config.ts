@@ -7,7 +7,11 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { provideHttpClient } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { appReducers, PokedexEffects, PokemonEffects } from 'data-access';
+import {
+  appReducers,
+  PokedexEffects,
+  PokemonEffects,
+} from 'shared-data-access';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),

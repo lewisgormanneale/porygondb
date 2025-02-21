@@ -11,9 +11,11 @@
     "lib": ["ES2022", "dom"],
     "baseUrl": "./",
     "paths": {
-      "data-access": ["libs/shared/data-access/src/index.ts"],
       "pokedex": ["libs/pokedex/src/index.ts"],
-      "shared-ui": ["libs/shared/ui/src/index.ts"]
+      "pokedex-ui": ["libs/pokedex/ui/src/index.ts"],
+      "shared-data-access": ["libs/shared/data-access/src/index.ts"],
+      "shared-ui": ["libs/shared/ui/src/index.ts"],
+      "shared-utils": ["libs/shared/utils/src/index.ts"]
     }
   }
 }

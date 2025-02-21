@@ -4,11 +4,11 @@ import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { PokedexCardComponent } from './components/pokedex-card/pokedex-card.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { PokedexResult, AppState, loadPokedex } from 'data-access';
+import { PokedexResult, AppState, loadPokedex } from 'shared-data-access';
+import { PokedexCardComponent } from 'pokedex-ui';
 
 @Component({
   imports: [
@@ -28,8 +28,8 @@ export class PokedexComponent implements OnInit {
   pokedex$: Observable<PokedexResult[]>;
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
-  pageIndex: number = 0;
-  pageSize: number = 25;
+  pageIndex = 0;
+  pageSize = 25;
 
   constructor(private store: Store<AppState>) {
     this.pokedex$ = this.store.select((state) => state.pokedex.pokedex);
