@@ -1,0 +1,47 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+:root {
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-primary-container),
+      container-text-color: var(--mat-sys-primary-text),
+    )
+  );
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border: var(--mat-sys-neutral-variant20) solid 1px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--mat-sys-primary-container);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mat-sys-primary-fixed-dim);
+}
