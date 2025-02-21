@@ -32,3 +32,7 @@ e2e/*.map
 
 # System Files
 .DS_Store/
+
+
+.nx/cache
+.nx/workspace-data
