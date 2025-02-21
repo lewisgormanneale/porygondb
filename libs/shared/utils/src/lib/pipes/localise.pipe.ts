@@ -3,7 +3,9 @@ import { NamedAPIResource } from 'pokenode-ts';
 
 interface Localisable {
   language: NamedAPIResource;
-  [key: string]: unknown;
+  // TODO: Fix any type
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 @Pipe({
