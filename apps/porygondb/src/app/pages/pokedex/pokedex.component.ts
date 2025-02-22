@@ -26,8 +26,6 @@ import { ActivatedRoute } from '@angular/router';
 export class PokedexComponent implements OnInit {
   readonly pokedexStore = inject(PokedexStore);
   pokedexName: string;
-  pageIndex = 0;
-  pageSize = 25;
 
   constructor(private route: ActivatedRoute) {
     this.pokedexName = this.route.snapshot.paramMap.get('name') || '';
@@ -39,9 +37,7 @@ export class PokedexComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent): void {
-    // this.pageIndex = event.pageIndex;
-    // this.pageSize = event.pageSize;
-    // const offset = this.pageIndex * this.pageSize;
-    // this.store.dispatch(loadPokedex({ offset, limit: this.pageSize }));
+    this.pokedexStore.setPageSize(event.pageSize);
+    this.pokedexStore.setPageIndex(event.pageIndex);
   }
 }

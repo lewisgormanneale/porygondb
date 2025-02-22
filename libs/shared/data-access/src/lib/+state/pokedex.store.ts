@@ -26,6 +26,8 @@ type PokedexState = {
   isLoading: boolean;
   _selectedPokedexId: number | null;
   _selectedPokedexName: string | null;
+  pageSize: number;
+  pageIndex: number;
 };
 
 const initialState: PokedexState = {
@@ -33,12 +35,14 @@ const initialState: PokedexState = {
   isLoading: false,
   _selectedPokedexId: null,
   _selectedPokedexName: null,
+  pageSize: 25,
+  pageIndex: 0,
 };
 
 export const PokedexStore = signalStore(
   withState(initialState),
-  withComputed((store) => ({
-    activePokedex: computed(() => {
+  withComputed((store) => {
+    const activePokedex = computed(() => {
       if (store._selectedPokedexId() !== null) {
         return store
           .pokedexes()
@@ -54,8 +58,27 @@ export const PokedexStore = signalStore(
           );
       }
       return null;
-    }),
-  })),
+    });
+
+    return {
+      activePokedex,
+      totalPokedexEntriesCount: computed(() => {
+        const activePokedexValue = activePokedex();
+        return activePokedexValue
+          ? activePokedexValue.pokemon_entries.length
+          : 0;
+      }),
+      paginatedPokemonEntries: computed(() => {
+        const activePokedexValue = activePokedex();
+        if (!activePokedex) return [];
+        const startIndex = store.pageIndex() * store.pageSize();
+        const endIndex = startIndex + store.pageSize();
+        return activePokedexValue
+          ? activePokedexValue.pokemon_entries.slice(startIndex, endIndex)
+          : [];
+      }),
+    };
+  }),
   withMethods((store, gameService = inject(GameService)) => ({
     listAllPokedexes: rxMethod<void>(
       pipe(
@@ -102,6 +125,12 @@ export const PokedexStore = signalStore(
         _selectedPokedexName: name,
         _selectedPokedexId: null,
       });
+    },
+    setPageSize: (size: number) => {
+      patchState(store, { pageSize: size });
+    },
+    setPageIndex: (index: number) => {
+      patchState(store, { pageIndex: index });
     },
   }))
 );

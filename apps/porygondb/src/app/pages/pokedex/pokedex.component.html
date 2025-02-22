@@ -18,22 +18,22 @@
       </mat-form-field>
     </div>
     <div class="pokedex-cards">
-      @for (pokemon of pokedexStore.activePokedex()?.pokemon_entries; track
+      @for (pokemon of pokedexStore.paginatedPokemonEntries(); track
       pokemon.entry_number) {
       <div>{{ pokemon.pokemon_species.name }}</div>
       <!-- <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card> -->
       }
     </div>
   </div>
-  <!-- <mat-paginator
-    [length]="totalCount$ | async"
-    [pageSize]="pageSize"
-    [pageIndex]="pageIndex"
+  <mat-paginator
+    [length]="pokedexStore.totalPokedexEntriesCount()"
+    [pageSize]="this.pokedexStore.pageSize()"
+    [pageIndex]="this.pokedexStore.pageIndex()"
     [showFirstLastButtons]="true"
     [pageSizeOptions]="[25, 50, 100]"
     (page)="onPageChange($event)"
     aria-label="Select page"
   >
-  </mat-paginator> -->
+  </mat-paginator>
 </div>
 } }
