@@ -1,14 +1,10 @@
-// State
-export * from './lib/+state/app.state';
-
-// Actions
-export * from './lib/+state/actions/pokedex.actions';
-
-// Reducers
-export * from './lib/+state/reducers/pokedex.reducer';
-
-// Effects
-export * from './lib/+state/effects/pokedex.effects';
+//Stores
+export * from './lib/+state/pokedex.store';
 
 // Models
+export * from './lib/models/pokemon.model';
 export * from './lib/models/pokedex.model';
+
+// Services
+export * from './lib/services/pokemon.service';
+export * from './lib/services/game.service';

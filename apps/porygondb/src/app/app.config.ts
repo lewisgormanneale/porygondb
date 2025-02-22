@@ -5,9 +5,6 @@ import { provideProtractorTestingSupport } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatIconRegistry } from '@angular/material/icon';
 import { provideHttpClient } from '@angular/common/http';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { appReducers, PokedexEffects } from 'shared-data-access';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -15,7 +12,5 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     MatIconRegistry,
     provideHttpClient(),
-    provideStore(appReducers),
-    provideEffects([PokedexEffects]),
   ],
 };

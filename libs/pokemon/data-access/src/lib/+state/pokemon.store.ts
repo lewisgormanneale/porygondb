@@ -11,10 +11,9 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { PokemonResult } from '../models/pokemon.model';
 import { tapResponse } from '@ngrx/operators';
-import { PokemonService } from '../services/pokemon.service';
 import { Pokemon, PokemonSpecies } from 'pokenode-ts';
+import { PokemonResult, PokemonService } from 'shared-data-access';
 
 type PokemonState = {
   pokemon: PokemonResult;

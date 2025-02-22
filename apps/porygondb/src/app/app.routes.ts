@@ -4,7 +4,8 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { PokemonComponent } from './pages/pokemon/pokemon.component';
 
 export const routes: Routes = [
-  { path: '', component: PokedexComponent },
+  { path: '', redirectTo: '/pokedex/national', pathMatch: 'full' },
+  { path: 'pokedex/:name', component: PokedexComponent },
   { path: 'pokemon/:name', component: PokemonComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
