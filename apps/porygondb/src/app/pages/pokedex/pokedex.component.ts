@@ -1,7 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AsyncPipe } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +11,6 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   imports: [
-    AsyncPipe,
     MatPaginatorModule,
     MatProgressBarModule,
     PokedexCardComponent,
@@ -39,6 +35,7 @@ export class PokedexComponent implements OnInit {
 
   ngOnInit(): void {
     this.pokedexStore.listAllPokedexes();
+    this.pokedexStore.selectPokedexByName(this.pokedexName);
   }
 
   onPageChange(event: PageEvent): void {

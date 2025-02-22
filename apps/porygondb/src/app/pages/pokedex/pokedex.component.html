@@ -1,10 +1,10 @@
-<!-- @if (loading$ | async) {
+@if (pokedexStore.isLoading()) {
 <div class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-} @else { @if (pokedex$| async; as pokedex) { -->
+} @else { @if (pokedexStore.activePokedex()) {
 <div class="pokedex-container">
-  <!-- <div>
+  <div>
     <div class="pokedex-options">
       <mat-form-field subscriptSizing="dynamic">
         <mat-label>Pokédex</mat-label>
@@ -18,12 +18,14 @@
       </mat-form-field>
     </div>
     <div class="pokedex-cards">
-      @for (pokemon of pokedex; track pokemon.speciesDetails?.id) {
-      <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card>
+      @for (pokemon of pokedexStore.activePokedex()?.pokemon_entries; track
+      pokemon.entry_number) {
+      <div>{{ pokemon.pokemon_species.name }}</div>
+      <!-- <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card> -->
       }
     </div>
   </div>
-  <mat-paginator
+  <!-- <mat-paginator
     [length]="totalCount$ | async"
     [pageSize]="pageSize"
     [pageIndex]="pageIndex"
@@ -34,4 +36,4 @@
   >
   </mat-paginator> -->
 </div>
-<!-- } } -->
+} }

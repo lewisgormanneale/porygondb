@@ -56,10 +56,10 @@ export class GameService {
   }
 
   listVersions(): Observable<NamedAPIResourceList> {
-    return from(this.gameClient.listVersions());
+    return from(this.gameClient.listVersions(0, 1000));
   }
 
   listVersionGroups(): Observable<NamedAPIResourceList> {
-    return from(this.gameClient.listVersionGroups());
+    return from(this.gameClient.listVersionGroups(0, 1000));
   }
 }

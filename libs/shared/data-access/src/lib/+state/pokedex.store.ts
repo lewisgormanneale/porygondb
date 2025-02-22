@@ -1,12 +1,17 @@
-import { inject } from '@angular/core';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { computed, inject } from '@angular/core';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
   catchError,
   debounceTime,
   distinctUntilChanged,
   forkJoin,
-  Observable,
   of,
   pipe,
   switchMap,
@@ -15,26 +20,42 @@ import {
 import { tapResponse } from '@ngrx/operators';
 import { NamedAPIResource, NamedAPIResourceList, Pokedex } from 'pokenode-ts';
 import { GameService } from '../services/game.service';
-import { PokemonService } from '../services/pokemon.service';
-import { withSelectedEntity } from 'shared-utils';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 
 type PokedexState = {
   pokedexes: Pokedex[];
-  selectedPokedex: Pokedex | null;
   isLoading: boolean;
+  _selectedPokedexId: number | null;
+  _selectedPokedexName: string | null;
 };
 
 const initialState: PokedexState = {
   pokedexes: [],
-  selectedPokedex: null,
   isLoading: false,
+  _selectedPokedexId: null,
+  _selectedPokedexName: null,
 };
 
 export const PokedexStore = signalStore(
   withState(initialState),
-  withEntities<Pokedex>(),
-  withSelectedEntity(),
+  withComputed((store) => ({
+    activePokedex: computed(() => {
+      if (store._selectedPokedexId() !== null) {
+        return store
+          .pokedexes()
+          .find(
+            (pokedex: Pokedex) => pokedex.id === store._selectedPokedexId()
+          );
+      }
+      if (store._selectedPokedexName() !== null) {
+        return store
+          .pokedexes()
+          .find(
+            (pokedex: Pokedex) => pokedex.name === store._selectedPokedexName()
+          );
+      }
+      return null;
+    }),
+  })),
   withMethods((store, gameService = inject(GameService)) => ({
     listAllPokedexes: rxMethod<void>(
       pipe(
@@ -44,15 +65,18 @@ export const PokedexStore = signalStore(
         switchMap(() => {
           return gameService.listPokedexes().pipe(
             switchMap((response: NamedAPIResourceList) => {
-              console.log(response);
               const pokedexDetailRequests = response.results.map(
                 (pokedex: NamedAPIResource) =>
                   gameService.getPokedexByName(pokedex.name)
               );
               return forkJoin(pokedexDetailRequests).pipe(
                 tapResponse({
-                  next: (pokedexDetails) => {
-                    patchState(store, setAllEntities(pokedexDetails));
+                  next: (pokedexes) => {
+                    console.log(pokedexes);
+                    patchState(store, {
+                      pokedexes,
+                      isLoading: false,
+                    });
                   },
                   error: (err) => {
                     patchState(store, { isLoading: false });
@@ -70,5 +94,14 @@ export const PokedexStore = signalStore(
         })
       )
     ),
+    selectPokedexById: (id: number) => {
+      patchState(store, { _selectedPokedexId: id, _selectedPokedexName: null });
+    },
+    selectPokedexByName: (name: string) => {
+      patchState(store, {
+        _selectedPokedexName: name,
+        _selectedPokedexId: null,
+      });
+    },
   }))
 );
