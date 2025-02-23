@@ -44,6 +44,13 @@ export const PokemonStore = signalStore(
         debounceTime(300),
         distinctUntilChanged(),
         switchMap((pageEvent?: PageEvent) => {
+          patchState(store, {
+            pageEvent: {
+              pageIndex: pageEvent?.pageIndex ? pageEvent.pageIndex : 0,
+              pageSize: pageEvent?.pageSize ? pageEvent.pageSize : 25,
+              length: store.pageEvent().length,
+            },
+          });
           return pokemonService
             .listPokemonSpecies(store.offset(), store.limit())
             .pipe(
@@ -63,7 +70,6 @@ export const PokemonStore = signalStore(
                 return forkJoin(pokemonSpeciesRequests).pipe(
                   tapResponse({
                     next: (pokemonSpecies: PokemonSpecies[]) => {
-                      console.log(pokemonSpecies);
                       patchState(store, removeAllEntities());
                       patchState(store, addEntities(pokemonSpecies));
                     },

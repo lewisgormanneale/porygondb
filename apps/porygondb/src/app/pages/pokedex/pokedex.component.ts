@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { PokedexCardComponent } from 'pokedex-ui';
-import { PokemonStore } from 'shared-data-access';
+import { PokemonStore, VersionStore } from 'shared-data-access';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
