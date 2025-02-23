@@ -1,7 +1,7 @@
-<!-- <mat-card appearance="outlined">
+<mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title
-      >{{ pokemon.speciesDetails.names | localise : 'en' : 'name' }}
+      >{{ pokemon.names | localise : 'en' : 'name' }}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
@@ -15,12 +15,12 @@
       <img
         [src]="
           'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-          pokemon.speciesDetails.id +
+          pokemon.id +
           '.png'
         "
         [hidden]="imageLoading()"
         (load)="onImageLoad()"
-        alt="{{ pokemon.speciesDetails.names | localise : 'en' : 'name' }}"
+        alt="{{ pokemon.names | localise : 'en' : 'name' }}"
         mat-card-image
         width="100"
         height="100"
@@ -30,4 +30,4 @@
   <mat-card-actions [align]="'end'">
     <a mat-raised-button [routerLink]="'pokemon/' + pokemon.name">View</a>
   </mat-card-actions>
-</mat-card> -->
+</mat-card>

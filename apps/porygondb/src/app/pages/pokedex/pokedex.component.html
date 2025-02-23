@@ -1,43 +1,37 @@
-<!-- @if (pokedexStore.isLoading()) {
+@if (pokemonStore.isLoading()) {
 <div class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-} @else { @if (pokedexStore.activePokedex()) { -->
-<!-- <div class="pokedex-container">
+} @else { @if (pokemonStore.entities()) {
+<div class="pokedex-container">
   <div>
     <div class="pokedex-options">
       <mat-form-field subscriptSizing="dynamic">
         <mat-label>Pokédex</mat-label>
         <select matNativeControl>
           <option value="national">National</option>
-          <option value="volvo">Sinnoh</option>
-          <option value="saab">Hoenn</option>
-          <option value="mercedes">Johto</option>
-          <option value="audi">Kanto</option>
+          <option value="sinnoh">Sinnoh</option>
+          <option value="hoenn">Hoenn</option>
+          <option value="johto">Johto</option>
+          <option value="kanto">Kanto</option>
         </select>
       </mat-form-field>
     </div>
     <div class="pokedex-cards">
-      @for (pokemon of pokedexStore.selectedEntity; track pokemon.entry_number)
-      {
-      <div>{{ pokemon.pokemon_species.name }}</div>
-      <!-- <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card> -->
-<!-- } -->
-<!-- </div>
-  </div> -->
-<!-- <mat-paginator
-    [length]="pokedexStore.totalPokedexEntriesCount()"
-    [pageSize]="this.pokedexStore.pageSize()"
-    [pageIndex]="this.pokedexStore.pageIndex()"
-    [showFirstLastButtons]="true"
+      @for (pokemon of pokemonStore.entities(); track pokemon.id) {
+      <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card>
+      }
+    </div>
+  </div>
+  <mat-paginator
+    [length]="pokemonStore.pageEvent().length"
+    [pageSize]="pokemonStore.pageEvent().pageSize"
+    [pageIndex]="pokemonStore.pageEvent().pageIndex"
     [pageSizeOptions]="[25, 50, 100]"
-    (page)="onPageChange($event)"
+    (page)="loadPokemon($event)"
+    [showFirstLastButtons]="true"
     aria-label="Select page"
   >
-  </mat-paginator> -->
-<!-- </div>
-} } -->
-<div>Hi</div>
-@for (pokemon of pokemonStore.entities(); track pokemon.id) {
-<div>{{ pokemon.name }}</div>
-}
+  </mat-paginator>
+</div>
+} }

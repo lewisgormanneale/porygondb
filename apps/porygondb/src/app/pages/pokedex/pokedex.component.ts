@@ -5,8 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { PokedexCardComponent } from 'pokedex-ui';
-import { PokemonStore } from 'pokemon-data-access';
-import { PokedexStore } from 'shared-data-access';
+import { PokemonStore } from 'shared-data-access';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -21,10 +20,9 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-pokedex',
   templateUrl: 'pokedex.component.html',
   styleUrl: 'pokedex.component.scss',
-  providers: [PokedexStore, PokemonStore],
+  providers: [PokemonStore],
 })
-export class PokedexComponent implements OnInit {
-  readonly pokedexStore = inject(PokedexStore);
+export class PokedexComponent {
   readonly pokemonStore = inject(PokemonStore);
   pokedexName: string;
 
@@ -32,14 +30,7 @@ export class PokedexComponent implements OnInit {
     this.pokedexName = this.route.snapshot.paramMap.get('name') || '';
   }
 
-  ngOnInit(): void {
-    this.pokemonStore.listAllPokemon();
-    // this.pokedexStore.listAllPokedexes();
-    // this.pokedexStore.selectPokedexByName(this.pokedexName);
+  loadPokemon(event?: PageEvent): void {
+    this.pokemonStore.listPokemonSpecies(event);
   }
-
-  // onPageChange(event: PageEvent): void {
-  //   this.pokedexStore.setPageSize(event.pageSize);
-  //   this.pokedexStore.setPageIndex(event.pageIndex);
-  // }
 }
