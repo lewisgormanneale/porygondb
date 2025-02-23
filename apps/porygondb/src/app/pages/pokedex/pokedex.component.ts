@@ -21,10 +21,11 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-pokedex',
   templateUrl: 'pokedex.component.html',
   styleUrl: 'pokedex.component.scss',
-  providers: [PokedexStore],
+  providers: [PokedexStore, PokemonStore],
 })
 export class PokedexComponent implements OnInit {
   readonly pokedexStore = inject(PokedexStore);
+  readonly pokemonStore = inject(PokemonStore);
   pokedexName: string;
 
   constructor(private route: ActivatedRoute) {
@@ -32,12 +33,13 @@ export class PokedexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pokedexStore.listAllPokedexes();
-    this.pokedexStore.selectPokedexByName(this.pokedexName);
+    this.pokemonStore.listAllPokemon();
+    // this.pokedexStore.listAllPokedexes();
+    // this.pokedexStore.selectPokedexByName(this.pokedexName);
   }
 
-  onPageChange(event: PageEvent): void {
-    this.pokedexStore.setPageSize(event.pageSize);
-    this.pokedexStore.setPageIndex(event.pageIndex);
-  }
+  // onPageChange(event: PageEvent): void {
+  //   this.pokedexStore.setPageSize(event.pageSize);
+  //   this.pokedexStore.setPageIndex(event.pageIndex);
+  // }
 }

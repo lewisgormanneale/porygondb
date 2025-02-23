@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   Ability,
+  NamedAPIResourceList,
   Pokemon,
   PokemonClient,
   PokemonSpecies,
@@ -48,5 +49,12 @@ export class PokemonService {
 
   getTypeById(id: number): Observable<Type> {
     return from(this.pokemonClient.getTypeById(id));
+  }
+
+  listPokemonSpecies(
+    offset?: number,
+    limit?: number
+  ): Observable<NamedAPIResourceList> {
+    return from(this.pokemonClient.listPokemonSpecies(offset, limit));
   }
 }

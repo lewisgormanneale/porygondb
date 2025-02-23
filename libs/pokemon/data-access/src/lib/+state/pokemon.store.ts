@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
   catchError,
@@ -9,63 +9,55 @@ import {
   of,
   pipe,
   switchMap,
-  tap,
 } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import { Pokemon, PokemonSpecies } from 'pokenode-ts';
-import { PokemonResult, PokemonService } from 'shared-data-access';
-
-type PokemonState = {
-  pokemon: PokemonResult;
-  isLoading: boolean;
-};
-
-const initialState: PokemonState = {
-  pokemon: {} as PokemonResult,
-  isLoading: false,
-};
+import {
+  NamedAPIResource,
+  NamedAPIResourceList,
+  PokemonSpecies,
+} from 'pokenode-ts';
+import { PokemonService, withPagination } from 'shared-data-access';
+import { withSelectedEntity } from 'shared-utils';
+import { addEntities, withEntities } from '@ngrx/signals/entities';
 
 export const PokemonStore = signalStore(
-  withState(initialState),
+  withEntities<PokemonSpecies>(),
+  withSelectedEntity(),
+  withPagination(),
   withMethods((store, pokemonService = inject(PokemonService)) => ({
-    loadByName: rxMethod<string>(
+    listAllPokemon: rxMethod<void>(
       pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        tap(() => patchState(store, { isLoading: true })),
-        switchMap((query) => {
-          return pokemonService.getPokemonSpeciesByName(query).pipe(
-            switchMap((speciesDetails: PokemonSpecies) => {
-              const varietyDetailRequests = speciesDetails.varieties.map(
-                (pokemon) =>
-                  pokemonService.getPokemonByName(pokemon.pokemon.name)
-              );
-              return forkJoin(varietyDetailRequests).pipe(
-                tapResponse({
-                  next: (varietyDetails: Pokemon[]) => {
-                    patchState(store, {
-                      pokemon: {
-                        name: query,
-                        url: speciesDetails.varieties[0].pokemon.url,
-                        speciesDetails,
-                        varietyDetails,
-                      },
-                      isLoading: false,
-                    });
-                  },
-                  error: (err) => {
-                    patchState(store, { isLoading: false });
-                    console.error(err);
-                  },
-                })
-              );
-            }),
-            catchError((err) => {
-              patchState(store, { isLoading: false });
-              console.error(err);
-              return of();
-            })
-          );
+        switchMap(() => {
+          return pokemonService
+            .listPokemonSpecies(
+              store.pageEvent().pageSize,
+              store.pageEvent().pageIndex
+            )
+            .pipe(
+              switchMap((response: NamedAPIResourceList) => {
+                const pokemonSpeciesRequests = response.results.map(
+                  (pokemon: NamedAPIResource) =>
+                    pokemonService.getPokemonSpeciesByName(pokemon.name)
+                );
+                return forkJoin(pokemonSpeciesRequests).pipe(
+                  tapResponse({
+                    next: (pokemonSpecies: PokemonSpecies[]) => {
+                      console.log(pokemonSpecies);
+                      patchState(store, addEntities(pokemonSpecies));
+                    },
+                    error: (err) => {
+                      console.error(err);
+                    },
+                  })
+                );
+              }),
+              catchError((err) => {
+                console.error(err);
+                return of();
+              })
+            );
         })
       )
     ),

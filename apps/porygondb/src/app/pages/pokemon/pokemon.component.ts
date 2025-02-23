@@ -32,7 +32,5 @@ export class PokemonComponent implements OnInit {
     this.pokemonName = this.route.snapshot.paramMap.get('name') || '';
   }
 
-  ngOnInit(): void {
-    this.pokemonStore.loadByName(this.pokemonName);
-  }
+  ngOnInit(): void {}
 }

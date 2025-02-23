@@ -1,9 +1,9 @@
-@if (pokedexStore.isLoading()) {
+<!-- @if (pokedexStore.isLoading()) {
 <div class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-} @else { @if (pokedexStore.activePokedex()) {
-<div class="pokedex-container">
+} @else { @if (pokedexStore.activePokedex()) { -->
+<!-- <div class="pokedex-container">
   <div>
     <div class="pokedex-options">
       <mat-form-field subscriptSizing="dynamic">
@@ -18,14 +18,14 @@
       </mat-form-field>
     </div>
     <div class="pokedex-cards">
-      @for (pokemon of pokedexStore.paginatedPokemonEntries(); track
-      pokemon.entry_number) {
+      @for (pokemon of pokedexStore.selectedEntity; track pokemon.entry_number)
+      {
       <div>{{ pokemon.pokemon_species.name }}</div>
       <!-- <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card> -->
-      }
-    </div>
-  </div>
-  <mat-paginator
+<!-- } -->
+<!-- </div>
+  </div> -->
+<!-- <mat-paginator
     [length]="pokedexStore.totalPokedexEntriesCount()"
     [pageSize]="this.pokedexStore.pageSize()"
     [pageIndex]="this.pokedexStore.pageIndex()"
@@ -34,6 +34,10 @@
     (page)="onPageChange($event)"
     aria-label="Select page"
   >
-  </mat-paginator>
-</div>
-} }
+  </mat-paginator> -->
+<!-- </div>
+} } -->
+<div>Hi</div>
+@for (pokemon of pokemonStore.entities(); track pokemon.id) {
+<div>{{ pokemon.name }}</div>
+}
