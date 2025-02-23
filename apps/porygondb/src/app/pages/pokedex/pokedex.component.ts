@@ -1,11 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, signal, effect } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { PokedexCardComponent } from 'pokedex-ui';
-import { PokemonStore, VersionStore } from 'shared-data-access';
+import { PokedexStore } from 'shared-data-access';
+import { PokedexSpeciesListStore } from 'pokedex-data-access';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -20,17 +21,28 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-pokedex',
   templateUrl: 'pokedex.component.html',
   styleUrl: 'pokedex.component.scss',
-  providers: [PokemonStore],
+  providers: [PokedexSpeciesListStore],
 })
 export class PokedexComponent {
-  readonly pokemonStore = inject(PokemonStore);
-  pokedexName: string;
+  readonly pokedexStore = inject(PokedexStore);
+  readonly pokemonSpeciesListStore = inject(PokedexSpeciesListStore);
+  pokedexName = signal<string>('');
 
   constructor(private route: ActivatedRoute) {
-    this.pokedexName = this.route.snapshot.paramMap.get('name') || '';
+    this.pokedexName.set(this.route.snapshot.paramMap.get('name') || '');
+    this.pokedexStore.loadPokedexByName(this.pokedexName);
+    effect(() => {
+      if (this.pokemonSpeciesListStore.pokemonEntries().length > 0) {
+        this.loadPokemonSpecies();
+      }
+    });
   }
 
-  loadPokemon(event?: PageEvent): void {
-    this.pokemonStore.listPokemonSpecies(event);
+  loadPokemonSpecies(event?: PageEvent): void {
+    this.pokemonSpeciesListStore.loadPokemonSpecies(event);
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.loadPokemonSpecies(event);
   }
 }

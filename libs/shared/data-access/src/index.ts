@@ -7,6 +7,7 @@ export * from './lib/+state/version.store';
 // Store Features
 export * from './lib/+state/features/pagination.feature';
 export * from './lib/+state/features/selected-entity.feature';
+export * from './lib/+state/features/request-status.feature';
 
 // Models
 export * from './lib/models/pokemon.model';

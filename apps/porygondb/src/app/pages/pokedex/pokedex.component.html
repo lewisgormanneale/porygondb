@@ -1,8 +1,8 @@
-@if (pokemonStore.isLoading()) {
+@if (pokedexStore.isLoading()) {
 <div class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-} @else { @if (pokemonStore.entities()) {
+} @else { @if (pokedexStore.selectedEntity()) {
 <div class="pokedex-container">
   <div>
     <div class="pokedex-options">
@@ -14,17 +14,17 @@
       </mat-form-field>
     </div>
     <div class="pokedex-cards">
-      @for (pokemon of pokemonStore.entities(); track pokemon.id) {
+      @for (pokemon of pokemonSpeciesListStore.entities(); track pokemon.id) {
       <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card>
       }
     </div>
   </div>
   <mat-paginator
-    [length]="pokemonStore.pageEvent().length"
-    [pageSize]="pokemonStore.pageEvent().pageSize"
-    [pageIndex]="pokemonStore.pageEvent().pageIndex"
+    [length]="pokemonSpeciesListStore.pageEvent().length"
+    [pageSize]="pokemonSpeciesListStore.pageEvent().pageSize"
+    [pageIndex]="pokemonSpeciesListStore.pageEvent().pageIndex"
     [pageSizeOptions]="[25, 50, 100]"
-    (page)="loadPokemon($event)"
+    (page)="loadPokemonSpecies($event)"
     [showFirstLastButtons]="true"
     aria-label="Select page"
   >
