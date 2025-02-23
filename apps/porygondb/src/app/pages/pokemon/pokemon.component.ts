@@ -7,18 +7,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { LocalisePipe } from 'shared-utils';
-import { PokemonStore } from 'pokemon-data-access';
+import { PokemonStore } from 'shared-data-access';
 
 @Component({
-  imports: [
-    MatProgressBarModule,
-    NgOptimizedImage,
-    MatTabsModule,
-    LocalisePipe,
-    MatCardModule,
-    MatIconModule,
-    MatChipsModule,
-  ],
+  imports: [MatProgressBarModule, MatTabsModule, MatIconModule, MatChipsModule],
   selector: 'app-pokemon',
   templateUrl: 'pokemon.component.html',
   styleUrl: 'pokemon.component.scss',
@@ -32,7 +24,5 @@ export class PokemonComponent implements OnInit {
     this.pokemonName = this.route.snapshot.paramMap.get('name') || '';
   }
 
-  ngOnInit(): void {
-    this.pokemonStore.loadByName(this.pokemonName);
-  }
+  ngOnInit(): void {}
 }

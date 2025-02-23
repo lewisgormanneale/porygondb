@@ -6,6 +6,7 @@ import { MatPaginatorHarness } from '@angular/material/paginator/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PokédexComponent', () => {
   let fixture: ComponentFixture<PokedexComponent>;
@@ -25,7 +26,12 @@ describe('PokédexComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PokedexComponent, MatPaginatorModule, NoopAnimationsModule],
+      imports: [
+        PokedexComponent,
+        MatPaginatorModule,
+        NoopAnimationsModule,
+        RouterTestingModule,
+      ],
       providers: [provideMockStore({ initialState })],
     }).compileComponents();
 

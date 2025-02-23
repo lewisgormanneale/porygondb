@@ -1,8 +1,8 @@
 export default {
-  displayName: 'pokemon-data-access',
+  displayName: 'pokedex-data-access',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../coverage/libs/pokemon/data-access',
+  coverageDirectory: '../../../coverage/libs/pokedex/data-access',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

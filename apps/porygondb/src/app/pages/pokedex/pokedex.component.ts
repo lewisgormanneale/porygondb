@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AsyncPipe } from '@angular/common';
+import { Component, inject, signal, effect } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { PokedexResult, AppState, loadPokedex } from 'shared-data-access';
 import { PokedexCardComponent } from 'pokedex-ui';
+import { PokedexStore } from 'shared-data-access';
+import { PokedexSpeciesListStore } from 'pokedex-data-access';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   imports: [
-    AsyncPipe,
     MatPaginatorModule,
     MatProgressBarModule,
     PokedexCardComponent,
@@ -23,28 +21,28 @@ import { PokedexCardComponent } from 'pokedex-ui';
   selector: 'app-pokedex',
   templateUrl: 'pokedex.component.html',
   styleUrl: 'pokedex.component.scss',
+  providers: [PokedexSpeciesListStore],
 })
-export class PokedexComponent implements OnInit {
-  pokedex$: Observable<PokedexResult[]>;
-  totalCount$: Observable<number>;
-  loading$: Observable<boolean>;
-  pageIndex = 0;
-  pageSize = 25;
+export class PokedexComponent {
+  readonly pokedexStore = inject(PokedexStore);
+  readonly pokemonSpeciesListStore = inject(PokedexSpeciesListStore);
+  pokedexName = signal<string>('');
 
-  constructor(private store: Store<AppState>) {
-    this.pokedex$ = this.store.select((state) => state.pokedex.pokedex);
-    this.totalCount$ = this.store.select((state) => state.pokedex.totalCount);
-    this.loading$ = this.store.select((state) => state.pokedex.loading);
+  constructor(private route: ActivatedRoute) {
+    this.pokedexName.set(this.route.snapshot.paramMap.get('name') || '');
+    this.pokedexStore.loadPokedexByName(this.pokedexName);
+    effect(() => {
+      if (this.pokemonSpeciesListStore.pokemonEntries().length > 0) {
+        this.loadPokemonSpecies();
+      }
+    });
   }
 
-  ngOnInit(): void {
-    this.store.dispatch(loadPokedex({ offset: 0, limit: 25 }));
+  loadPokemonSpecies(event?: PageEvent): void {
+    this.pokemonSpeciesListStore.loadPokemonSpecies(event);
   }
 
   onPageChange(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    const offset = this.pageIndex * this.pageSize;
-    this.store.dispatch(loadPokedex({ offset, limit: this.pageSize }));
+    this.loadPokemonSpecies(event);
   }
 }
