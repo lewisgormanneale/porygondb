@@ -25,23 +25,3 @@ body {
     )
   );
 }
-
-/* width */
-::-webkit-scrollbar {
-  width: 20px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  border: var(--mat-sys-neutral-variant20) solid 1px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: var(--mat-sys-primary-container);
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--mat-sys-primary-fixed-dim);
-}
