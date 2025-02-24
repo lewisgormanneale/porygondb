@@ -4,11 +4,19 @@
 </div>
 } @else { @if (pokemonStore.speciesDetails() && pokemonStore.varietyDetails()) {
 <div class="pokemon-container">
+  <section class="navigation">
+    <a mat-mini-fab [routerLink]="'/pokemon/' + previousPokemonName()">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <a mat-mini-fab [routerLink]="'/pokemon/' + nextPokemonName()">
+      <mat-icon>arrow_forward</mat-icon>
+    </a>
+  </section>
   <section class="general-info">
     <mat-card appearance="outlined">
       <mat-card-header>
         <div mat-card-avatar class="pokemon-id-avatar">
-          #{{ pokemonStore.speciesDetails().id }}
+          #{{ currentPokemonEntryNumberForSelectedPokedex() }}
         </div>
         <mat-card-title
           >{{
@@ -21,10 +29,11 @@
       </mat-card-header>
       <mat-card-content>
         <mat-chip-set aria-label="Types">
-          @for (type of pokemonStore.varietyDetails()[0].types; track type.slot)
-          {
+          @if (pokemonStore.varietyDetails()[0]?.types &&
+          pokemonStore.varietyDetails()[0].types.length > 0) { @for (type of
+          pokemonStore.varietyDetails()[0].types; track type.slot) {
           <mat-chip>{{ type.type.name | titlecase }}</mat-chip>
-          }
+          } }
         </mat-chip-set>
         <img
           [ngSrc]="
