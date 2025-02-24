@@ -1,43 +1,39 @@
-<!-- @if (pokemonStore.isLoading()) {
+@if (pokemonStore.isLoading()) {
 <div class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-} @else { @if (pokemonStore.pokemon() && pokemonStore.pokemon().speciesDetails
-&& pokemonStore.pokemon().varietyDetails) {
+} @else { @if (pokemonStore.speciesDetails() && pokemonStore.varietyDetails()) {
 <div class="pokemon-container">
   <section class="general-info">
     <mat-card appearance="outlined">
       <mat-card-header>
         <div mat-card-avatar class="pokemon-id-avatar">
-          #{{ pokemonStore.pokemon().speciesDetails?.id }}
+          #{{ pokemonStore.speciesDetails().id }}
         </div>
         <mat-card-title
           >{{
-            pokemonStore.pokemon().speciesDetails?.names || []
-              | localise : 'en' : 'name'
+            pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
           }}
         </mat-card-title>
         <mat-card-subtitle>{{
-          pokemonStore.pokemon().speciesDetails?.genera || []
-            | localise : 'en' : 'genus'
+          pokemonStore.speciesDetails().genera || [] | localise : 'en' : 'genus'
         }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <mat-chip-set aria-label="Types">
-          @for (type of pokemonStore.pokemon().varietyDetails[0].types; track
-          type.slot) {
+          @for (type of pokemonStore.varietyDetails()[0].types; track type.slot)
+          {
           <mat-chip>{{ type.type.name | titlecase }}</mat-chip>
           }
         </mat-chip-set>
         <img
           [ngSrc]="
             'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-            pokemonStore.pokemon().speciesDetails?.id +
+            pokemonStore.speciesDetails().id +
             '.png'
           "
           alt="{{
-            pokemonStore.pokemon().speciesDetails?.names || []
-              | localise : 'en' : 'name'
+            pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
           }}"
           mat-card-image
           width="400"
@@ -60,4 +56,4 @@
   </section>
 </div>
 
-} } -->
+} }
