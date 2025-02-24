@@ -7,11 +7,9 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
-  catchError,
   debounceTime,
   distinctUntilChanged,
   forkJoin,
-  of,
   pipe,
   switchMap,
   tap,
@@ -35,7 +33,7 @@ export const PokedexStore = signalStore(
   withRequestStatus(),
   withComputed(({ selectedEntity }) => ({
     pokemonEntriesForSelectedPokedex: computed(
-      () => selectedEntity()?.pokemon_entries
+      () => selectedEntity()?.pokemon_entries || []
     ),
   })),
   withMethods((store, gameService = inject(GameService)) => ({
@@ -55,7 +53,10 @@ export const PokedexStore = signalStore(
                 tapResponse({
                   next: (pokedexes) => {
                     patchState(store, addEntities(pokedexes));
-                    store.setSelectedId(1);
+                    const selectedPokedexId = store.selectedEntityId();
+                    if (selectedPokedexId === null) {
+                      store.setSelectedId(1);
+                    }
                   },
                   error: (error: Error) =>
                     patchState(store, setError(error.message)),
