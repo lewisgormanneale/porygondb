@@ -18,20 +18,22 @@ import {
   tap,
 } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { withSelectedEntity } from 'shared-utils';
 
 type PokemonState = {
   speciesDetails: PokemonSpecies;
-  varietyDetails: Pokemon[];
 };
 
 const initialState: PokemonState = {
   speciesDetails: {} as PokemonSpecies,
-  varietyDetails: [],
 };
 
 export const PokemonStore = signalStore(
   withState(initialState),
   withRequestStatus(),
+  withEntities<Pokemon>(),
+  withSelectedEntity(),
   withMethods((store, pokemonService = inject(PokemonService)) => ({
     loadPokemonByName: rxMethod<string>(
       pipe(
@@ -48,7 +50,12 @@ export const PokemonStore = signalStore(
               return forkJoin(varietyDetailRequests).pipe(
                 tapResponse({
                   next: (varietyDetails) => {
-                    patchState(store, { speciesDetails, varietyDetails });
+                    patchState(
+                      store,
+                      { speciesDetails },
+                      setAllEntities(varietyDetails)
+                    );
+                    store.setSelectedId(varietyDetails[0].id);
                   },
                   error: (error: Error) =>
                     patchState(store, setError(error.message)),

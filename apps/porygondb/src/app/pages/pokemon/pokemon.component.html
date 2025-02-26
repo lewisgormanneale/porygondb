@@ -2,7 +2,7 @@
 <div class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-} @else { @if (pokemonStore.speciesDetails() && pokemonStore.varietyDetails()) {
+} @else { @if (pokemonStore.isCompleted() && pokemonStore.selectedEntity()) {
 <div class="pokemon-container">
   <section class="navigation">
     <a mat-mini-fab [routerLink]="'/pokemon/' + previousPokemonName()">
@@ -15,9 +15,14 @@
   <section class="general-info">
     <mat-card appearance="outlined">
       <mat-card-header>
-        <div mat-card-avatar class="pokemon-id-avatar">
-          #{{ currentPokemonEntryNumberForSelectedPokedex() }}
-        </div>
+        <img
+          mat-card-avatar
+          class="pokemon-id-avatar"
+          [src]="pokemonStore.selectedEntity()?.sprites?.front_default!"
+          alt="{{
+            pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
+          }}"
+        />
         <mat-card-title
           >{{
             pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
@@ -29,12 +34,13 @@
       </mat-card-header>
       <mat-card-content>
         <mat-chip-set aria-label="Types">
-          @if (pokemonStore.varietyDetails()[0]?.types &&
-          pokemonStore.varietyDetails()[0].types.length > 0) { @for (type of
-          pokemonStore.varietyDetails()[0].types; track type.slot) {
+          @if (pokemonStore.selectedEntity()?.types) { @for (type of
+          pokemonStore.selectedEntity()?.types; track type.slot) {
           <mat-chip>{{ type.type.name | titlecase }}</mat-chip>
           } }
         </mat-chip-set>
+      </mat-card-content>
+      <mat-card-content>
         <img
           [ngSrc]="
             'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
@@ -50,8 +56,17 @@
           priority
         />
       </mat-card-content>
+      <mat-card-footer>
+        @for (variety of pokemonStore.entities(); track variety.id) {
+        <img
+          [ngSrc]="variety.sprites.front_default!"
+          width="50"
+          height="50"
+          alt="{{ variety.name }}"
+        />
+        }
+      </mat-card-footer>
     </mat-card>
-    <mat-card-footer></mat-card-footer>
   </section>
   <section class="additional-info">
     <mat-tab-group>

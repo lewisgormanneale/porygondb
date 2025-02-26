@@ -94,4 +94,8 @@ export class PokemonComponent {
       }
     });
   }
+
+  setSelectedPokemonVariety(varietyId: string) {
+    this.pokemonStore.setSelectedId(varietyId);
+  }
 }
