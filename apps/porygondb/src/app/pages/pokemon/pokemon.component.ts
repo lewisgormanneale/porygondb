@@ -16,6 +16,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { LocalisePipe } from 'shared-utils';
 import { PokedexStore, PokemonStore } from 'shared-data-access';
 import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @Component({
   imports: [
@@ -29,6 +30,7 @@ import { MatButtonModule } from '@angular/material/button';
     NgOptimizedImage,
     TitleCasePipe,
     RouterModule,
+    MatGridListModule,
   ],
   selector: 'app-pokemon',
   templateUrl: 'pokemon.component.html',
@@ -95,7 +97,7 @@ export class PokemonComponent {
     });
   }
 
-  setSelectedPokemonVariety(varietyId: string) {
+  setSelectedPokemonVariety(varietyId: number) {
     this.pokemonStore.setSelectedId(varietyId);
   }
 }

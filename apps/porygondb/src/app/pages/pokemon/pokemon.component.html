@@ -43,9 +43,7 @@
       <mat-card-content>
         <img
           [ngSrc]="
-            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-            pokemonStore.speciesDetails().id +
-            '.png'
+            pokemonStore.selectedEntity()?.sprites?.other?.home?.front_default!
           "
           alt="{{
             pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
@@ -57,14 +55,18 @@
         />
       </mat-card-content>
       <mat-card-footer>
-        @for (variety of pokemonStore.entities(); track variety.id) {
-        <img
-          [ngSrc]="variety.sprites.front_default!"
-          width="50"
-          height="50"
-          alt="{{ variety.name }}"
-        />
-        }
+        <mat-grid-list cols="4" rowHeight="100px">
+          @for (variety of pokemonStore.entities(); track variety.id) {
+          <mat-grid-tile (click)="setSelectedPokemonVariety(variety.id)">
+            <img
+              [ngSrc]="variety.sprites.front_default!"
+              width="50"
+              height="50"
+              alt="{{ variety.name }}"
+            />
+          </mat-grid-tile>
+          }
+        </mat-grid-list>
       </mat-card-footer>
     </mat-card>
   </section>
