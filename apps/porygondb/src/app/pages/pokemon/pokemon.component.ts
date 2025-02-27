@@ -1,12 +1,5 @@
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -17,6 +10,7 @@ import { LocalisePipe } from 'shared-utils';
 import { PokedexStore, PokemonStore } from 'shared-data-access';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { PokemonSummaryCardComponent } from 'pokemon-ui';
 
 @Component({
   imports: [
@@ -26,11 +20,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatIconModule,
     MatButtonModule,
     MatChipsModule,
-    LocalisePipe,
-    NgOptimizedImage,
-    TitleCasePipe,
     RouterModule,
-    MatGridListModule,
+    PokemonSummaryCardComponent,
   ],
   selector: 'app-pokemon',
   templateUrl: 'pokemon.component.html',
@@ -95,9 +86,5 @@ export class PokemonComponent {
         this.pokemonStore.loadPokemonByName(this.pokemonName());
       }
     });
-  }
-
-  setSelectedPokemonVariety(varietyId: number) {
-    this.pokemonStore.setSelectedId(varietyId);
   }
 }
