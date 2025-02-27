@@ -26,9 +26,22 @@
       font-weight: bold;
       color: var(--mat-sys-primary-text);
     }
+    mat-card-footer {
+      .forms-header {
+        margin-top: 20px;
+        margin-left: 10px;
+      }
+      .pokemon-form-image {
+        padding: 10px;
+      }
+    }
   }
   .additional-info {
     width: 100%;
     max-width: 500px;
   }
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

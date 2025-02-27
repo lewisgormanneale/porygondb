@@ -69,3 +69,5 @@ export const PokemonStore = signalStore(
     ),
   }))
 );
+
+export type PokemonStore = InstanceType<typeof PokemonStore>;
