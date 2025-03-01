@@ -1,16 +1,15 @@
-import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatChipsModule } from '@angular/material/chips';
-import { LocalisePipe } from 'shared-utils';
 import { PokedexStore, PokemonStore } from 'shared-data-access';
 import { MatButtonModule } from '@angular/material/button';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { PokemonSummaryCardComponent } from 'pokemon-ui';
+import {
+  PokemonMovesTabComponent,
+  PokemonSummaryCardComponent,
+} from 'pokemon-ui';
 
 @Component({
   imports: [
@@ -19,9 +18,9 @@ import { PokemonSummaryCardComponent } from 'pokemon-ui';
     MatTabsModule,
     MatIconModule,
     MatButtonModule,
-    MatChipsModule,
     RouterModule,
     PokemonSummaryCardComponent,
+    PokemonMovesTabComponent,
   ],
   selector: 'app-pokemon',
   templateUrl: 'pokemon.component.html',
