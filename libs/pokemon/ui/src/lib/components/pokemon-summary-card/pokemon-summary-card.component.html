@@ -18,12 +18,10 @@
     }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-chip-set aria-label="Types">
-      @if (pokemonStore.selectedEntity().types) { @for (type of
-      pokemonStore.selectedEntity().types; track type.slot) {
-      <mat-chip>{{ type.type.name | titlecase }}</mat-chip>
-      } }
-    </mat-chip-set>
+    <lib-pokemon-type-chip-set
+      [pokemonTypes]="pokemonStore.selectedEntity().types"
+    >
+    </lib-pokemon-type-chip-set>
   </mat-card-content>
   <mat-card-content>
     <img

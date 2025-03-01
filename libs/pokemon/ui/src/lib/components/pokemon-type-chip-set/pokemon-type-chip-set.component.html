@@ -1,0 +1,7 @@
+<mat-chip-set aria-label="Types">
+  @for (type of pokemonTypes(); track type.slot) {
+  <mat-chip [style.background-color]="getTypeColor(type.type.name)">
+    {{ type.type.name | titlecase }}
+  </mat-chip>
+  }
+</mat-chip-set>
