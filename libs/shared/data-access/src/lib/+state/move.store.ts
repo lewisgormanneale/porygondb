@@ -24,42 +24,44 @@ import {
   tap,
 } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import {
-  addEntities,
-  removeAllEntities,
-  withEntities,
-} from '@ngrx/signals/entities';
-import { withSelectedEntity } from 'shared-utils';
 import { MoveService } from '../services/move.service';
 import { withPagination } from './features/pagination.feature';
-import { PokemonStore } from './pokemon.store';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
+type MoveState = {
+  pokemonMoves: PokemonMove[];
+  paginatedMoves: Move[];
+};
+
+const initialState: MoveState = {
+  pokemonMoves: [],
+  paginatedMoves: [],
+};
+
 export const MoveStore = signalStore(
-  withEntities<Move>(),
-  withSelectedEntity(),
+  withState(initialState),
   withPagination(),
-  withComputed((store, pokemonStore = inject(PokemonStore)) => ({
-    selectedPokemon: computed(() => pokemonStore.selectedEntity() || {}),
-  })),
   withComputed((store) => ({
-    paginatedMoves: computed(() => {
+    paginatedPokemonMoves: computed(() => {
       const pageSize = store.pageEvent().pageSize;
       const pageIndex = store.pageEvent().pageIndex;
       const startIndex = pageIndex * pageSize;
       const endIndex = startIndex + pageSize;
-      return store.selectedPokemon().moves.slice(startIndex, endIndex);
+      return store.pokemonMoves().slice(startIndex, endIndex);
     }),
   })),
-  withComputed((store) => ({
-    selectedPokemonMovesDataSource: computed(
-      () => new MatTableDataSource<Move, MatPaginator>(store.entities())
-    ),
+  withComputed(({ paginatedMoves }) => ({
+    selectedPokemonMovesDataSource: computed(() => {
+      return new MatTableDataSource<Move>(paginatedMoves());
+    }),
   })),
   withRequestStatus(),
   withMethods((store, moveService = inject(MoveService)) => ({
-    loadMovesForSelectedPokemon: rxMethod<PageEvent | undefined>(
+    setPokemonMoves: (pokemonMoves: PokemonMove[]) => {
+      patchState(store, { pokemonMoves });
+    },
+    loadMovesForPaginatedPokemonMoves: rxMethod<PageEvent | undefined>(
       pipe(
         debounceTime(300),
         distinctUntilChanged(),
@@ -69,18 +71,17 @@ export const MoveStore = signalStore(
             pageEvent: {
               pageIndex: pageEvent?.pageIndex ? pageEvent.pageIndex : 0,
               pageSize: pageEvent?.pageSize ? pageEvent.pageSize : 10,
-              length: store.selectedPokemon().moves.length,
+              length: store.pokemonMoves().length,
             },
           });
-          const paginatedMoves = store.paginatedMoves();
-          const moveRequests = paginatedMoves.map((move: PokemonMove) =>
+          const paginatedPokemonMoves = store.paginatedPokemonMoves();
+          const moveRequests = paginatedPokemonMoves.map((move: PokemonMove) =>
             moveService.getMoveByName(move.move.name)
           );
-          patchState(store, removeAllEntities());
           return forkJoin(moveRequests).pipe(
             tapResponse({
-              next: (moves: Move[]) => {
-                patchState(store, addEntities(moves));
+              next: (paginatedMoves: Move[]) => {
+                patchState(store, { paginatedMoves });
               },
               error: (error: Error) =>
                 patchState(store, setError(error.message)),

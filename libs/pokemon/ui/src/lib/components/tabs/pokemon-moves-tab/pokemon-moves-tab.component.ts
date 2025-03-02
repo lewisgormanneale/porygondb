@@ -1,14 +1,7 @@
-import {
-  AfterViewInit,
-  Component,
-  effect,
-  inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Move } from 'pokenode-ts';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTable, MatTableModule } from '@angular/material/table';
 import {
   MatPaginator,
   MatPaginatorModule,
@@ -18,12 +11,14 @@ import { MatSort } from '@angular/material/sort';
 import { MoveStore, PokemonStore } from 'shared-data-access';
 import { LocalisePipe } from 'shared-utils';
 import { PokemonTypeChipComponent } from '../../pokemon-type-chip/pokemon-type-chip.component';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'lib-pokemon-moves-tab',
   imports: [
     CommonModule,
     MatTableModule,
+    MatCardModule,
     MatPaginatorModule,
     LocalisePipe,
     PokemonTypeChipComponent,
@@ -32,33 +27,21 @@ import { PokemonTypeChipComponent } from '../../pokemon-type-chip/pokemon-type-c
   styleUrl: './pokemon-moves-tab.component.scss',
   providers: [MoveStore],
 })
-export class PokemonMovesTabComponent implements OnInit, AfterViewInit {
+export class PokemonMovesTabComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly moveStore = inject(MoveStore);
   displayedColumns = ['name', 'type'];
-  dataSource = new MatTableDataSource<Move>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatTable) table!: MatTable<Move>;
 
-  ngOnInit(): void {
-    this.loadPokemonMoves();
+  constructor() {
+    if (this.pokemonStore.selectedEntity()) {
+      this.moveStore.setPokemonMoves(this.pokemonStore.selectedEntity().moves);
+      this.loadPokemonMoves();
+    }
   }
-
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource = this.moveStore.selectedPokemonMovesDataSource();
-  }
-
   loadPokemonMoves(event?: PageEvent): void {
-    this.moveStore.loadMovesForSelectedPokemon(event);
-    this.dataSource.data = this.moveStore.selectedPokemonMovesDataSource().data;
-    this.dataSource.sort = this.moveStore.selectedPokemonMovesDataSource().sort;
-    this.dataSource.paginator =
-      this.moveStore.selectedPokemonMovesDataSource().paginator;
-  }
-
-  onPageChange(event: PageEvent): void {
-    this.loadPokemonMoves(event);
+    this.moveStore.loadMovesForPaginatedPokemonMoves(event);
   }
 }

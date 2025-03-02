@@ -1,7 +1,7 @@
 <div class="mat-elevation-z2">
   <table
     mat-table
-    [dataSource]="dataSource"
+    [dataSource]="this.moveStore.selectedPokemonMovesDataSource()"
     matSort
     class="full-width-table"
     aria-label="Elements"
@@ -38,7 +38,7 @@
     [pageSize]="moveStore.pageEvent().pageSize"
     [pageIndex]="moveStore.pageEvent().pageIndex"
     [pageSizeOptions]="[10, 25, 50]"
-    (page)="onPageChange($event)"
+    (page)="loadPokemonMoves($event)"
     [showFirstLastButtons]="true"
     aria-label="Select page"
   >
