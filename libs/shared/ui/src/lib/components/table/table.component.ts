@@ -7,7 +7,7 @@ import { TableDataSource, TableItem } from './table-datasource';
 @Component({
   selector: 'lib-table',
   templateUrl: './table.component.html',
-  styleUrl: './table.component.css',
+  styleUrl: './table.component.scss',
   standalone: true,
   imports: [MatPaginatorModule],
 })
