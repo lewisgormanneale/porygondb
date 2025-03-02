@@ -3,6 +3,7 @@ import {
   Component,
   effect,
   inject,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,7 +17,7 @@ import {
 import { MatSort } from '@angular/material/sort';
 import { MoveStore, PokemonStore } from 'shared-data-access';
 import { LocalisePipe } from 'shared-utils';
-import { PokemonTypeChipSetComponent } from '../../pokemon-type-chip-set/pokemon-type-chip-set.component';
+import { PokemonTypeChipComponent } from '../../pokemon-type-chip/pokemon-type-chip.component';
 
 @Component({
   selector: 'lib-pokemon-moves-tab',
@@ -25,29 +26,36 @@ import { PokemonTypeChipSetComponent } from '../../pokemon-type-chip-set/pokemon
     MatTableModule,
     MatPaginatorModule,
     LocalisePipe,
-    PokemonTypeChipSetComponent,
+    PokemonTypeChipComponent,
   ],
   templateUrl: './pokemon-moves-tab.component.html',
   styleUrl: './pokemon-moves-tab.component.scss',
   providers: [MoveStore],
 })
-export class PokemonMovesTabComponent {
+export class PokemonMovesTabComponent implements OnInit, AfterViewInit {
   readonly pokemonStore = inject(PokemonStore);
   readonly moveStore = inject(MoveStore);
   displayedColumns = ['name', 'type'];
   dataSource = new MatTableDataSource<Move>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  constructor() {
-    effect(() => {
-      if (this.pokemonStore.selectedEntity().moves.length > 0) {
-        this.loadPokemonMoves();
-      }
-    });
+  ngOnInit(): void {
+    this.loadPokemonMoves();
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource = this.moveStore.selectedPokemonMovesDataSource();
   }
 
   loadPokemonMoves(event?: PageEvent): void {
     this.moveStore.loadMovesForSelectedPokemon(event);
-    this.dataSource.data = this.moveStore.entities();
+    this.dataSource.data = this.moveStore.selectedPokemonMovesDataSource().data;
+    this.dataSource.sort = this.moveStore.selectedPokemonMovesDataSource().sort;
+    this.dataSource.paginator =
+      this.moveStore.selectedPokemonMovesDataSource().paginator;
   }
 
   onPageChange(event: PageEvent): void {

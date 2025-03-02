@@ -16,7 +16,16 @@
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
       <td mat-cell *matCellDef="let row">
-        {{ row.type.name }}
+        <lib-pokemon-type-chip
+          [typeName]="row.type.name"
+        ></lib-pokemon-type-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="accuracy">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.accuracy }}
       </td>
     </ng-container>
 

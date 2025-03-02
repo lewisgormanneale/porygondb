@@ -5,7 +5,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { PokedexStore, PokemonStore } from 'shared-data-access';
 import { LocalisePipe } from 'shared-utils';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { PokemonTypeChipSetComponent } from '../pokemon-type-chip-set/pokemon-type-chip-set.component';
+import { PokemonTypeChipComponent } from '../pokemon-type-chip/pokemon-type-chip.component';
 
 @Component({
   selector: 'lib-pokemon-summary-card',
@@ -15,7 +15,7 @@ import { PokemonTypeChipSetComponent } from '../pokemon-type-chip-set/pokemon-ty
     LocalisePipe,
     NgOptimizedImage,
     MatGridListModule,
-    PokemonTypeChipSetComponent,
+    PokemonTypeChipComponent,
   ],
   templateUrl: './pokemon-summary-card.component.html',
   styleUrl: './pokemon-summary-card.component.scss',

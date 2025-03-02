@@ -33,7 +33,8 @@ import { withSelectedEntity } from 'shared-utils';
 import { MoveService } from '../services/move.service';
 import { withPagination } from './features/pagination.feature';
 import { PokemonStore } from './pokemon.store';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 export const MoveStore = signalStore(
   withEntities<Move>(),
@@ -51,6 +52,11 @@ export const MoveStore = signalStore(
       return store.selectedPokemon().moves.slice(startIndex, endIndex);
     }),
   })),
+  withComputed((store) => ({
+    selectedPokemonMovesDataSource: computed(
+      () => new MatTableDataSource<Move, MatPaginator>(store.entities())
+    ),
+  })),
   withRequestStatus(),
   withMethods((store, moveService = inject(MoveService)) => ({
     loadMovesForSelectedPokemon: rxMethod<PageEvent | undefined>(
@@ -62,11 +68,10 @@ export const MoveStore = signalStore(
           patchState(store, {
             pageEvent: {
               pageIndex: pageEvent?.pageIndex ? pageEvent.pageIndex : 0,
-              pageSize: pageEvent?.pageSize ? pageEvent.pageSize : 18,
+              pageSize: pageEvent?.pageSize ? pageEvent.pageSize : 10,
               length: store.selectedPokemon().moves.length,
             },
           });
-          console.log(store.selectedPokemon().moves.length);
           const paginatedMoves = store.paginatedMoves();
           const moveRequests = paginatedMoves.map((move: PokemonMove) =>
             moveService.getMoveByName(move.move.name)
