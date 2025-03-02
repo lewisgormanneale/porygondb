@@ -14,7 +14,7 @@
       "pokedex": ["libs/pokedex/src/index.ts"],
       "pokedex-data-access": ["libs/pokedex/data-access/src/index.ts"],
       "pokedex-ui": ["libs/pokedex/ui/src/index.ts"],
-      "pokemon-data-access": ["libs/pokemon/data-access/src/index.ts"],
+      "pokemon-ui": ["libs/pokemon/ui/src/index.ts"],
       "shared-data-access": ["libs/shared/data-access/src/index.ts"],
       "shared-ui": ["libs/shared/ui/src/index.ts"],
       "shared-utils": ["libs/shared/utils/src/index.ts"]

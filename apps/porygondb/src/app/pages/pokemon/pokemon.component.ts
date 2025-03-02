@@ -1,21 +1,15 @@
-import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatChipsModule } from '@angular/material/chips';
-import { LocalisePipe } from 'shared-utils';
 import { PokedexStore, PokemonStore } from 'shared-data-access';
 import { MatButtonModule } from '@angular/material/button';
+import {
+  PokemonMovesTabComponent,
+  PokemonSummaryCardComponent,
+} from 'pokemon-ui';
 
 @Component({
   imports: [
@@ -24,11 +18,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatTabsModule,
     MatIconModule,
     MatButtonModule,
-    MatChipsModule,
-    LocalisePipe,
-    NgOptimizedImage,
-    TitleCasePipe,
     RouterModule,
+    PokemonSummaryCardComponent,
+    PokemonMovesTabComponent,
   ],
   selector: 'app-pokemon',
   templateUrl: 'pokemon.component.html',
@@ -87,7 +79,6 @@ export class PokemonComponent {
       const name = params.get('name') || '';
       this.pokemonName.set(name);
     });
-    this.pokedexStore.loadAllPokedexes();
     effect(() => {
       if (this.pokemonName()) {
         this.pokemonStore.loadPokemonByName(this.pokemonName());

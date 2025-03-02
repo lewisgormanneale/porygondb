@@ -12,6 +12,7 @@ import {
   forkJoin,
   pipe,
   switchMap,
+  tap,
 } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { PokemonEntry, PokemonSpecies } from 'pokenode-ts';
@@ -25,6 +26,7 @@ import {
   PokemonService,
   setCompleted,
   setError,
+  setLoading,
   withPagination,
   withRequestStatus,
 } from 'shared-data-access';
@@ -54,6 +56,7 @@ export const PokedexSpeciesListStore = signalStore(
       pipe(
         debounceTime(300),
         distinctUntilChanged(),
+        tap(() => patchState(store, setLoading())),
         switchMap((pageEvent?: PageEvent) => {
           patchState(store, {
             pageEvent: {

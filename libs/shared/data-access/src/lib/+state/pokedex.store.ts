@@ -90,3 +90,5 @@ export const PokedexStore = signalStore(
     ),
   }))
 );
+
+export type PokedexStore = InstanceType<typeof PokedexStore>;
