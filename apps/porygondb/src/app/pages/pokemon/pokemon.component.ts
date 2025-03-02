@@ -79,7 +79,6 @@ export class PokemonComponent {
       const name = params.get('name') || '';
       this.pokemonName.set(name);
     });
-    this.pokedexStore.loadAllPokedexes();
     effect(() => {
       if (this.pokemonName()) {
         this.pokemonStore.loadPokemonByName(this.pokemonName());
