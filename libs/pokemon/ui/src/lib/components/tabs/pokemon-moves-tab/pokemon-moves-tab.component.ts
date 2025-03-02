@@ -30,7 +30,7 @@ import { MatCardModule } from '@angular/material/card';
 export class PokemonMovesTabComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly moveStore = inject(MoveStore);
-  displayedColumns = ['name', 'type'];
+  displayedColumns = ['name', 'type', 'power', 'accuracy', 'pp'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<Move>;

@@ -6,8 +6,7 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { Move, Pokemon, PokemonMove, PokemonSpecies } from 'pokenode-ts';
-import { PokemonService } from '../services/pokemon.service';
+import { Move, PokemonMove } from 'pokenode-ts';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
   setCompleted,
