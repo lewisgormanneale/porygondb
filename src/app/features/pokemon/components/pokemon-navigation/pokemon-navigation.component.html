@@ -1,0 +1,14 @@
+<div class="pokemon-navigation">
+  <a mat-mini-fab [routerLink]="'/pokemon/' + previousPokemonName()">
+    <mat-icon>arrow_back</mat-icon>
+  </a>
+  <mat-form-field subscriptSizing="dynamic">
+    <mat-label>Selected Version</mat-label>
+    <select matNativeControl required>
+      <option value="national">National</option>
+    </select>
+  </mat-form-field>
+  <a mat-mini-fab [routerLink]="'/pokemon/' + nextPokemonName()">
+    <mat-icon>arrow_forward</mat-icon>
+  </a>
+</div>

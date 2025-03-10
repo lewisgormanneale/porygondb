@@ -1,34 +1,27 @@
 import { Component, computed, effect, inject, signal } from "@angular/core";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatTabsModule } from "@angular/material/tabs";
-import { ActivatedRoute, RouterModule } from "@angular/router";
-import { MatCardModule } from "@angular/material/card";
-import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { ActivatedRoute, RouterModule } from "@angular/router";
 import { PokedexStore } from "src/app/shared/store/pokedex.store";
 import { PokemonStore } from "src/app/shared/store/pokemon.store";
-import { PokemonSummaryComponent } from "../../components/pokemon-summary/pokemon-summary.component";
-import { PokemonMovesTabComponent } from "../../components/tabs/pokemon-moves-tab/pokemon-moves-tab.component";
-import { PokemonNavigationComponent } from "../../components/pokemon-navigation/pokemon-navigation.component";
 
 @Component({
+  selector: "pokemon-navigation",
   imports: [
-    MatProgressBarModule,
-    MatCardModule,
-    MatTabsModule,
     MatIconModule,
-    MatButtonModule,
     RouterModule,
-    PokemonSummaryComponent,
-    PokemonMovesTabComponent,
-    PokemonNavigationComponent,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
   ],
-  selector: "app-pokemon",
-  templateUrl: "pokemon.component.html",
-  styleUrl: "pokemon.component.scss",
-  providers: [PokemonStore],
+  templateUrl: "./pokemon-navigation.component.html",
+  styleUrl: "./pokemon-navigation.component.scss",
 })
-export class PokemonComponent {
+export class PokemonNavigationComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly pokedexStore = inject(PokedexStore);
   pokemonName = signal<string>("");
