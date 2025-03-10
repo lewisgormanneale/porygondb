@@ -8,11 +8,11 @@ import {
   PageEvent,
 } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
-import { PokemonTypeChipComponent } from "../../pokemon-type-chip/pokemon-type-chip.component";
 import { MatCardModule } from "@angular/material/card";
 import { LocalisePipe } from "src/app/shared/pipes/localise.pipe";
 import { MoveStore } from "src/app/shared/store/move.store";
 import { PokemonStore } from "src/app/shared/store/pokemon.store";
+import { TypeChipComponent } from "src/app/shared/components/type-chip/type-chip.component";
 
 @Component({
   selector: "lib-pokemon-moves-tab",
@@ -22,7 +22,7 @@ import { PokemonStore } from "src/app/shared/store/pokemon.store";
     MatCardModule,
     MatPaginatorModule,
     LocalisePipe,
-    PokemonTypeChipComponent,
+    TypeChipComponent,
   ],
   templateUrl: "./pokemon-moves-tab.component.html",
   styleUrl: "./pokemon-moves-tab.component.scss",

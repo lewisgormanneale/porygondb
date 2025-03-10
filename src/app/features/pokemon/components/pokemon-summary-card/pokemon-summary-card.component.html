@@ -20,8 +20,7 @@
   <mat-card-content>
     <mat-chip-set aria-label="Types">
       @for (type of pokemonStore.selectedEntity()!.types; track type.slot) {
-      <lib-pokemon-type-chip [typeName]="type.type.name">
-      </lib-pokemon-type-chip>
+      <type-chip [typeName]="type.type.name"> </type-chip>
       }
     </mat-chip-set>
   </mat-card-content>

@@ -16,9 +16,7 @@
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
       <td mat-cell *matCellDef="let row">
-        <lib-pokemon-type-chip
-          [typeName]="row.type.name"
-        ></lib-pokemon-type-chip>
+        <type-chip [typeName]="row.type.name"></type-chip>
       </td>
     </ng-container>
 

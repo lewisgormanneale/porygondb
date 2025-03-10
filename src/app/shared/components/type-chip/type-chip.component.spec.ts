@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { PokemonTypeChipComponent } from "./pokemon-type-chip.component";
+import { TypeChipComponent } from "./type-chip.component";
 
 describe("PokemonTypeChipsComponent", () => {
-  let component: PokemonTypeChipComponent;
-  let fixture: ComponentFixture<PokemonTypeChipComponent>;
+  let component: TypeChipComponent;
+  let fixture: ComponentFixture<TypeChipComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PokemonTypeChipComponent],
+      imports: [TypeChipComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PokemonTypeChipComponent);
+    fixture = TestBed.createComponent(TypeChipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

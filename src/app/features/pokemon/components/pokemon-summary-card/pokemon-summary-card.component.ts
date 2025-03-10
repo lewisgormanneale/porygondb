@@ -3,7 +3,7 @@ import { Component, inject } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatGridListModule } from "@angular/material/grid-list";
-import { PokemonTypeChipComponent } from "../pokemon-type-chip/pokemon-type-chip.component";
+import { TypeChipComponent } from "src/app/shared/components/type-chip/type-chip.component";
 import { LocalisePipe } from "src/app/shared/pipes/localise.pipe";
 import { PokedexStore } from "src/app/shared/store/pokedex.store";
 import { PokemonStore } from "src/app/shared/store/pokemon.store";
@@ -16,7 +16,7 @@ import { PokemonStore } from "src/app/shared/store/pokemon.store";
     LocalisePipe,
     NgOptimizedImage,
     MatGridListModule,
-    PokemonTypeChipComponent,
+    TypeChipComponent,
   ],
   templateUrl: "./pokemon-summary-card.component.html",
   styleUrl: "./pokemon-summary-card.component.scss",
