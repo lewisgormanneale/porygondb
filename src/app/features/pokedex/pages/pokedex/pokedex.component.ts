@@ -7,7 +7,7 @@ import { MatInputModule } from "@angular/material/input";
 import { ActivatedRoute } from "@angular/router";
 import { PokedexSpeciesListStore } from "../../store/pokedex-species-list.store";
 import { PokedexStore } from "src/app/shared/store/pokedex.store";
-import { PokedexCardComponent } from "../../components/pokedex-card/pokedex-card.component";
+import { PokedexEntryComponent } from "../../components/pokedex-entry/pokedex-entry.component";
 
 @Component({
   imports: [
@@ -16,7 +16,7 @@ import { PokedexCardComponent } from "../../components/pokedex-card/pokedex-card
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-    PokedexCardComponent,
+    PokedexEntryComponent,
   ],
   selector: "app-pokedex",
   templateUrl: "pokedex.component.html",

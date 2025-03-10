@@ -7,7 +7,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { PokedexStore } from "src/app/shared/store/pokedex.store";
 import { PokemonStore } from "src/app/shared/store/pokemon.store";
-import { PokemonSummaryCardComponent } from "../../components/pokemon-summary-card/pokemon-summary-card.component";
+import { PokemonSummaryComponent } from "../../components/pokemon-summary/pokemon-summary.component";
 import { PokemonMovesTabComponent } from "../../components/tabs/pokemon-moves-tab/pokemon-moves-tab.component";
 
 @Component({
@@ -18,7 +18,7 @@ import { PokemonMovesTabComponent } from "../../components/tabs/pokemon-moves-ta
     MatIconModule,
     MatButtonModule,
     RouterModule,
-    PokemonSummaryCardComponent,
+    PokemonSummaryComponent,
     PokemonMovesTabComponent,
   ],
   selector: "app-pokemon",

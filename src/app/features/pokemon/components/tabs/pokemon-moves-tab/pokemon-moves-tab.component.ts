@@ -15,7 +15,7 @@ import { PokemonStore } from "src/app/shared/store/pokemon.store";
 import { TypeChipComponent } from "src/app/shared/components/type-chip/type-chip.component";
 
 @Component({
-  selector: "lib-pokemon-moves-tab",
+  selector: "pokemon-moves-tab",
   imports: [
     CommonModule,
     MatTableModule,

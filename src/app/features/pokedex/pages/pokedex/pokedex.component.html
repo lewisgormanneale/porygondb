@@ -13,9 +13,9 @@
         </select>
       </mat-form-field>
     </div>
-    <div class="pokedex-cards">
+    <div class="pokedex-entries">
       @for (pokemon of pokemonSpeciesListStore.entities(); track pokemon.id) {
-      <lib-pokedex-card [pokemon]="pokemon"></lib-pokedex-card>
+      <pokedex-entry [pokemon]="pokemon"></pokedex-entry>
       }
     </div>
   </div>

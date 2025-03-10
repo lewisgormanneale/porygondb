@@ -9,7 +9,7 @@ import { PokedexStore } from "src/app/shared/store/pokedex.store";
 import { PokemonStore } from "src/app/shared/store/pokemon.store";
 
 @Component({
-  selector: "lib-pokemon-summary-card",
+  selector: 'pokemon-summary',
   imports: [
     MatCardModule,
     MatChipsModule,
@@ -18,10 +18,10 @@ import { PokemonStore } from "src/app/shared/store/pokemon.store";
     MatGridListModule,
     TypeChipComponent,
   ],
-  templateUrl: "./pokemon-summary-card.component.html",
-  styleUrl: "./pokemon-summary-card.component.scss",
+  templateUrl: './pokemon-summary.component.html',
+  styleUrl: './pokemon-summary.component.scss',
 })
-export class PokemonSummaryCardComponent {
+export class PokemonSummaryComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly pokedexStore = inject(PokedexStore);
 

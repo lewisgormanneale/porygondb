@@ -7,7 +7,7 @@ import { PokemonSpecies } from "pokenode-ts";
 import { LocalisePipe } from "src/app/shared/pipes/localise.pipe";
 
 @Component({
-  selector: "lib-pokedex-card",
+  selector: "pokedex-entry",
   imports: [
     MatCardModule,
     MatButtonModule,
@@ -15,10 +15,10 @@ import { LocalisePipe } from "src/app/shared/pipes/localise.pipe";
     RouterModule,
     LocalisePipe,
   ],
-  templateUrl: "pokedex-card.component.html",
-  styleUrl: "pokedex-card.component.scss",
+  templateUrl: "pokedex-entry.component.html",
+  styleUrl: "pokedex-entry.component.scss",
 })
-export class PokedexCardComponent {
+export class PokedexEntryComponent {
   @Input() pokemon: PokemonSpecies = {} as PokemonSpecies;
   imageLoading: WritableSignal<boolean> = signal(true);
 
