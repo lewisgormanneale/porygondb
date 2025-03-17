@@ -1,0 +1,10 @@
+.pokedex-entries {
+
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, 200px);
+  grid-template-rows: 200px;
+  gap: 10px;
+  overflow-y: auto;
+  padding: 20px;
+}

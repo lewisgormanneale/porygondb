@@ -7,6 +7,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { PokedexStore } from "src/app/shared/store/pokedex.store";
 import { PokemonStore } from "src/app/shared/store/pokemon.store";
+import { VersionGroupStore } from "src/app/shared/store/version-group.store";
 
 @Component({
   selector: "pokemon-navigation",
@@ -22,8 +23,10 @@ import { PokemonStore } from "src/app/shared/store/pokemon.store";
   styleUrl: "./pokemon-navigation.component.scss",
 })
 export class PokemonNavigationComponent {
+  selectedVersionGroupName = signal<string>("");
   readonly pokemonStore = inject(PokemonStore);
   readonly pokedexStore = inject(PokedexStore);
+  readonly versionGroupStore = inject(VersionGroupStore);
   pokemonName = signal<string>("");
   currentPokemonEntryNumberForSelectedPokedex = computed(() => {
     if (this.pokedexStore.pokemonEntriesForSelectedPokedex().length === 0) {
@@ -73,6 +76,11 @@ export class PokemonNavigationComponent {
       const name = params.get("name") || "";
       this.pokemonName.set(name);
     });
+    if (this.versionGroupStore.selectedEntity()) {
+      this.selectedVersionGroupName.set(
+        this.versionGroupStore.selectedEntity()!.name
+      );
+    }
     effect(() => {
       if (this.pokemonName()) {
         this.pokemonStore.loadPokemonByName(this.pokemonName());

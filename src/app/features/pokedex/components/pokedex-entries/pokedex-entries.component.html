@@ -1,0 +1,15 @@
+<div class="pokedex-entries">
+  @for (pokemon of pokedexEntriesStore.entities(); track pokemon.id) {
+    <pokedex-entry [pokemon]="pokemon"></pokedex-entry>
+  }
+</div>
+<mat-paginator
+  (page)="pokedexEntriesStore.loadPokemonSpecies($event)"
+  [length]="pokedexEntriesStore.pageEvent().length"
+  [pageIndex]="pokedexEntriesStore.pageEvent().pageIndex"
+  [pageSizeOptions]="[25, 50, 100]"
+  [pageSize]="pokedexEntriesStore.pageEvent().pageSize"
+  [showFirstLastButtons]="true"
+  aria-label="Select page"
+>
+</mat-paginator>

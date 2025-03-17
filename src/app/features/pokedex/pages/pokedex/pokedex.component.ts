@@ -1,48 +1,36 @@
-import { Component, inject, signal, effect } from "@angular/core";
-import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatSelectModule } from "@angular/material/select";
-import { MatInputModule } from "@angular/material/input";
 import { ActivatedRoute } from "@angular/router";
-import { PokedexSpeciesListStore } from "../../store/pokedex-species-list.store";
-import { PokedexStore } from "src/app/shared/store/pokedex.store";
-import { PokedexEntryComponent } from "../../components/pokedex-entry/pokedex-entry.component";
+import { VersionGroupStore } from "src/app/shared/store/version-group.store";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { MatTabsModule } from "@angular/material/tabs";
+import { VersionGroupSelectComponent } from "../../components/version-group-select/version-group-select.component";
+import { PokedexEntriesComponent } from "../../components/pokedex-entries/pokedex-entries.component";
 
 @Component({
   imports: [
     MatPaginatorModule,
     MatProgressBarModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    PokedexEntryComponent,
+    MatTabsModule,
+    VersionGroupSelectComponent,
+    PokedexEntriesComponent,
   ],
   selector: "app-pokedex",
   templateUrl: "pokedex.component.html",
   styleUrl: "pokedex.component.scss",
-  providers: [PokedexSpeciesListStore],
 })
-export class PokedexComponent {
-  readonly pokedexStore = inject(PokedexStore);
-  readonly pokemonSpeciesListStore = inject(PokedexSpeciesListStore);
-  pokedexName = signal<string>("");
+export class PokedexComponent implements OnInit {
+  readonly versionGroupStore = inject(VersionGroupStore);
+  private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _destroy$ = inject(DestroyRef);
 
-  constructor(private route: ActivatedRoute) {
-    this.pokedexName.set(this.route.snapshot.paramMap.get("name") || "");
-    this.pokedexStore.loadPokedexByName(this.pokedexName);
-    effect(() => {
-      if (this.pokemonSpeciesListStore.pokemonEntries().length > 0) {
-        this.loadPokemonSpecies();
-      }
-    });
-  }
-
-  loadPokemonSpecies(event?: PageEvent): void {
-    this.pokemonSpeciesListStore.loadPokemonSpecies(event);
-  }
-
-  onPageChange(event: PageEvent): void {
-    this.loadPokemonSpecies(event);
+  ngOnInit(): void {
+    this._activatedRoute.paramMap
+      .pipe(takeUntilDestroyed(this._destroy$))
+      .subscribe((paramMap) => {
+        const versionGroupName = paramMap.get("versionGroupName") || "";
+        this.versionGroupStore.setSelectedVersionGroupByName(versionGroupName);
+      });
   }
 }

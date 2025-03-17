@@ -10,6 +10,7 @@ import { PokemonStore } from "src/app/shared/store/pokemon.store";
 import { PokemonSummaryComponent } from "../../components/pokemon-summary/pokemon-summary.component";
 import { PokemonMovesTabComponent } from "../../components/tabs/pokemon-moves-tab/pokemon-moves-tab.component";
 import { PokemonNavigationComponent } from "../../components/pokemon-navigation/pokemon-navigation.component";
+import { VersionGroupStore } from "src/app/shared/store/version-group.store";
 
 @Component({
   imports: [
@@ -26,11 +27,11 @@ import { PokemonNavigationComponent } from "../../components/pokemon-navigation/
   selector: "app-pokemon",
   templateUrl: "pokemon.component.html",
   styleUrl: "pokemon.component.scss",
-  providers: [PokemonStore],
 })
 export class PokemonComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly pokedexStore = inject(PokedexStore);
+  readonly versionGroupStore = inject(VersionGroupStore);
   pokemonName = signal<string>("");
   currentPokemonEntryNumberForSelectedPokedex = computed(() => {
     if (this.pokedexStore.pokemonEntriesForSelectedPokedex().length === 0) {

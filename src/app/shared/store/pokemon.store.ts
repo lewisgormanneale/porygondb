@@ -30,6 +30,7 @@ const initialState: PokemonState = {
 };
 
 export const PokemonStore = signalStore(
+  { providedIn: "root" },
   withState(initialState),
   withRequestStatus(),
   withEntities<Pokemon>(),

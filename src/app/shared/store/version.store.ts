@@ -34,6 +34,7 @@ import {
 } from "./features/request-status.feature";
 
 export const VersionStore = signalStore(
+  { providedIn: "root" },
   withEntities<Version>(),
   withSelectedEntity(),
   withRequestStatus(),
