@@ -1,11 +1,11 @@
 @if (versionGroupStore.selectedEntity()) {
-  <div class="pokedex-container">
+  <div class="pokedex">
     <div>
       <div class="pokedex-options">
         <version-group-select></version-group-select>
       </div>
-      <mat-tab-group>
-        @for (pokedex of versionGroupStore.selectedEntity()!.pokedexes; track pokedex.name) {
+      <mat-tab-group animationDuration="0ms">
+        @for (pokedex of versionGroupStore.selectedEntity()?.pokedexes; track pokedex.name) {
           <mat-tab [label]="pokedex.formattedName">
             <ng-template matTabContent>
               <pokedex-entries [pokedexName]="pokedex.name"></pokedex-entries>

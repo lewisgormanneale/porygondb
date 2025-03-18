@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   .pokemon-container {
     display: flex;
     flex-direction: column;
@@ -10,15 +11,15 @@
     gap: 20px;
     width: 100%;
     max-width: 800px;
-    .navigation {
-      width: 100%;
-    }
+    padding-top: 20px;
+
     .summary-info {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
     }
+
     .additional-info {
       width: 100%;
     }

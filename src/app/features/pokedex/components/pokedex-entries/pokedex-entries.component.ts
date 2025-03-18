@@ -1,7 +1,7 @@
 import { Component, effect, inject, input } from "@angular/core";
 import { GameService } from "../../../../shared/services/game.service";
 import { PokedexEntriesStore } from "../../store/pokedex-entries.store";
-import { PokedexEntryComponent } from "../pokedex-entry/pokedex-entry.component";
+import { PokedexEntryComponent } from "./pokedex-entry/pokedex-entry.component";
 import { MatPaginatorModule } from "@angular/material/paginator";
 
 @Component({
@@ -22,7 +22,6 @@ export class PokedexEntriesComponent {
         this.gameService
           .getPokedexByName(this.pokedexName())
           .subscribe((pokedex) => {
-            console.log(this.pokedexName());
             this.pokedexEntriesStore.setPokedexEntries(pokedex.pokemon_entries);
             this.pokedexEntriesStore.loadPokemonSpecies(undefined);
           });
