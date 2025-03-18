@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   selector: "version-group-select",
   templateUrl: "version-group-select.component.html",
   imports: [MatFormFieldModule, MatSelectModule, MatInputModule],
+  styleUrls: ["version-group-select.component.scss"],
 })
 export class VersionGroupSelectComponent {
   selectedVersionGroupName = signal<string>("");

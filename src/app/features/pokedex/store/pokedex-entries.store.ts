@@ -64,7 +64,6 @@ export const PokedexEntriesStore = signalStore(
         distinctUntilChanged(),
         tap(() => patchState(store, setLoading())),
         switchMap((pageEvent?: PageEvent) => {
-          console.log("hi");
           patchState(store, {
             pageEvent: {
               pageIndex: pageEvent?.pageIndex ? pageEvent.pageIndex : 0,

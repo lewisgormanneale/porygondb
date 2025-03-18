@@ -8,6 +8,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { PokemonStore } from "src/app/shared/store/pokemon.store";
 import { PokemonSummaryComponent } from "../../components/pokemon-summary/pokemon-summary.component";
 import { PokemonMovesTabComponent } from "../../components/tabs/pokemon-moves-tab/pokemon-moves-tab.component";
+import { PokemonStatsTabComponent } from "../../components/tabs/pokemon-stats-tab/pokemon-stats-tab.component";
 
 @Component({
   imports: [
@@ -19,10 +20,12 @@ import { PokemonMovesTabComponent } from "../../components/tabs/pokemon-moves-ta
     RouterModule,
     PokemonSummaryComponent,
     PokemonMovesTabComponent,
+    PokemonStatsTabComponent,
   ],
   selector: "app-pokemon",
   templateUrl: "pokemon.component.html",
   styleUrl: "pokemon.component.scss",
+  providers: [PokemonStore],
 })
 export class PokemonComponent {
   readonly pokemonStore = inject(PokemonStore);

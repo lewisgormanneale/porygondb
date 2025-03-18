@@ -5,9 +5,10 @@ import {
   Pokemon,
   PokemonClient,
   PokemonSpecies,
+  Stat,
   Type,
 } from "pokenode-ts";
-import { Observable, from } from "rxjs";
+import { from, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -43,6 +44,14 @@ export class PokemonService {
     return from(this.pokemonClient.getAbilityById(id));
   }
 
+  getStatByName(name: string): Observable<Stat> {
+    return from(this.pokemonClient.getStatByName(name));
+  }
+
+  getStatById(id: number): Observable<Stat> {
+    return from(this.pokemonClient.getStatById(id));
+  }
+
   getTypeByName(name: string): Observable<Type> {
     return from(this.pokemonClient.getTypeByName(name));
   }
@@ -56,5 +65,9 @@ export class PokemonService {
     limit?: number
   ): Observable<NamedAPIResourceList> {
     return from(this.pokemonClient.listPokemonSpecies(offset, limit));
+  }
+
+  listStats(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    return from(this.pokemonClient.listStats(offset, limit));
   }
 }

@@ -14,10 +14,10 @@ import { tapResponse } from "@ngrx/operators";
 import { setAllEntities, withEntities } from "@ngrx/signals/entities";
 import { PokemonService } from "../services/pokemon.service";
 import {
-  withRequestStatus,
-  setLoading,
-  setError,
   setCompleted,
+  setError,
+  setLoading,
+  withRequestStatus,
 } from "./features/request-status.feature";
 import { withSelectedEntity } from "./features/selected-entity.feature";
 
@@ -29,8 +29,13 @@ const initialState: PokemonState = {
   speciesDetails: {} as PokemonSpecies,
 };
 
+export interface PokemonStatData {
+  name: string;
+  weight: number;
+  symbol: string;
+}
+
 export const PokemonStore = signalStore(
-  { providedIn: "root" },
   withState(initialState),
   withRequestStatus(),
   withEntities<Pokemon>(),

@@ -1,6 +1,7 @@
-.pokemon-summary-card {
+.pokemon-summary {
   width: 100%;
   max-width: 800px;
+
   mat-card-header {
     .pokemon-id-avatar {
       display: flex;
@@ -15,17 +16,24 @@
       color: var(--mat-sys-primary-text);
     }
   }
+
   mat-card-footer {
     .forms-header {
       margin-top: 20px;
       margin-left: 10px;
     }
+
     .pokemon-form-image {
-      padding: 10px;
+      padding: 5px;
     }
   }
 }
 
-.cursor-pointer {
+.form-option {
   cursor: pointer;
+
+  :hover {
+    background-color: var(--mat-sys-primary-container);
+    transition: 0.2s;
+  }
 }
