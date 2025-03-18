@@ -32,8 +32,3 @@ e2e/*.map
 
 # System Files
 .DS_Store/
-
-# Nx
-.nx/cache
-.nx/workspace-data
-.angular

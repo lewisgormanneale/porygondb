@@ -1,0 +1,19 @@
+.header {
+  .title {
+    font-family: "Tektur", serif;
+    font-weight: 800;
+    font-size: 1.2em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: white;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .material-icon {
+    line-height: 1;
+  }
+}

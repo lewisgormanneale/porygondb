@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+
+.pokemon-stats-tab {
+  @include mat.progress-bar-overrides((
+          active-indicator-color: orange,
+          track-color: red,
+  ));
+}

@@ -1,0 +1,67 @@
+<mat-card appearance="outlined" class="pokemon-summary">
+  <mat-card-header>
+    <img
+      [src]="pokemonStore.selectedEntity()!.sprites.front_default"
+      alt="{{
+        pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
+      }}"
+      class="pokemon-id-avatar"
+      mat-card-avatar
+    />
+    <mat-card-title
+    >{{
+        pokemonStore.speciesDetails().names || [] | localise : "en" : "name"
+      }}
+    </mat-card-title>
+    <mat-card-subtitle>{{
+        pokemonStore.speciesDetails().genera || [] | localise : "en" : "genus"
+      }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-chip-set aria-label="Types">
+      @for (type of pokemonStore.selectedEntity()!.types; track type.slot) {
+        <type-chip [typeName]="type.type.name"></type-chip>
+      }
+    </mat-chip-set>
+  </mat-card-content>
+  <mat-card-content>
+    <img
+      [ngSrc]="
+        pokemonStore.selectedEntity()!.sprites.other?.home?.front_default!
+      "
+      alt="{{
+        pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
+      }}"
+      height="350"
+      mat-card-image
+      priority
+      width="350"
+    />
+  </mat-card-content>
+  @if (pokemonStore.entities().length > 1) {
+    <mat-card-footer>
+      <h4 class="forms-header">Select Form</h4>
+      <mat-grid-list cols="4" rowHeight="100px">
+        @for (variety of pokemonStore.entities(); track variety.id) {
+          <mat-grid-tile>
+            <mat-card
+              (click)="setSelectedPokemonVariety(variety.id)"
+              class="form-option"
+              appearance="outlined"
+            >
+              <img
+                class="pokemon-form-image"
+                mat-card-image
+                [src]="variety.sprites.front_default!"
+                width="80"
+                height="80"
+                alt="{{ variety.name }}"
+              />
+            </mat-card>
+          </mat-grid-tile>
+        }
+      </mat-grid-list>
+    </mat-card-footer>
+  }
+</mat-card>
