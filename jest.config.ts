@@ -1,22 +1,13 @@
-/* eslint-disable */
-export default {
-  displayName: "porygondb",
-  preset: "../../jest.preset.js",
-  setupFilesAfterEnv: ["<rootDir>/src/test-setup.ts"],
-  coverageDirectory: "../../coverage/apps/porygondb",
-  transform: {
-    "^.+\\.(ts|mjs|js|html)$": [
-      "jest-preset-angular",
-      {
-        tsconfig: "<rootDir>/tsconfig.spec.json",
-        stringifyContentPathRegex: "\\.(html|svg)$",
-      },
-    ],
-  },
-  transformIgnorePatterns: ["node_modules/(?!.*\\.mjs$)"],
-  snapshotSerializers: [
-    "jest-preset-angular/build/serializers/no-ng-attributes",
-    "jest-preset-angular/build/serializers/ng-snapshot",
-    "jest-preset-angular/build/serializers/html-comment",
-  ],
+/**
+ * For a detailed explanation regarding each configuration property, visit:
+ * https://jestjs.io/docs/configuration
+ */
+
+import type { Config } from "jest";
+
+const config: Config = {
+  preset: "jest-preset-angular",
+  setupFilesAfterEnv: ["<rootDir>/test-setup.ts"],
 };
+
+export default config;
