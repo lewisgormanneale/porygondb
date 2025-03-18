@@ -1,7 +1,7 @@
 import { Component, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatChipsModule } from "@angular/material/chips";
-import { getPokemonTypeColor } from "src/app/shared/utils/get-type-color.util";
+import { getPokemonTypeColor } from "../../utils/get-type-color.util";
 
 @Component({
   selector: "type-chip",

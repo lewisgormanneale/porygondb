@@ -4,7 +4,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { RouterModule } from "@angular/router";
 import { PokemonSpecies } from "pokenode-ts";
-import { LocalisePipe } from "src/app/shared/pipes/localise.pipe";
+import { LocalisePipe } from "../../../../../shared/pipes/localise.pipe";
 
 @Component({
   selector: "pokedex-entry",

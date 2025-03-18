@@ -3,9 +3,9 @@ import { Component, inject } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatGridListModule } from "@angular/material/grid-list";
-import { TypeChipComponent } from "src/app/shared/components/type-chip/type-chip.component";
-import { LocalisePipe } from "src/app/shared/pipes/localise.pipe";
-import { PokemonStore } from "src/app/shared/store/pokemon.store";
+import { LocalisePipe } from "../../../../shared/pipes/localise.pipe";
+import { TypeChipComponent } from "../../../../shared/components/type-chip/type-chip.component";
+import { PokemonStore } from "../../../../shared/store/pokemon.store";
 
 @Component({
   selector: "pokemon-summary",

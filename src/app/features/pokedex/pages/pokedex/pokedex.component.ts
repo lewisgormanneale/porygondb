@@ -1,17 +1,13 @@
 import { Component, DestroyRef, inject, OnInit } from "@angular/core";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { ActivatedRoute } from "@angular/router";
-import { VersionGroupStore } from "src/app/shared/store/version-group.store";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { MatTabsModule } from "@angular/material/tabs";
 import { VersionGroupSelectComponent } from "../../components/version-group-select/version-group-select.component";
 import { PokedexEntriesComponent } from "../../components/pokedex-entries/pokedex-entries.component";
+import { VersionGroupStore } from "../../../../shared/store/version-group.store";
 
 @Component({
   imports: [
-    MatPaginatorModule,
-    MatProgressBarModule,
     MatTabsModule,
     VersionGroupSelectComponent,
     PokedexEntriesComponent,

@@ -9,10 +9,10 @@ import {
 } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatCardModule } from "@angular/material/card";
-import { LocalisePipe } from "src/app/shared/pipes/localise.pipe";
-import { MoveStore } from "src/app/shared/store/move.store";
-import { PokemonStore } from "src/app/shared/store/pokemon.store";
-import { TypeChipComponent } from "src/app/shared/components/type-chip/type-chip.component";
+import { LocalisePipe } from "../../../../../shared/pipes/localise.pipe";
+import { MoveStore } from "../../../../../shared/store/move.store";
+import { TypeChipComponent } from "../../../../../shared/components/type-chip/type-chip.component";
+import { PokemonStore } from "../../../../../shared/store/pokemon.store";
 
 @Component({
   selector: "pokemon-moves-tab",
@@ -45,6 +45,7 @@ export class PokemonMovesTabComponent {
       this.loadPokemonMoves();
     }
   }
+
   loadPokemonMoves(event?: PageEvent): void {
     this.moveStore.loadMovesForPaginatedPokemonMoves(event);
   }

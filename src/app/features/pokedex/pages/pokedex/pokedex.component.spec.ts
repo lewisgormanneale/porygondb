@@ -1,16 +1,14 @@
 import { PokedexComponent } from "./pokedex.component";
-import { HarnessLoader } from "@angular/cdk/testing";
-import { TestbedHarnessEnvironment } from "@angular/cdk/testing/testbed";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { MatPaginatorHarness } from "@angular/material/paginator/testing";
 import { provideMockStore } from "@ngrx/store/testing";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { MatPaginatorModule } from "@angular/material/paginator";
 import { RouterTestingModule } from "@angular/router/testing";
+import { PokedexEntriesComponent } from "../../components/pokedex-entries/pokedex-entries.component";
+import { MockComponent } from "ng-mocks";
+import { VersionGroupSelectComponent } from "../../components/version-group-select/version-group-select.component";
 
 describe("PokédexComponent", () => {
   let fixture: ComponentFixture<PokedexComponent>;
-  let loader: HarnessLoader;
   let component: PokedexComponent;
   const initialState = {
     loading: false,
@@ -26,19 +24,17 @@ describe("PokédexComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        PokedexComponent,
-        MatPaginatorModule,
-        NoopAnimationsModule,
-        RouterTestingModule,
+      imports: [PokedexComponent, NoopAnimationsModule, RouterTestingModule],
+      declarations: [
+        MockComponent(PokedexEntriesComponent),
+        MockComponent(VersionGroupSelectComponent),
       ],
       providers: [provideMockStore({ initialState })],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PokedexComponent);
-    fixture.detectChanges();
-    loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it("The page should load", async () => {
