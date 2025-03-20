@@ -1,4 +1,4 @@
-<mat-card appearance="outlined" class="pokemon-summary">
+<mat-card appearance="outlined">
   <mat-card-header>
     <img
       [src]="pokemonStore.selectedEntity()!.sprites.front_default"
@@ -25,7 +25,7 @@
       }
     </mat-chip-set>
   </mat-card-content>
-  <mat-card-content>
+  <mat-card-content class="pokemon-image">
     <img
       [ngSrc]="
         pokemonStore.selectedEntity()!.sprites.other?.home?.front_default!
@@ -39,6 +39,21 @@
       width="350"
     />
   </mat-card-content>
+  <mat-card-content class="pokemon-abilities">
+    <mat-chip-set aria-label="Types">
+      @for (ability of pokemonStore.selectedEntity()!.abilities; track ability.slot) {
+        <mat-chip [disabled]="ability.is_hidden">{{ ability.ability.name }}</mat-chip>
+      }
+    </mat-chip-set>
+  </mat-card-content>
+  <mat-card-content class="pokemon-details">
+    <span>Height: {{ pokemonStore.selectedEntity()?.height }}</span>
+    <span>Weight: {{ pokemonStore.selectedEntity()?.weight }}</span>
+  </mat-card-content>
+  <mat-card-content class="pokemon-description">
+    <span>{{ pokemonStore.speciesDetails().flavor_text_entries[0].flavor_text }}</span>
+  </mat-card-content>
+
   @if (pokemonStore.entities().length > 1) {
     <mat-card-footer>
       <h4 class="forms-header">Select Form</h4>
