@@ -1,4 +1,4 @@
-mat-card {
+mat-card.pokemon-summary {
   margin: 0 20px;
   display: flex;
   flex-direction: column;
@@ -32,13 +32,26 @@ mat-card {
   }
 
   mat-card-footer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
     .forms-header {
       margin-top: 20px;
       margin-left: 10px;
+      width: 100%;
     }
 
-    .pokemon-form-image {
-      padding: 5px;
+    .forms {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 10px;
+      gap: 8px;
+      width: 100%;
+
+      .pokemon-form-image {
+        padding: 5px;
+      }
     }
   }
 }

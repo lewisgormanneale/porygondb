@@ -1,4 +1,4 @@
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" class="pokemon-summary">
   <mat-card-header>
     <img
       [src]="pokemonStore.selectedEntity()!.sprites.front_default"
@@ -57,26 +57,24 @@
   @if (pokemonStore.entities().length > 1) {
     <mat-card-footer>
       <h4 class="forms-header">Select Form</h4>
-      <mat-grid-list cols="4" rowHeight="100px">
+      <div class="forms">
         @for (variety of pokemonStore.entities(); track variety.id) {
-          <mat-grid-tile>
-            <mat-card
-              (click)="setSelectedPokemonVariety(variety.id)"
-              class="form-option"
-              appearance="outlined"
-            >
-              <img
-                class="pokemon-form-image"
-                mat-card-image
-                [src]="variety.sprites.front_default!"
-                width="80"
-                height="80"
-                alt="{{ variety.name }}"
-              />
-            </mat-card>
-          </mat-grid-tile>
+          <mat-card
+            (click)="setSelectedPokemonVariety(variety.id)"
+            class="form-option"
+            appearance="outlined"
+          >
+            <img
+              class="pokemon-form-image"
+              mat-card-image
+              [src]="variety.sprites.front_default!"
+              width="80"
+              height="80"
+              alt="{{ variety.name }}"
+            />
+          </mat-card>
         }
-      </mat-grid-list>
+      </div>
     </mat-card-footer>
   }
 </mat-card>
