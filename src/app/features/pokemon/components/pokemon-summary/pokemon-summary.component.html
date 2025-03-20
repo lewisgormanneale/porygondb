@@ -47,11 +47,11 @@
     </mat-chip-set>
   </mat-card-content>
   <mat-card-content class="pokemon-details">
-    <span>Height: {{ pokemonStore.selectedEntity()?.height }}</span>
-    <span>Weight: {{ pokemonStore.selectedEntity()?.weight }}</span>
+    <p><b>Height:</b> {{ pokemonStore.selectedEntity()!.height | decimetersToInches }}</p>
+    <p><b>Weight:</b> {{ pokemonStore.selectedEntity()!.weight | hectogramsToPounds }}</p>
   </mat-card-content>
   <mat-card-content class="pokemon-description">
-    <span>{{ pokemonStore.speciesDetails().flavor_text_entries[0].flavor_text }}</span>
+    <p>{{ pokemonStore.speciesDetails().flavor_text_entries[0].flavor_text }}</p>
   </mat-card-content>
 
   @if (pokemonStore.entities().length > 1) {

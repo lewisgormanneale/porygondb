@@ -6,6 +6,8 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { LocalisePipe } from "../../../../shared/pipes/localise.pipe";
 import { TypeChipComponent } from "../../../../shared/components/type-chip/type-chip.component";
 import { PokemonStore } from "../../../../shared/store/pokemon.store";
+import { DecimetersToInchesPipe } from "../../../../shared/pipes/decimetersToInches.pipe";
+import { HectogramsToPoundsPipe } from "../../../../shared/pipes/hectogramsToPounds.pipe";
 
 @Component({
   selector: "pokemon-summary",
@@ -16,6 +18,8 @@ import { PokemonStore } from "../../../../shared/store/pokemon.store";
     NgOptimizedImage,
     MatGridListModule,
     TypeChipComponent,
+    DecimetersToInchesPipe,
+    HectogramsToPoundsPipe,
   ],
   templateUrl: "./pokemon-summary.component.html",
   styleUrl: "./pokemon-summary.component.scss",
