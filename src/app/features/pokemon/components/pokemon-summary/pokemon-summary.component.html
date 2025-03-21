@@ -25,7 +25,7 @@
       }
     </mat-chip-set>
   </mat-card-content>
-  <mat-card-content>
+  <mat-card-content class="pokemon-image">
     <img
       [ngSrc]="
         pokemonStore.selectedEntity()!.sprites.other?.home?.front_default!
@@ -39,29 +39,42 @@
       width="350"
     />
   </mat-card-content>
+  <mat-card-content class="pokemon-abilities">
+    <mat-chip-set aria-label="Types">
+      @for (ability of pokemonStore.selectedEntity()!.abilities; track ability.slot) {
+        <mat-chip [disabled]="ability.is_hidden">{{ ability.ability.name }}</mat-chip>
+      }
+    </mat-chip-set>
+  </mat-card-content>
+  <mat-card-content class="pokemon-details">
+    <p><b>Height:</b> {{ pokemonStore.selectedEntity()!.height | decimetersToInches }}</p>
+    <p><b>Weight:</b> {{ pokemonStore.selectedEntity()!.weight | hectogramsToPounds }}</p>
+  </mat-card-content>
+  <mat-card-content class="pokemon-description">
+    <p>{{ pokemonStore.speciesDetails().flavor_text_entries[0].flavor_text }}</p>
+  </mat-card-content>
+
   @if (pokemonStore.entities().length > 1) {
     <mat-card-footer>
       <h4 class="forms-header">Select Form</h4>
-      <mat-grid-list cols="4" rowHeight="100px">
+      <div class="forms">
         @for (variety of pokemonStore.entities(); track variety.id) {
-          <mat-grid-tile>
-            <mat-card
-              (click)="setSelectedPokemonVariety(variety.id)"
-              class="form-option"
-              appearance="outlined"
-            >
-              <img
-                class="pokemon-form-image"
-                mat-card-image
-                [src]="variety.sprites.front_default!"
-                width="80"
-                height="80"
-                alt="{{ variety.name }}"
-              />
-            </mat-card>
-          </mat-grid-tile>
+          <mat-card
+            (click)="setSelectedPokemonVariety(variety.id)"
+            class="form-option"
+            appearance="outlined"
+          >
+            <img
+              class="pokemon-form-image"
+              mat-card-image
+              [src]="variety.sprites.front_default!"
+              width="80"
+              height="80"
+              alt="{{ variety.name }}"
+            />
+          </mat-card>
         }
-      </mat-grid-list>
+      </div>
     </mat-card-footer>
   }
 </mat-card>
