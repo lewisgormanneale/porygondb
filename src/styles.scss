@@ -1,6 +1,8 @@
 @use "@angular/material" as mat;
 @use "sass:map";
-@use './styles/skeleton';
+@use './styles/_skeletons';
+@use './styles/_theme-colors' as my-theme; // location of generated file
+
 
 * {
   margin: 0;
@@ -9,6 +11,23 @@
 
 html {
   height: 100%;
+  // Must specify color-scheme for theme mixin to automatically work
+  color-scheme: light dark;
+
+  // Create one theme that works automatically for light and dark theme
+  @include mat.theme((
+          color: (
+                  primary: my-theme.$primary-palette,
+                  tertiary: my-theme.$tertiary-palette,
+          ),
+          typography: Roboto,
+          density: 0,
+  ));
+
+  // Use high contrast values when users prefer contrast
+  @media (prefers-contrast: more) {
+    @include my-theme.high-contrast-overrides(color-scheme);
+  }
 }
 
 body {
