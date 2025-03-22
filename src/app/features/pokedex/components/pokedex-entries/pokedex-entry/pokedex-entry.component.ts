@@ -19,7 +19,7 @@ import { LocalisePipe } from "../../../../../shared/pipes/localise.pipe";
   styleUrl: "pokedex-entry.component.scss",
 })
 export class PokedexEntryComponent {
-  @Input() pokemon: PokemonSpecies = {} as PokemonSpecies;
+  @Input() pokemon?: PokemonSpecies;
   imageLoading: WritableSignal<boolean> = signal(true);
 
   onImageLoad() {

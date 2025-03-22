@@ -7,9 +7,9 @@ import {
 } from "@ngrx/signals";
 import { setAllEntities, withEntities } from "@ngrx/signals/entities";
 import { withSelectedEntity } from "./features/selected-entity.feature";
-import { StoredVersionGroup } from "src/app/core/models/version-group.model";
 import { VersionGroups } from "./data/version-group.constants";
 import { computed } from "@angular/core";
+import { StoredVersionGroup } from "../../core/interfaces/stored-version-group.interface";
 
 export const VersionGroupStore = signalStore(
   { providedIn: "root" },

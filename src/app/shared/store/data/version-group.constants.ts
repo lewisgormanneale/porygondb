@@ -1,4 +1,4 @@
-import { StoredVersionGroup } from "src/app/core/models/version-group.model";
+import { StoredVersionGroup } from "../../../core/interfaces/stored-version-group.interface";
 
 export const VersionGroups: StoredVersionGroup[] = [
   {

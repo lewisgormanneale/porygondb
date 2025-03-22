@@ -1,29 +1,41 @@
 <mat-toolbar class="header">
   <a
+    [routerLink]="['/']"
     aria-label="Home"
     class="title"
-    [routerLink]="['/']"
     routerLinkActive="active"
   >
     <img
-      class="logo"
-      ngSrc="assets/images/porygon-gen-3.png"
       alt="Porygon"
-      width="60"
       height="60"
+      ngSrc="assets/images/porygon-gen-3.png"
       priority
+      width="60"
     />
     <span>PorygonDB</span>
   </a>
   <span class="spacer"></span>
-  <a
-    aria-label="GitHub Repository"
-    href="https://github.com/lewisgormanneale/porygondb"
-    mat-icon-button
-    target="_blank"
-  >
-    <mat-icon svgIcon="github"></mat-icon>
-  </a>
+  <div class="toolbar-actions">
+    <button
+      (click)="themeStore.toggleTheme()"
+      aria-label="Change Application Theme"
+      mat-icon-button
+    >
+      @if (themeStore.isDarkTheme()) {
+        <mat-icon>light_mode</mat-icon>
+      } @else {
+        <mat-icon>dark_mode</mat-icon>
+      }
+    </button>
+    <a
+      aria-label="GitHub Repository"
+      href="https://github.com/lewisgormanneale/porygondb"
+      mat-icon-button
+      target="_blank"
+    >
+      <mat-icon svgIcon="github"></mat-icon>
+    </a>
+  </div>
 </mat-toolbar>
 <main>
   <router-outlet />
