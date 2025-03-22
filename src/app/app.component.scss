@@ -1,4 +1,14 @@
+@use "@angular/material" as mat;
+@use "sass:map";
+
 .header {
+  @include mat.toolbar-overrides(
+                  (
+                          container-background-color: var(--mat-sys-primary-container),
+                          container-text-color: var(--mat-sys-primary-text),
+                  )
+  );
+
   .title {
     font-family: "Tektur", serif;
     font-weight: 800;

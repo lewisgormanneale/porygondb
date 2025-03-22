@@ -4,7 +4,7 @@ import { PokemonComponent } from "./features/pokemon/pages/pokemon/pokemon.compo
 import { PageNotFoundComponent } from "./shared/components/page-not-found/page-not-found.component";
 
 export const routes: Routes = [
-  { path: "", redirectTo: "/pokedex/scarlet-violet", pathMatch: "full" },
+  { path: "", redirectTo: "/pokedex/red-blue", pathMatch: "full" },
   { path: "pokedex/:versionGroupName", component: PokedexComponent },
   { path: "pokemon/:name", component: PokemonComponent },
   { path: "**", component: PageNotFoundComponent },

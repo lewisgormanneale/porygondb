@@ -1,9 +1,13 @@
 mat-card {
-  height: 100%;
+  max-height: 200px;
+  height: 200px;
+  width: 160px;
+
   mat-card-title {
     font-size: 1em;
     text-wrap: nowrap;
   }
+
   mat-card-content {
     flex: 1;
     display: flex;

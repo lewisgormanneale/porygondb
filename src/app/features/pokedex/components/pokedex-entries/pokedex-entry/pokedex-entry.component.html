@@ -1,33 +1,42 @@
 <mat-card appearance="outlined">
   <mat-card-header>
-    <mat-card-title
-      >{{ pokemon.names | localise : "en" : "name" }}
+    <mat-card-title>
+      @if (pokemon?.names) {
+        {{ pokemon!.names | localise : "en" : "name" }}
+      } @else {
+        <span class="skeleton skeleton-text"></span>
+      }
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div class="image-container">
-      @if (imageLoading()) {
-      <mat-progress-spinner
-        mode="indeterminate"
-        diameter="50"
-      ></mat-progress-spinner>
-      }
-      <img
-        [src]="
+      @if (pokemon?.name && pokemon?.names) {
+        <img
+          (load)="onImageLoad()"
+          [hidden]="imageLoading()"
+          [src]="
           'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-          pokemon.id +
+          pokemon?.id +
           '.png'
         "
-        [hidden]="imageLoading()"
-        (load)="onImageLoad()"
-        alt="{{ pokemon.names | localise : 'en' : 'name' }}"
-        mat-card-image
-        width="100"
-        height="100"
-      />
+          alt="{{ pokemon!.names | localise : 'en' : 'name' }}"
+          height="100"
+          mat-card-image
+          width="100"
+        />
+      } @else {
+        <mat-progress-spinner
+          mode="indeterminate"
+          diameter="50"
+        ></mat-progress-spinner>
+      }
     </div>
   </mat-card-content>
   <mat-card-actions [align]="'end'">
-    <a mat-raised-button [routerLink]="'/pokemon/' + pokemon.name">View</a>
+    @if (pokemon?.name) {
+      <a [routerLink]="'/pokemon/' + pokemon!.name" mat-raised-button>View</a>
+    } @else {
+      <span class="skeleton skeleton-text"></span>
+    }
   </mat-card-actions>
 </mat-card>
