@@ -1,8 +1,7 @@
 @use "@angular/material" as mat;
 @use "sass:map";
 @use './styles/_skeletons';
-@use './styles/_theme-colors' as my-theme; // location of generated file
-
+@use './styles/_theme-colors' as my-theme;
 
 * {
   margin: 0;
@@ -11,10 +10,7 @@
 
 html {
   height: 100%;
-  // Must specify color-scheme for theme mixin to automatically work
   color-scheme: light dark;
-
-  // Create one theme that works automatically for light and dark theme
   @include mat.theme((
           color: (
                   primary: my-theme.$primary-palette,
@@ -24,11 +20,19 @@ html {
           density: 0,
   ));
 
-  // Use high contrast values when users prefer contrast
   @media (prefers-contrast: more) {
     @include my-theme.high-contrast-overrides(color-scheme);
   }
 }
+
+body[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+body[data-theme='light'] {
+  color-scheme: light;
+}
+
 
 body {
   height: 100%;
