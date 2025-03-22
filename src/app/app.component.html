@@ -1,17 +1,16 @@
 <mat-toolbar class="header">
   <a
+    [routerLink]="['/']"
     aria-label="Home"
     class="title"
-    [routerLink]="['/']"
     routerLinkActive="active"
   >
     <img
-      class="logo"
-      ngSrc="assets/images/porygon-gen-3.png"
       alt="Porygon"
-      width="60"
       height="60"
+      ngSrc="assets/images/porygon-gen-3.png"
       priority
+      width="60"
     />
     <span>PorygonDB</span>
   </a>

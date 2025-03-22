@@ -4,8 +4,8 @@
 .header {
   @include mat.toolbar-overrides(
                   (
-                          container-background-color: var(--mat-sys-primary-container),
-                          container-text-color: var(--mat-sys-primary-text),
+                          container-background-color: var(--mat-sys-surface-dim),
+                          container-text-color: var(--mat-sys-on-surface-variant),
                   )
   );
 
@@ -16,14 +16,10 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    color: white;
+    color: inherit;
   }
 
   .spacer {
     flex: 1 1 auto;
-  }
-
-  .material-icon {
-    line-height: 1;
   }
 }
