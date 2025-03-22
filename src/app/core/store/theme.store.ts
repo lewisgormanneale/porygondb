@@ -3,6 +3,7 @@ import {
   patchState,
   signalStore,
   withComputed,
+  withHooks,
   withMethods,
   withState,
 } from "@ngrx/signals";
@@ -30,7 +31,14 @@ export const ThemeStore = signalStore(
       patchState(store, { theme: newTheme });
       document.body.setAttribute("data-theme", newTheme);
     },
-  }))
+  })),
+  withHooks({
+    onInit(store) {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        store.toggleTheme();
+      }
+    },
+  })
 );
 
 export type ThemeStore = InstanceType<typeof ThemeStore>;
