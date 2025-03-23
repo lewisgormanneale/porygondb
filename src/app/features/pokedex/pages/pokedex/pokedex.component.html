@@ -1,6 +1,8 @@
 @if (versionGroupStore.selectedEntity()) {
   <div class="pokedex">
-    <version-group-select></version-group-select>
+    <div class="pokedex-options">
+      <version-group-select></version-group-select>
+    </div>
     <mat-tab-group animationDuration="0ms">
       @for (pokedex of versionGroupStore.selectedEntity()?.pokedexes; track pokedex.name) {
         <mat-tab [label]="pokedex.formattedName">

@@ -5,4 +5,8 @@
   @media (max-width: 599px) {
     height: calc(100vh - var(--mat-toolbar-mobile-height, 56px));
   }
+
+  .pokedex-options {
+    background-color: var(--mat-sys-surface-variant)
+  }
 }

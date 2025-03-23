@@ -12,10 +12,13 @@
     display: flex;
     justify-content: center;
     align-items: start;
+    align-content: start;
     flex-wrap: wrap;
+    height: 100%;
     gap: 10px;
     overflow-y: scroll;
-    padding: 12px;
+    padding: 10px;
+    background-color: var(--mat-sys-surface-container-low);
 
     .entry {
       height: 200px;
