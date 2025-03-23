@@ -1,8 +1,8 @@
 <mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title>
-      @if (pokemon?.names) {
-        {{ pokemon!.names | localise : "en" : "name" }}
+      @if (pokemon()?.names && pokemon()!.names.length > 0) {
+        {{ pokemon()!.names | localise : "en" : "name" }}
       } @else {
         <span class="skeleton skeleton-text"></span>
       }
@@ -10,16 +10,16 @@
   </mat-card-header>
   <mat-card-content>
     <div class="image-container">
-      @if (pokemon?.name && pokemon?.names) {
+      @if (pokemon()?.name && pokemon()?.names) {
         <img
           (load)="onImageLoad()"
           [hidden]="imageLoading()"
           [src]="
           'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-          pokemon?.id +
+          pokemon()?.id +
           '.png'
         "
-          alt="{{ pokemon!.names | localise : 'en' : 'name' }}"
+          alt="{{ pokemon()?.name }}"
           height="90"
           mat-card-image
           width="90"
@@ -33,8 +33,8 @@
     </div>
   </mat-card-content>
   <mat-card-actions [align]="'end'">
-    @if (pokemon?.name) {
-      <a [routerLink]="'/pokemon/' + pokemon!.name" mat-button>View</a>
+    @if (pokemon()?.name) {
+      <a [routerLink]="'/pokemon/' + pokemon()!.name" mat-button>View</a>
     } @else {
       <span class="skeleton skeleton-text"></span>
     }

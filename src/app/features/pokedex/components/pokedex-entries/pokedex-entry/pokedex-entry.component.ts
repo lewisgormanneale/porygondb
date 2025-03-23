@@ -1,4 +1,4 @@
-import { Component, Input, signal, WritableSignal } from "@angular/core";
+import { Component, input, signal, WritableSignal } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
@@ -19,7 +19,7 @@ import { LocalisePipe } from "../../../../../shared/pipes/localise.pipe";
   styleUrl: "pokedex-entry.component.scss",
 })
 export class PokedexEntryComponent {
-  @Input() pokemon?: PokemonSpecies;
+  pokemon = input<PokemonSpecies>();
   imageLoading: WritableSignal<boolean> = signal(true);
 
   onImageLoad() {
