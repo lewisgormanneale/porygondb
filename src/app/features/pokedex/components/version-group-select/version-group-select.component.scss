@@ -7,5 +7,11 @@
   }
   @include mat.form-field-overrides((
           filled-container-color: var(--mat-sys-secondary-container),
+          filled-with-label-container-padding-top: 20px,
+          filled-with-label-container-padding-bottom: 0px,
+          container-height: 48px,
+  ));
+  @include mat.select-overrides((
+          trigger-text-size: var(--mat-sys-title-small),
   ));
 }

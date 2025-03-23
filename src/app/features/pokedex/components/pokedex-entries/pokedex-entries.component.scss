@@ -3,9 +3,9 @@
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  height: calc(100vh - var(--mat-toolbar-standard-height, 64px) - 57px - var(--mdc-secondary-navigation-tab-container-height, 48px));
+  height: calc(100vh - var(--mat-toolbar-standard-height, 64px) - 50px - var(--mdc-secondary-navigation-tab-container-height, 48px));
   @media (max-width: 599px) {
-    height: calc(100vh - var(--mat-toolbar-mobile-height, 56px) - 57px - var(--mdc-secondary-navigation-tab-container-height, 48px));
+    height: calc(100vh - var(--mat-toolbar-mobile-height, 56px) - 50px - var(--mdc-secondary-navigation-tab-container-height, 48px));
   }
 
   .pokedex-entries {
