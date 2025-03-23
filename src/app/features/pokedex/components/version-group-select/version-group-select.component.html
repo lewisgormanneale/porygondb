@@ -4,7 +4,7 @@
     (selectionChange)="navigateToVersionGroupPokedex($event.value)"
     [value]="selectedVersionGroupName()"
   >
-    @for (versionGroup of versionGroupStore.sortedByMostRecent(); track
+    @for (versionGroup of versionGroupStore.entities(); track
       versionGroup.id) {
       <mat-option value="{{ versionGroup.name }}">
         {{ versionGroup.formattedName }}
