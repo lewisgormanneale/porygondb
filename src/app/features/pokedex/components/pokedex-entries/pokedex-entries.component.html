@@ -6,6 +6,7 @@
   </div>
   <mat-paginator
     (page)="pokedexEntriesStore.loadPokemonSpecies($event)"
+    [hidePageSize]="hidePageSize()"
     [length]="pokedexEntriesStore.pageEvent().length"
     [pageIndex]="pokedexEntriesStore.pageEvent().pageIndex"
     [pageSizeOptions]="[25, 50, 100]"
