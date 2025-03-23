@@ -30,12 +30,23 @@ export const ThemeStore = signalStore(
       const newTheme = store.isDarkTheme() ? Theme.LIGHT : Theme.DARK;
       patchState(store, { theme: newTheme });
       document.body.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
     },
   })),
   withHooks({
     onInit(store) {
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        store.toggleTheme();
+      const storedTheme = localStorage.getItem("theme") as Theme | null;
+      if (storedTheme) {
+        patchState(store, { theme: storedTheme });
+        document.body.setAttribute("data-theme", storedTheme);
+      } else {
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          patchState(store, { theme: Theme.DARK });
+          document.body.setAttribute("data-theme", Theme.DARK);
+        } else {
+          patchState(store, { theme: Theme.LIGHT });
+          document.body.setAttribute("data-theme", Theme.LIGHT);
+        }
       }
     },
   })

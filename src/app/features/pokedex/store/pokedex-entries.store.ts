@@ -10,7 +10,9 @@ import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import {
   debounceTime,
   distinctUntilChanged,
-  forkJoin,
+  finalize,
+  from,
+  mergeMap,
   pipe,
   switchMap,
   tap,
@@ -18,8 +20,8 @@ import {
 import { tapResponse } from "@ngrx/operators";
 import { PokemonEntry, PokemonSpecies } from "pokenode-ts";
 import {
-  addEntities,
   removeAllEntities,
+  setEntities,
   withEntities,
 } from "@ngrx/signals/entities";
 import { PageEvent } from "@angular/material/paginator";
@@ -67,23 +69,38 @@ export const PokedexEntriesStore = signalStore(
           patchState(store, {
             pageEvent: {
               pageIndex: pageEvent?.pageIndex ? pageEvent.pageIndex : 0,
-              pageSize: pageEvent?.pageSize ? pageEvent.pageSize : 25,
+              pageSize: pageEvent?.pageSize ? pageEvent.pageSize : 50,
               length: store.pokedexEntries().length,
             },
           });
           const paginatedEntries = store.paginatedPokemonEntries();
-          const speciesRequests = paginatedEntries.map((entry: PokemonEntry) =>
-            pokemonService.getPokemonSpeciesByName(entry.pokemon_species.name)
-          );
           patchState(store, removeAllEntities());
-          return forkJoin(speciesRequests).pipe(
-            tapResponse({
-              next: (species: PokemonSpecies[]) => {
-                patchState(store, addEntities(species));
-              },
-              error: (error: Error) =>
-                patchState(store, setError(error.message)),
-              finalize: () => patchState(store, setCompleted()),
+          return from(paginatedEntries).pipe(
+            mergeMap(
+              (entry: PokemonEntry) =>
+                pokemonService
+                  .getPokemonSpeciesByName(entry.pokemon_species.name)
+                  .pipe(
+                    tapResponse({
+                      next: (species: PokemonSpecies) => {
+                        const index = paginatedEntries.findIndex(
+                          (e) =>
+                            e.pokemon_species.name ===
+                            entry.pokemon_species.name
+                        );
+                        const orderedEntities = store.entities();
+                        orderedEntities[index] = species;
+                        patchState(store, setEntities(orderedEntities));
+                      },
+                      error: (error: Error) => {
+                        patchState(store, setError(error.message));
+                      },
+                    })
+                  ),
+              5
+            ),
+            finalize(() => {
+              patchState(store, setCompleted());
             })
           );
         })

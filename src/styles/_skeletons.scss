@@ -1,6 +1,12 @@
 .skeleton {
   display: inline-block;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.1) 75%);
+  background: linear-gradient(
+                  -90deg,
+                  var(--primary-color-opacity-10, rgba(240, 240, 240, 0.1)) 0%,
+                  var(--primary-color-opacity-20, rgba(210, 210, 210, 0.2)) 50%,
+                  var(--primary-color-opacity-10, rgba(240, 240, 240, 0.1)) 100%
+  );
+
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
   border-radius: 4px;

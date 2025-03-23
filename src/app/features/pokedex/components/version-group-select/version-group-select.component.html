@@ -1,10 +1,10 @@
-<mat-form-field subscriptSizing="dynamic">
+<mat-form-field class="version-group-select" subscriptSizing="dynamic">
   <mat-label>Pokédex</mat-label>
   <mat-select
     (selectionChange)="navigateToVersionGroupPokedex($event.value)"
     [value]="selectedVersionGroupName()"
   >
-    @for (versionGroup of versionGroupStore.sortedByMostRecent(); track
+    @for (versionGroup of versionGroupStore.entities(); track
       versionGroup.id) {
       <mat-option value="{{ versionGroup.name }}">
         {{ versionGroup.formattedName }}
