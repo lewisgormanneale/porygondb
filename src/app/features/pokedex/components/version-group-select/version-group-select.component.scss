@@ -1,6 +1,11 @@
-mat-form-field {
+@use "@angular/material" as mat;
+
+.version-group-select {
   width: 300px;
   @media (max-width: 599px) {
     width: 100vw;
   }
+  @include mat.form-field-overrides((
+          filled-container-color: var(--mat-sys-secondary-container),
+  ));
 }
