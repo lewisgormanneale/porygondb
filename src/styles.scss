@@ -2,6 +2,7 @@
 @use "sass:map";
 @use './styles/_skeletons';
 @use './styles/_theme-colors' as my-theme;
+@use './styles/_typography';
 
 * {
   margin: 0;

@@ -1,8 +1,13 @@
-mat-card.pokemon-summary {
+@use '@angular/material' as mat;
+
+.pokemon-summary {
   margin: 0 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  @include mat.card-overrides((
+          outlined-container-color: var(--mat-sys-surface-container-low),
+  ));
 
   mat-card-header {
     .pokemon-id-avatar {
@@ -19,39 +24,34 @@ mat-card.pokemon-summary {
     }
   }
 
+  .pokemon-types {
+    margin-bottom: 10px;
+  }
+
   .pokemon-image {
     display: flex;
     justify-content: center;
+    margin: 10px 0;
   }
 
   .pokemon-details {
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
-    margin: 1rem 0;
+    gap: 5px;
+    margin: 10px 0;
   }
 
-  mat-card-footer {
+  .forms {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
     width: 100%;
+    @include mat.card-overrides((
+            outlined-container-color: var(--mat-sys-surface-container),
+    ));
 
-    .forms-header {
-      margin-top: 20px;
-      margin-left: 10px;
-      width: 100%;
-    }
-
-    .forms {
-      display: flex;
-      flex-wrap: wrap;
-      margin: 10px;
-      gap: 8px;
-      width: 100%;
-
-      .pokemon-form-image {
-        padding: 5px;
-      }
+    .pokemon-form-image {
+      padding: 5px;
     }
   }
 }
