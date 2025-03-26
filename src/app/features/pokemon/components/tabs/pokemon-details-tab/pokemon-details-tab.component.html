@@ -1,0 +1,19 @@
+<div class="details-tab">
+  <span class="label-large">Height</span>
+  <span class="body-medium">{{ pokemonStore.selectedEntity()!.height | decimetersToInches }}</span>
+  <mat-divider></mat-divider>
+  <span class="label-large">Weight</span>
+  <span class="body-medium">{{ pokemonStore.selectedEntity()!.weight | hectogramsToPounds }}</span>
+  <mat-divider></mat-divider>
+  <span class="label-large">Base Experience</span>
+  <span class="body-medium">{{ pokemonStore.selectedEntity()!.base_experience }} XP</span>
+  <mat-divider></mat-divider>
+  <span class="label-large">Capture Rate</span>
+  <span class="body-medium">{{ pokemonStore.speciesDetails()!.capture_rate }}</span>
+  <mat-divider></mat-divider>
+  <span class="label-large">Gender Ratio</span>
+  <span class="body-medium">{{ pokemonStore.speciesDetails()!.gender_rate }}</span>
+  <mat-divider></mat-divider>
+  <span class="label-large">Description:</span>
+  <p>{{ pokemonStore.speciesDetails().flavor_text_entries[0].flavor_text }}</p>
+</div>
