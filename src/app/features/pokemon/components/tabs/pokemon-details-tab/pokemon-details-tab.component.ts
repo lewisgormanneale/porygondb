@@ -10,6 +10,8 @@ import { MatChipsModule } from "@angular/material/chips";
 import { Ability } from "pokenode-ts";
 import { PokemonService } from "../../../../../shared/services/pokemon.service";
 import { TypeChipComponent } from "../../../../../shared/components/type-chip/type-chip.component";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { GenderRatePipe } from "../../../../../shared/pipes/genderRate.pipe";
 
 interface AbilityInformation {
   ability: Ability;
@@ -27,7 +29,9 @@ interface AbilityInformation {
     CaptureRatePipe,
     LocalisePipe,
     MatChipsModule,
+    MatProgressBarModule,
     TypeChipComponent,
+    GenderRatePipe,
   ],
   templateUrl: "./pokemon-details-tab.component.html",
   styleUrl: "./pokemon-details-tab.component.scss",

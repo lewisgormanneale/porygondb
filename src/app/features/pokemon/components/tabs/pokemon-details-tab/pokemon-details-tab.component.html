@@ -51,6 +51,18 @@
   <mat-divider></mat-divider>
   <div class="detail">
     <span class="label-large">Gender Ratio</span>
-    <span class="body-medium">{{ pokemonStore.speciesDetails()!.gender_rate }}</span>
+    @if (pokemonStore.speciesDetails()!.gender_rate >= 0) {
+      <mat-progress-bar [value]="pokemonStore.speciesDetails()!.gender_rate | genderRate"
+                        class="progress-bar gender-rate"
+                        mode="determinate"
+      >
+      </mat-progress-bar>
+    } @else if (pokemonStore.speciesDetails()!.gender_rate === -1) {
+      <mat-progress-bar [value]="100"
+                        class="progress-bar genderless"
+                        mode="determinate"
+      >
+      </mat-progress-bar>
+    }
   </div>
 </div>
