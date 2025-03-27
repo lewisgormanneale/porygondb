@@ -3,4 +3,10 @@
   flex-direction: column;
   gap: 5px;
   margin: 10px 0;
+
+  .detail {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 10px;
+  }
 }
