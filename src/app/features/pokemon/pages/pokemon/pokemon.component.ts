@@ -2,25 +2,21 @@ import { Component, effect, inject, signal } from "@angular/core";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, RouterModule } from "@angular/router";
-import { MatCardModule } from "@angular/material/card";
-import { MatIconModule } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
 import { PokemonSummaryComponent } from "../../components/pokemon-summary/pokemon-summary.component";
 import { PokemonMovesTabComponent } from "../../components/tabs/pokemon-moves-tab/pokemon-moves-tab.component";
 import { PokemonStatsTabComponent } from "../../components/tabs/pokemon-stats-tab/pokemon-stats-tab.component";
 import { PokemonStore } from "../../../../shared/store/pokemon.store";
+import { PokemonDetailsTabComponent } from "../../components/tabs/pokemon-details-tab/pokemon-details-tab.component";
 
 @Component({
   imports: [
     MatProgressBarModule,
-    MatCardModule,
     MatTabsModule,
-    MatIconModule,
-    MatButtonModule,
     RouterModule,
     PokemonSummaryComponent,
     PokemonMovesTabComponent,
     PokemonStatsTabComponent,
+    PokemonDetailsTabComponent,
   ],
   selector: "app-pokemon",
   templateUrl: "pokemon.component.html",

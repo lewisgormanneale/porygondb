@@ -1,7 +1,9 @@
-import { Component, input } from "@angular/core";
+import { Component, inject, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatChipsModule } from "@angular/material/chips";
 import { getPokemonTypeColor } from "../../utils/get-type-color.util";
+import { ThemeStore } from "../../../core/store/theme.store";
+import { darkenColor } from "../../utils/darken-color.util";
 
 @Component({
   selector: "type-chip",
@@ -11,8 +13,13 @@ import { getPokemonTypeColor } from "../../utils/get-type-color.util";
 })
 export class TypeChipComponent {
   typeName = input.required<string>();
+  themeStore = inject(ThemeStore);
 
   getTypeColor(typeName: string): string {
-    return getPokemonTypeColor(typeName);
+    const color = getPokemonTypeColor(typeName);
+    if (this.themeStore.isDarkTheme()) {
+      return darkenColor(color, 20);
+    }
+    return color;
   }
 }

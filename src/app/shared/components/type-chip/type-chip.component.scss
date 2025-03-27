@@ -1,7 +1,17 @@
 @use "@angular/material" as mat;
 
-.chip-text {
-  text-transform: capitalize;
-  font-weight: 500;
-  color: #fff8f8;
+.type-chip {
+  @include mat.chips-overrides((
+          outline-width: 0,
+  ));
+
+  .chip-text {
+    text-transform: capitalize;
+    font-weight: 500;
+    color: #f9f9ff;
+    text-shadow: 1px 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;
+  }
 }

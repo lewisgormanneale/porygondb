@@ -11,6 +11,11 @@
       </section>
       <section class="additional-info">
         <mat-tab-group animationDuration="0ms">
+          <mat-tab label="Details">
+            <ng-template matTabContent>
+              <pokemon-details-tab></pokemon-details-tab>
+            </ng-template>
+          </mat-tab>
           <mat-tab label="Stats">
             <ng-template matTabContent>
               <pokemon-stats-tab></pokemon-stats-tab>

@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+
+.details-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px 0;
+
+  .detail {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 10px;
+  }
+
+  .progress-bar {
+    margin-top: 4px;
+    border-radius: 5px;
+    @include mat.progress-bar-overrides((
+            active-indicator-height: 10px,
+            track-height: 10px,
+    ));
+
+    &.gender-rate {
+      @include mat.progress-bar-overrides((
+              active-indicator-color: #0075BE,
+              track-color: #F57694,
+      ));
+    }
+
+    &.genderless {
+      @include mat.progress-bar-overrides((
+              active-indicator-color: #50C878,
+              track-color: #50C878,
+      ));
+    }
+  }
+}

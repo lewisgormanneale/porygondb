@@ -1,10 +1,11 @@
 .pokedex {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - var(--mat-toolbar-standard-height, 64px));
+  height: calc(min(100vh, 100svh) - var(--mat-toolbar-standard-height, 64px));
   @media (max-width: 599px) {
-    height: calc(100vh - var(--mat-toolbar-mobile-height, 56px));
+    height: calc(min(100vh, 100svh) - var(--mat-toolbar-mobile-height, 56px));
   }
+
 
   .pokedex-options {
     background-color: var(--mat-sys-secondary-container)
