@@ -10,8 +10,6 @@
   ));
 
   mat-card-header {
-    margin-bottom: 10px;
-
     .pokemon-id-avatar {
       display: flex;
       align-items: center;
@@ -26,18 +24,10 @@
     }
   }
 
-  .pokemon-types {
-    margin: 10px;
-  }
-
   .pokemon-image {
     display: flex;
     justify-content: center;
-    margin: 10px 0;
-  }
-
-  .pokemon-abilities {
-    margin: 10px 0;
+    margin-bottom: 10px;
   }
 
   .pokemon-forms {
