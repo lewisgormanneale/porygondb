@@ -11,8 +11,12 @@
   <div class="detail">
     <span class="label-large">Abilities</span>
     <mat-chip-set aria-label="Abilities">
+      @if (abilities().length === 0) {
+        <mat-chip><span class="skeleton skeleton-chip"></span></mat-chip>
+      }
       @for (ability of abilities(); track ability.slot) {
-        <mat-chip [disabled]="ability.isHidden">{{ ability.ability.names || [] | localise : 'en' : 'name' }}</mat-chip>
+        <mat-chip [disabled]="ability.isHidden">{{ ability.ability.names || [] | localise : 'en' : 'name' }}
+        </mat-chip>
       }
     </mat-chip-set>
   </div>

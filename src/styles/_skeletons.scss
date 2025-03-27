@@ -25,6 +25,12 @@
   display: inline-block;
 }
 
+.skeleton-chip {
+  width: 80px;
+  height: 12px;
+  display: inline-block;
+}
+
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
