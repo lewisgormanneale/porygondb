@@ -25,13 +25,13 @@ import {
   withEntities,
 } from "@ngrx/signals/entities";
 import { PageEvent } from "@angular/material/paginator";
-import { withPagination } from "../../../shared/store/features/pagination.feature";
+import { withPagination } from "../../../shared/+state/features/pagination.feature";
 import {
   setCompleted,
   setError,
   setLoading,
   withRequestStatus,
-} from "../../../shared/store/features/request-status.feature";
+} from "../../../shared/+state/features/request-status.feature";
 import { PokemonService } from "../../../shared/services/pokemon.service";
 
 interface PokedexEntriesStoreState {

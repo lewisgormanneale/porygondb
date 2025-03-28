@@ -31,6 +31,10 @@
   .pokemon-forms {
     margin-top: 10px;
 
+    .form-label {
+      margin-bottom: 6px;
+    }
+
     .forms {
       display: flex;
       flex-wrap: wrap;
@@ -40,19 +44,19 @@
               outlined-container-color: var(--mat-sys-surface-container),
       ));
 
-      .pokemon-form-image {
-        padding: 5px;
+      .form-option {
+        cursor: pointer;
+
+        :hover {
+          background-color: var(--mat-sys-primary-container);
+          transition: 0.2s;
+        }
+
+        .pokemon-form-image {
+          padding: 5px;
+        }
       }
     }
 
-  }
-}
-
-.form-option {
-  cursor: pointer;
-
-  :hover {
-    background-color: var(--mat-sys-primary-container);
-    transition: 0.2s;
   }
 }

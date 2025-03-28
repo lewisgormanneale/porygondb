@@ -2,7 +2,7 @@ import { Component, inject, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatChipsModule } from "@angular/material/chips";
 import { getPokemonTypeColor } from "../../utils/get-type-color.util";
-import { ThemeStore } from "../../../core/store/theme.store";
+import { ThemeStore } from "../../../core/+state/theme.store";
 import { darkenColor } from "../../utils/darken-color.util";
 
 @Component({

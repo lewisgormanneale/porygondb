@@ -5,7 +5,7 @@ import {
   inject,
   ViewChild,
 } from "@angular/core";
-import { PokemonStore } from "src/app/shared/store/pokemon.store";
+import { PokemonStore } from "src/app/shared/+state/pokemon.store";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { MatSort, MatSortModule } from "@angular/material/sort";
