@@ -11,6 +11,9 @@ Given the large amount of data relating to the Pokémon games, the project seeme
 As for Angular Material, it was good to get my head around things like how things like style overrides worked with it. Once I [designed my own theme for it](https://material-foundation.github.io/material-theme-builder/), and implemented a Dark/Light Mode toggle, I was generally pretty happy with it as far as component libraries go. I stopped myself from using TailwindCSS for this project, which is normally my go-to, but I didn't want to stray from Material Design principles and tailwind made that a bit too easy. Plus, I don't want my standard CSS knowledge to get rusty.
 
 
+## View Live
+### [https://porygondb.lewisgormanneale.com](https://porygondb.lewisgormanneale.com/pokedex/red-blue)
+
 ## Features
 
 - Pokédex Page
@@ -26,6 +29,32 @@ As for Angular Material, it was good to get my head around things like how thing
     - Theme Toggle (Default theme will be based on system)
     - High contrast modes supported
 
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/lewisgormanneale/porygondb.git
+```
+
+Go to the project directory
+
+```bash
+  cd my-project
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start
+```
+
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/dadf382e-d4d0-44a6-bb75-2a24bcc406cd)
 ![image](https://github.com/user-attachments/assets/bce689d1-4885-4d59-8933-7ac09cdf6f23)
@@ -33,7 +62,7 @@ As for Angular Material, it was good to get my head around things like how thing
 
 ## Future Roadmap
 
-As said above, this project was mainly done to get my head around signal stores and Angular Material. However, if I want more practice in these areas, or just fancy coming back to this project, I have additional plenty features I'd like to add:
+As said above, this project was mainly done to get my head around signal stores and Angular Material. However, if I want more practice in these areas, or just fancy coming back to this project, there's plenty of additional features I'd like to add:
 - Additional Pokémon information - evolution trees, movesets, locations, and so on. (PokéAPI makes it hard to retrieve a lot of this information efficiently without using something like the rate-restricted GraphQL API, so I stayed away from being too ambitous here).
 - Toggles to see things like shiny sprites on the Pokédex/Pokémon pages.
 - A way to save favourite Pokémon, or even a team builder.
