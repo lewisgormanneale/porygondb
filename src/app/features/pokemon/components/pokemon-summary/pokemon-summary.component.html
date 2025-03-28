@@ -22,8 +22,7 @@
   </mat-card-header>
   <mat-card-content class="pokemon-image">
     <img
-      (error)="onError()"
-      [ngSrc]="selectedPokemonHomeFrontSprite()"
+      [ngSrc]="pokemonStore.selectedPokemonHomeFrontSprite() || fallbackImageLarge"
       alt="{{
         pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
       }}"
