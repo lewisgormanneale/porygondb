@@ -3,7 +3,6 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { PokemonSummaryComponent } from "../../components/pokemon-summary/pokemon-summary.component";
-import { PokemonMovesTabComponent } from "../../components/tabs/pokemon-moves-tab/pokemon-moves-tab.component";
 import { PokemonStatsTabComponent } from "../../components/tabs/pokemon-stats-tab/pokemon-stats-tab.component";
 import { PokemonStore } from "../../../../shared/store/pokemon.store";
 import { PokemonDetailsTabComponent } from "../../components/tabs/pokemon-details-tab/pokemon-details-tab.component";
@@ -14,7 +13,6 @@ import { PokemonDetailsTabComponent } from "../../components/tabs/pokemon-detail
     MatTabsModule,
     RouterModule,
     PokemonSummaryComponent,
-    PokemonMovesTabComponent,
     PokemonStatsTabComponent,
     PokemonDetailsTabComponent,
   ],
