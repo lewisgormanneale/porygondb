@@ -34,7 +34,7 @@
   </mat-card-content>
   <mat-card-content class="pokemon-forms">
     @if (pokemonStore.entities().length > 1) {
-      <h4 class="label-large">Select Form</h4>
+      <h4 class="label-large form-label">Select Form</h4>
       <div class="forms">
         @for (variety of pokemonStore.entities(); track variety.id) {
           <mat-card
@@ -55,7 +55,4 @@
       </div>
     }
   </mat-card-content>
-  <!--  <span class="label-large">Evolves From:</span>-->
-  <!--  <span class="body-medium">{{ pokemonStore.speciesDetails()!.gender_rate }}</span>-->
-
 </mat-card>

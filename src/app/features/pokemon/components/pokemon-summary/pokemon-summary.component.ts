@@ -1,13 +1,12 @@
 import { NgOptimizedImage } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
-import { MatChipsModule } from "@angular/material/chips";
 import { LocalisePipe } from "../../../../shared/pipes/localise.pipe";
-import { PokemonStore } from "../../../../shared/store/pokemon.store";
+import { PokemonStore } from "../../../../shared/+state/pokemon.store";
 
 @Component({
   selector: "pokemon-summary",
-  imports: [MatCardModule, MatChipsModule, LocalisePipe, NgOptimizedImage],
+  imports: [MatCardModule, LocalisePipe, NgOptimizedImage],
   templateUrl: "./pokemon-summary.component.html",
   styleUrl: "./pokemon-summary.component.scss",
 })

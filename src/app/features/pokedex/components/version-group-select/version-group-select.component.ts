@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, signal } from "@angular/core";
-import { VersionGroupStore } from "../../../../shared/store/version-group.store";
+import { VersionGroupStore } from "../../../../shared/+state/version-group.store";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";

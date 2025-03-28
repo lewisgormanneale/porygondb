@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { MatTabsModule } from "@angular/material/tabs";
 import { VersionGroupSelectComponent } from "../../components/version-group-select/version-group-select.component";
 import { PokedexEntriesComponent } from "../../components/pokedex-entries/pokedex-entries.component";
-import { VersionGroupStore } from "../../../../shared/store/version-group.store";
+import { VersionGroupStore } from "../../../../shared/+state/version-group.store";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 @Component({

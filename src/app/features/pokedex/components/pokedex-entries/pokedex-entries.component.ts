@@ -7,7 +7,7 @@ import {
   signal,
 } from "@angular/core";
 import { GameService } from "../../../../shared/services/game.service";
-import { PokedexEntriesStore } from "../../store/pokedex-entries.store";
+import { PokedexEntriesStore } from "../../+state/pokedex-entries.store";
 import { PokedexEntryComponent } from "./pokedex-entry/pokedex-entry.component";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";

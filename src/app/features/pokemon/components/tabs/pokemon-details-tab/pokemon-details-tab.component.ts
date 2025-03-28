@@ -1,6 +1,6 @@
 import { Component, effect, inject, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { PokemonStore } from "../../../../../shared/store/pokemon.store";
+import { PokemonStore } from "../../../../../shared/+state/pokemon.store";
 import { DecimetersToInchesPipe } from "../../../../../shared/pipes/decimetersToInches.pipe";
 import { HectogramsToPoundsPipe } from "../../../../../shared/pipes/hectogramsToPounds.pipe";
 import { MatDividerModule } from "@angular/material/divider";

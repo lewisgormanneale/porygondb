@@ -5,7 +5,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { RouterModule, RouterOutlet } from "@angular/router";
 import { DomSanitizer } from "@angular/platform-browser";
 import { NgOptimizedImage } from "@angular/common";
-import { ThemeStore } from "./core/store/theme.store";
+import { ThemeStore } from "./core/+state/theme.store";
 import { OverlayModule } from "@angular/cdk/overlay";
 
 @Component({
