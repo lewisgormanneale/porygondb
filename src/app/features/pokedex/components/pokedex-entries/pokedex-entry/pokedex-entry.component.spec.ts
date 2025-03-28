@@ -23,16 +23,17 @@ describe("PokedexEntryComponent", () => {
         fixture.componentRef.setInput("pokemon", undefined);
         fixture.detectChanges();
       });
+
       it("Then the component should be created", () => {
         expect(component).toBeTruthy();
         expect(component.imageLoading()).toEqual(true);
       });
 
-      it("Then skeleton text elements will be displayed as pokemon data is missing", () => {
+      it("Then a skeleton text element will be displayed as pokemon data is missing", () => {
         const skeleton = fixture.debugElement.query(
           By.css(".skeleton.skeleton-text")
         );
-        expect(skeleton).toBeTruthy(); // Skeleton rendered
+        expect(skeleton).toBeTruthy();
       });
 
       it("Then a spinner is displayed instead of the pokemon's image", fakeAsync(() => {
@@ -44,6 +45,18 @@ describe("PokedexEntryComponent", () => {
         expect(spinner).toBeTruthy();
         expect(image).toBeFalsy();
       }));
+
+      it("Then a skeleton button element will be displayed as pokemon data is missing", () => {
+        const skeleton = fixture.debugElement.query(
+          By.css(".skeleton.skeleton-button")
+        );
+        expect(skeleton).toBeTruthy();
+      });
+
+      it("Then no view button is rendered as no pokemon name is known yet", () => {
+        const viewButton = fixture.debugElement.query(By.css("a[mat-button]"));
+        expect(viewButton).toBeNull();
+      });
     });
     describe("When a valid pokemon is passed in as an input", () => {
       beforeEach(() => {
@@ -75,15 +88,5 @@ describe("PokedexEntryComponent", () => {
         expect(viewButton.attributes["href"]).toBe("/pokemon/bulbasaur");
       });
     });
-  });
-
-  it('should not display the "View" button for a missing name', () => {
-    fixture.componentRef.setInput("pokemon", {
-      id: 1,
-    } as PokemonSpecies);
-    fixture.detectChanges();
-
-    const viewButton = fixture.debugElement.query(By.css("a[mat-button]"));
-    expect(viewButton).toBeNull(); // Button should not render
   });
 });

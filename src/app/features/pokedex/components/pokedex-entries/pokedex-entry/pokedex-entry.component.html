@@ -36,7 +36,7 @@
     @if (pokemon()?.name) {
       <a [routerLink]="'/pokemon/' + pokemon()!.name" mat-button>View</a>
     } @else {
-      <span class="skeleton skeleton-text"></span>
+      <span class="skeleton skeleton-button"></span>
     }
   </mat-card-actions>
 </mat-card>
