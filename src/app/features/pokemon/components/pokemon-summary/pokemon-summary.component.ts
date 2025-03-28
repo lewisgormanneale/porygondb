@@ -13,6 +13,8 @@ import { PokemonStore } from "../../../../shared/store/pokemon.store";
 })
 export class PokemonSummaryComponent {
   readonly pokemonStore = inject(PokemonStore);
+  fallbackImageSmall = "assets/images/question-mark.png";
+  fallbackImageLarge = "assets/images/question-mark-2.png";
 
   setSelectedPokemonVariety(varietyId: number) {
     this.pokemonStore.setSelectedId(varietyId);

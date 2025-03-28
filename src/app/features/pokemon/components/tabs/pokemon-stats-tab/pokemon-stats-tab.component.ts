@@ -1,9 +1,14 @@
-import { Component, computed, inject, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  inject,
+  ViewChild,
+} from "@angular/core";
 import { PokemonStore } from "src/app/shared/store/pokemon.store";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatTable, MatTableModule } from "@angular/material/table";
-import { MatSort } from "@angular/material/sort";
-import { Move } from "pokenode-ts";
+import { MatTableDataSource, MatTableModule } from "@angular/material/table";
+import { MatSort, MatSortModule } from "@angular/material/sort";
 
 interface StatData {
   name: string;
@@ -12,32 +17,46 @@ interface StatData {
 
 @Component({
   selector: "pokemon-stats-tab",
-  imports: [MatProgressBarModule, MatTableModule],
+  imports: [MatProgressBarModule, MatTableModule, MatSortModule],
   templateUrl: "./pokemon-stats-tab.component.html",
   styleUrl: "./pokemon-stats-tab.component.scss",
 })
-export class PokemonStatsTabComponent {
+export class PokemonStatsTabComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<Move>;
   readonly pokemonStore = inject(PokemonStore);
-  readonly columnsToDisplay = ["name", "baseValue"];
-  pokemonStatsDataSource = computed(() => {
-    const pokemon = this.pokemonStore.selectedEntity();
-    if (!pokemon || !pokemon.stats || pokemon.stats.length === 0) {
-      return [];
-    }
-    let statData: StatData[] = [];
-    for (const stat of pokemon.stats) {
-      statData.push({
-        name: stat.stat.name,
-        baseValue: stat.base_stat,
-      });
-    }
-    return statData;
-  });
+  columnsToDisplay = ["name", "baseValue"];
+  stats: StatData[] = [
+    {
+      name: "HP",
+      baseValue: this.pokemonStore.selectedPokemonStats()["hp"],
+    },
+    {
+      name: "Attack",
+      baseValue: this.pokemonStore.selectedPokemonStats()["hp"],
+    },
+    {
+      name: "Defense",
+      baseValue: this.pokemonStore.selectedPokemonStats()["defense"],
+    },
+    {
+      name: "Special Attack",
+      baseValue: this.pokemonStore.selectedPokemonStats()["special-attack"],
+    },
+    {
+      name: "Special Defense",
+      baseValue: this.pokemonStore.selectedPokemonStats()["special-defense"],
+    },
+    {
+      name: "Speed",
+      baseValue: this.pokemonStore.selectedPokemonStats()["speed"],
+    },
+  ];
+  dataSource = new MatTableDataSource(this.stats);
   baseStatTotal = computed(() => {
-    return this.pokemonStatsDataSource()
-      .map((stat) => stat.baseValue)
-      .reduce((a, b) => a + b);
+    return this.stats.map((stat) => stat.baseValue).reduce((a, b) => a + b);
   });
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
 }

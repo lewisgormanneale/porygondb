@@ -1,6 +1,12 @@
-import { inject } from "@angular/core";
-import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
-import { Pokemon, PokemonSpecies } from "pokenode-ts";
+import { computed, inject } from "@angular/core";
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withState,
+} from "@ngrx/signals";
+import { FlavorText, Pokemon, PokemonSpecies } from "pokenode-ts";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import {
   debounceTime,
@@ -40,6 +46,26 @@ export const PokemonStore = signalStore(
   withRequestStatus(),
   withEntities<Pokemon>(),
   withSelectedEntity(),
+  withComputed((store) => ({
+    selectedPokemonStats: computed(() => {
+      return (
+        store.selectedEntity()?.stats?.reduce((acc, stat) => {
+          acc[stat.stat.name] = stat.base_stat;
+          return acc;
+        }, {} as Record<string, number>) || {}
+      );
+    }),
+    englishSpeciesDescription: computed(() => {
+      return store
+        .speciesDetails()
+        .flavor_text_entries.find(
+          (entry: FlavorText) => entry.language.name === "en"
+        );
+    }),
+    selectedPokemonHomeFrontSprite: computed(() => {
+      return store.selectedEntity()?.sprites.other?.home?.front_default ?? "";
+    }),
+  })),
   withMethods((store, pokemonService = inject(PokemonService)) => ({
     loadPokemonByName: rxMethod<string>(
       pipe(

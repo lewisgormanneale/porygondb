@@ -1,12 +1,14 @@
 <mat-card appearance="outlined" class="pokemon-summary">
   <mat-card-header>
     <img
-      [src]="pokemonStore.selectedEntity()!.sprites.front_default"
+      [ngSrc]="pokemonStore.selectedEntity()?.sprites?.front_default || fallbackImageSmall"
       alt="{{
         pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
       }}"
       class="pokemon-id-avatar"
+      height="40"
       mat-card-avatar
+      width="40"
     />
     <mat-card-title
     >{{
@@ -20,9 +22,7 @@
   </mat-card-header>
   <mat-card-content class="pokemon-image">
     <img
-      [ngSrc]="
-        pokemonStore.selectedEntity()!.sprites.other?.home?.front_default!
-      "
+      [ngSrc]="pokemonStore.selectedPokemonHomeFrontSprite() || fallbackImageLarge"
       alt="{{
         pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
       }}"
@@ -45,9 +45,9 @@
             <img
               class="pokemon-form-image"
               mat-card-image
-              [src]="variety.sprites.front_default!"
-              width="80"
-              height="80"
+              [ngSrc]="variety.sprites.front_default || fallbackImageSmall"
+              width="77"
+              height="77"
               alt="{{ variety.name }}"
             />
           </mat-card>

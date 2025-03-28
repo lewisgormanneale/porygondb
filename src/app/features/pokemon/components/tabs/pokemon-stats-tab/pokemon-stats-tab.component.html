@@ -1,14 +1,9 @@
-<div class="mat-elevation-z2">
+<div class="pokemon-stats-tab">
   <table
-    [dataSource]="pokemonStatsDataSource()"
-    aria-label="Elements"
-    class="full-width-table"
-    mat-table
-    matSort
-  >
+    [dataSource]="dataSource" mat-table matSort>
     <ng-container>
       <ng-container matColumnDef="name">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
+        <th *matHeaderCellDef mat-header-cell>Name</th>
         <td *matCellDef="let row" mat-cell>
           {{ row.name }}
         </td>

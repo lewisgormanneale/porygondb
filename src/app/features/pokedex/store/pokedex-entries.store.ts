@@ -69,7 +69,7 @@ export const PokedexEntriesStore = signalStore(
           patchState(store, {
             pageEvent: {
               pageIndex: pageEvent?.pageIndex ? pageEvent.pageIndex : 0,
-              pageSize: pageEvent?.pageSize ? pageEvent.pageSize : 50,
+              pageSize: pageEvent?.pageSize ? pageEvent.pageSize : 25,
               length: store.pokedexEntries().length,
             },
           });
