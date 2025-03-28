@@ -55,6 +55,9 @@ export const PokemonStore = signalStore(
         }, {} as Record<string, number>) || {}
       );
     }),
+    selectedPokemonHomeFrontSprite: computed(() => {
+      return store.selectedEntity()?.sprites.other?.home?.front_default ?? "";
+    }),
   })),
   withMethods((store, pokemonService = inject(PokemonService)) => ({
     loadPokemonByName: rxMethod<string>(
