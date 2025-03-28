@@ -21,10 +21,12 @@
     </mat-chip-set>
   </div>
   <mat-divider></mat-divider>
-  <div class="detail">
-    <span class="label-large">Description:</span>
-    <p>{{ pokemonStore.speciesDetails().flavor_text_entries[0].flavor_text }}</p>
-  </div>
+  @if (pokemonStore.englishSpeciesDescription()) {
+    <div class="detail">
+      <span class="label-large">Description:</span>
+      <p>{{ pokemonStore.englishSpeciesDescription()?.flavor_text }}</p>
+    </div>
+  }
   <mat-divider></mat-divider>
   <div class="detail">
     <span class="label-large">Height</span>

@@ -6,7 +6,7 @@ import {
   withMethods,
   withState,
 } from "@ngrx/signals";
-import { Pokemon, PokemonSpecies } from "pokenode-ts";
+import { FlavorText, Pokemon, PokemonSpecies } from "pokenode-ts";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import {
   debounceTime,
@@ -54,6 +54,13 @@ export const PokemonStore = signalStore(
           return acc;
         }, {} as Record<string, number>) || {}
       );
+    }),
+    englishSpeciesDescription: computed(() => {
+      return store
+        .speciesDetails()
+        .flavor_text_entries.find(
+          (entry: FlavorText) => entry.language.name === "en"
+        );
     }),
     selectedPokemonHomeFrontSprite: computed(() => {
       return store.selectedEntity()?.sprites.other?.home?.front_default ?? "";
