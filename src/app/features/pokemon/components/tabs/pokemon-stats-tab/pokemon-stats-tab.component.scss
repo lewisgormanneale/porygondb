@@ -1,6 +1,9 @@
 @use '@angular/material' as mat;
 
 .pokemon-stats-tab {
+  @include mat.table-overrides((
+          footer-supporting-text-weight: 600,
+  ));
   @include mat.progress-bar-overrides((
           active-indicator-color: orange,
           track-color: red,
