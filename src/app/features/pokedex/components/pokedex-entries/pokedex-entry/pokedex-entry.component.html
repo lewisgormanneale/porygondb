@@ -10,7 +10,7 @@
   </mat-card-header>
   <mat-card-content>
     <div class="image-container">
-      @if (pokemon()?.name && pokemon()?.names) {
+      @if (pokemon()?.name && pokemon()?.id) {
         <img
           (load)="onImageLoad()"
           [hidden]="imageLoading()"
