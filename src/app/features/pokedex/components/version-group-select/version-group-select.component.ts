@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, signal } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+  OnInit,
+} from "@angular/core";
 import { VersionGroupStore } from "../../../../shared/+state/version-group.store";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -12,7 +18,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   imports: [MatFormFieldModule, MatSelectModule, MatInputModule],
   styleUrls: ["version-group-select.component.scss"],
 })
-export class VersionGroupSelectComponent {
+export class VersionGroupSelectComponent implements OnInit {
   selectedVersionGroupName = signal<string>("");
   versionGroupStore = inject(VersionGroupStore);
   private readonly _router = inject(Router);
@@ -29,6 +35,6 @@ export class VersionGroupSelectComponent {
   }
 
   navigateToVersionGroupPokedex(versionGroupName: string): void {
-    this._router.navigate(["/pokedex", versionGroupName]);
+    void this._router.navigate(["/pokedex", versionGroupName]);
   }
 }

@@ -37,10 +37,10 @@ describe("PokedexEntryComponent", () => {
       });
 
       it("Then a spinner is displayed instead of the pokemon's image", fakeAsync(() => {
-        let spinner = fixture.debugElement.query(
+        const spinner = fixture.debugElement.query(
           By.css("mat-progress-spinner")
         );
-        let image = fixture.debugElement.query(By.css("img"));
+        const image = fixture.debugElement.query(By.css("img"));
 
         expect(spinner).toBeTruthy();
         expect(image).toBeFalsy();
@@ -71,7 +71,8 @@ describe("PokedexEntryComponent", () => {
 
       it("Then the entry should display the Pokemon's English name", () => {
         const title = fixture.debugElement.query(By.css("mat-card-title"));
-        expect(title.nativeElement.textContent.trim()).toBe("Bulbasaur");
+        const titleElement = title.nativeElement as HTMLElement;
+        expect((titleElement.textContent ?? "").trim()).toBe("Bulbasaur");
       });
       it("Then should display the image and hide progress spinner when it finishes loading", fakeAsync(() => {
         const spinner = fixture.debugElement.query(

@@ -43,12 +43,10 @@ export class PokemonDetailsTabComponent {
 
   constructor() {
     effect(() => {
-      if (
-        this.pokemonStore.selectedEntity()?.abilities &&
-        this.pokemonStore.selectedEntity()!.abilities!.length > 0
-      ) {
+      const selectedEntity = this.pokemonStore.selectedEntity();
+      if (selectedEntity?.abilities?.length) {
         this.abilities.set([]);
-        this.pokemonStore.selectedEntity()!.abilities.map((pokemonAbility) => {
+        selectedEntity.abilities.forEach((pokemonAbility) => {
           this.pokemonService
             .getAbilityByName(pokemonAbility.ability.name)
             .subscribe((ability: Ability) => {
