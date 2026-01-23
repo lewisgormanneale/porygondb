@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { PokemonStore } from '../../../../../shared/+state/pokemon.store';
 import { DecimetersToInchesPipe } from '../../../../../shared/pipes/decimetersToInches.pipe';
 import { HectogramsToPoundsPipe } from '../../../../../shared/pipes/hectogramsToPounds.pipe';
@@ -7,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { CaptureRatePipe } from '../../../../../shared/pipes/captureRate.pipe';
 import { LocalisePipe } from '../../../../../shared/pipes/localise.pipe';
 import { MatChipsModule } from '@angular/material/chips';
-import { Ability } from 'pokenode-ts';
+import { Ability, PokemonAbility } from 'pokenode-ts';
 import { PokemonService } from '../../../../../shared/services/pokemon.service';
 import { TypeChipComponent } from '../../../../../shared/components/type-chip/type-chip.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -22,7 +22,6 @@ interface AbilityInformation {
 @Component({
   selector: 'pokemon-details-tab',
   imports: [
-    CommonModule,
     DecimetersToInchesPipe,
     HectogramsToPoundsPipe,
     MatDividerModule,
@@ -46,7 +45,7 @@ export class PokemonDetailsTabComponent {
       const selectedEntity = this.pokemonStore.selectedEntity();
       if (selectedEntity?.abilities?.length) {
         this.abilities.set([]);
-        selectedEntity.abilities.forEach((pokemonAbility) => {
+        selectedEntity.abilities.forEach((pokemonAbility: PokemonAbility) => {
           this.pokemonService
             .getAbilityByName(pokemonAbility.ability.name)
             .subscribe((ability: Ability) => {
