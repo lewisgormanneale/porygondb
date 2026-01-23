@@ -6,8 +6,7 @@
     height: calc(min(100vh, 100svh) - var(--mat-toolbar-mobile-height, 56px));
   }
 
-
   .pokedex-options {
-    background-color: var(--mat-sys-secondary-container)
+    background-color: var(--mat-sys-secondary-container);
   }
 }

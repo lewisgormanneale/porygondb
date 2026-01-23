@@ -1,12 +1,6 @@
-import { computed, inject } from "@angular/core";
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withMethods,
-  withState,
-} from "@ngrx/signals";
-import { rxMethod } from "@ngrx/signals/rxjs-interop";
+import { computed, inject } from '@angular/core';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -16,23 +10,19 @@ import {
   pipe,
   switchMap,
   tap,
-} from "rxjs";
-import { tapResponse } from "@ngrx/operators";
-import { PokemonEntry, PokemonSpecies } from "pokenode-ts";
-import {
-  removeAllEntities,
-  setEntities,
-  withEntities,
-} from "@ngrx/signals/entities";
-import { PageEvent } from "@angular/material/paginator";
-import { withPagination } from "../../../shared/+state/features/pagination.feature";
+} from 'rxjs';
+import { tapResponse } from '@ngrx/operators';
+import { PokemonEntry, PokemonSpecies } from 'pokenode-ts';
+import { removeAllEntities, setEntities, withEntities } from '@ngrx/signals/entities';
+import { PageEvent } from '@angular/material/paginator';
+import { withPagination } from '../../../shared/+state/features/pagination.feature';
 import {
   setCompleted,
   setError,
   setLoading,
   withRequestStatus,
-} from "../../../shared/+state/features/request-status.feature";
-import { PokemonService } from "../../../shared/services/pokemon.service";
+} from '../../../shared/+state/features/request-status.feature';
+import { PokemonService } from '../../../shared/services/pokemon.service';
 
 interface PokedexEntriesStoreState {
   pokedexEntries: PokemonEntry[];
@@ -78,25 +68,21 @@ export const PokedexEntriesStore = signalStore(
           return from(paginatedEntries).pipe(
             mergeMap(
               (entry: PokemonEntry) =>
-                pokemonService
-                  .getPokemonSpeciesByName(entry.pokemon_species.name)
-                  .pipe(
-                    tapResponse({
-                      next: (species: PokemonSpecies) => {
-                        const index = paginatedEntries.findIndex(
-                          (e) =>
-                            e.pokemon_species.name ===
-                            entry.pokemon_species.name
-                        );
-                        const orderedEntities = store.entities();
-                        orderedEntities[index] = species;
-                        patchState(store, setEntities(orderedEntities));
-                      },
-                      error: (error: Error) => {
-                        patchState(store, setError(error.message));
-                      },
-                    })
-                  ),
+                pokemonService.getPokemonSpeciesByName(entry.pokemon_species.name).pipe(
+                  tapResponse({
+                    next: (species: PokemonSpecies) => {
+                      const index = paginatedEntries.findIndex(
+                        (e) => e.pokemon_species.name === entry.pokemon_species.name
+                      );
+                      const orderedEntities = store.entities();
+                      orderedEntities[index] = species;
+                      patchState(store, setEntities(orderedEntities));
+                    },
+                    error: (error: Error) => {
+                      patchState(store, setError(error.message));
+                    },
+                  })
+                ),
               5
             ),
             finalize(() => {

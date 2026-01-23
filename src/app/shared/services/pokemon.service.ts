@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   Ability,
   NamedAPIResourceList,
@@ -7,11 +7,11 @@ import {
   PokemonSpecies,
   Stat,
   Type,
-} from "pokenode-ts";
-import { from, Observable } from "rxjs";
+} from 'pokenode-ts';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class PokemonService {
   private readonly pokemonClient: PokemonClient;
@@ -60,10 +60,7 @@ export class PokemonService {
     return from(this.pokemonClient.getTypeById(id));
   }
 
-  listPokemonSpecies(
-    offset?: number,
-    limit?: number
-  ): Observable<NamedAPIResourceList> {
+  listPokemonSpecies(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
     return from(this.pokemonClient.listPokemonSpecies(offset, limit));
   }
 

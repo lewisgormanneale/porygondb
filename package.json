@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "format": "prettier --write \"src/**/*.{ts,html,scss,md,json}\"",
     "lint": "eslint \"src/**/*.{ts,html}\"",
+    "lint:ng": "ng lint",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"

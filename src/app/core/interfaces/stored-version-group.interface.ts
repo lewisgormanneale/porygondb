@@ -1,4 +1,4 @@
-import { VersionGroup } from "pokenode-ts";
+import { VersionGroup } from 'pokenode-ts';
 
 export interface StoredVersionGroup {
   id: number;

@@ -1,23 +1,23 @@
 @if (!(pokedexEntriesStore.paginatedPokemonEntries().length > 0)) {
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
 } @else {
-  <div class="pokedex-entries-container">
-    <div class="pokedex-entries">
-      @for (entry of pokedexEntriesStore.paginatedPokemonEntries(); track $index) {
-        <pokedex-entry class="entry" [pokemon]="pokedexEntriesStore.entities()[$index]"></pokedex-entry>
-      }
-    </div>
-    <mat-paginator
-      (page)="pokedexEntriesStore.loadPokemonSpecies($event)"
-      [hidePageSize]="hidePageSize()"
-      [length]="pokedexEntriesStore.pageEvent().length"
-      [pageIndex]="pokedexEntriesStore.pageEvent().pageIndex"
-      [pageSizeOptions]="[25, 50, 100]"
-      [pageSize]="pokedexEntriesStore.pageEvent().pageSize"
-      [showFirstLastButtons]="true"
-      aria-label="Select page"
-    >
-    </mat-paginator>
+<div class="pokedex-entries-container">
+  <div class="pokedex-entries">
+    @for (entry of pokedexEntriesStore.paginatedPokemonEntries(); track $index) {
+    <pokedex-entry class="entry" [pokemon]="pokedexEntriesStore.entities()[$index]"></pokedex-entry>
+    }
   </div>
+  <mat-paginator
+    (page)="pokedexEntriesStore.loadPokemonSpecies($event)"
+    [hidePageSize]="hidePageSize()"
+    [length]="pokedexEntriesStore.pageEvent().length"
+    [pageIndex]="pokedexEntriesStore.pageEvent().pageIndex"
+    [pageSizeOptions]="[25, 50, 100]"
+    [pageSize]="pokedexEntriesStore.pageEvent().pageSize"
+    [showFirstLastButtons]="true"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>
 
 }

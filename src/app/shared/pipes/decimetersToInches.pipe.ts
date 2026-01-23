@@ -1,7 +1,7 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: "decimetersToInches",
+  name: 'decimetersToInches',
 })
 export class DecimetersToInchesPipe implements PipeTransform {
   private readonly INCHES_PER_DECIMETER = 3.937;
@@ -9,7 +9,7 @@ export class DecimetersToInchesPipe implements PipeTransform {
 
   transform(value: number): string {
     if (isNaN(value) || value < 0) {
-      return "Invalid input";
+      return 'Invalid input';
     }
 
     const totalInches = Math.round(value * this.INCHES_PER_DECIMETER);

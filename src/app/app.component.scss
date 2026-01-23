@@ -1,15 +1,15 @@
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 
 .header {
   @include mat.toolbar-overrides(
-                  (
-                          container-background-color: var(--mat-sys-surface-dim),
-                          container-text-color: var(--mat-sys-on-surface-variant),
-                  )
+    (
+      container-background-color: var(--mat-sys-surface-dim),
+      container-text-color: var(--mat-sys-on-surface-variant),
+    )
   );
 
   .title {
-    font-family: "Tektur", serif;
+    font-family: 'Tektur', serif;
     font-weight: 800;
     font-size: 1.2em;
     text-decoration: none;

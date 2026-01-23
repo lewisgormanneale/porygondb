@@ -1,17 +1,21 @@
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 
 .version-group-select {
   width: 300px;
   @media (max-width: 599px) {
     width: 100vw;
   }
-  @include mat.form-field-overrides((
-          filled-container-color: var(--mat-sys-secondary-container),
-          filled-with-label-container-padding-top: 20px,
-          filled-with-label-container-padding-bottom: 0px,
-          container-height: 48px,
-  ));
-  @include mat.select-overrides((
-          trigger-text-size: var(--mat-sys-title-small),
-  ));
+  @include mat.form-field-overrides(
+    (
+      filled-container-color: var(--mat-sys-secondary-container),
+      filled-with-label-container-padding-top: 20px,
+      filled-with-label-container-padding-bottom: 0px,
+      container-height: 48px,
+    )
+  );
+  @include mat.select-overrides(
+    (
+      trigger-text-size: var(--mat-sys-title-small),
+    )
+  );
 }

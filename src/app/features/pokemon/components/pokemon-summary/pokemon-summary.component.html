@@ -2,30 +2,23 @@
   <mat-card-header>
     <img
       [ngSrc]="pokemonStore.selectedEntity()?.sprites?.front_default || fallbackImageSmall"
-      alt="{{
-        pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
-      }}"
+      alt="{{ pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name' }}"
       class="pokemon-id-avatar"
       height="40"
       mat-card-avatar
       width="40"
     />
     <mat-card-title
-    >{{
-        pokemonStore.speciesDetails().names || [] | localise : "en" : "name"
-      }}
+      >{{ pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name' }}
     </mat-card-title>
-    <mat-card-subtitle>{{
-        pokemonStore.speciesDetails().genera || [] | localise : "en" : "genus"
-      }}
+    <mat-card-subtitle
+      >{{ pokemonStore.speciesDetails().genera || [] | localise : 'en' : 'genus' }}
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content class="pokemon-image">
     <img
       [ngSrc]="pokemonStore.selectedPokemonHomeFrontSprite() || fallbackImageLarge"
-      alt="{{
-        pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name'
-      }}"
+      alt="{{ pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name' }}"
       height="350"
       mat-card-image
       priority
@@ -34,25 +27,25 @@
   </mat-card-content>
   <mat-card-content class="pokemon-forms">
     @if (pokemonStore.entities().length > 1) {
-      <h4 class="label-large form-label">Select Form</h4>
-      <div class="forms">
-        @for (variety of pokemonStore.entities(); track variety.id) {
-          <mat-card
-            (click)="setSelectedPokemonVariety(variety.id)"
-            class="form-option"
-            appearance="outlined"
-          >
-            <img
-              class="pokemon-form-image"
-              mat-card-image
-              [ngSrc]="variety.sprites.front_default || fallbackImageSmall"
-              width="77"
-              height="77"
-              alt="{{ variety.name }}"
-            />
-          </mat-card>
-        }
-      </div>
+    <h4 class="label-large form-label">Select Form</h4>
+    <div class="forms">
+      @for (variety of pokemonStore.entities(); track variety.id) {
+      <mat-card
+        (click)="setSelectedPokemonVariety(variety.id)"
+        class="form-option"
+        appearance="outlined"
+      >
+        <img
+          class="pokemon-form-image"
+          mat-card-image
+          [ngSrc]="variety.sprites.front_default || fallbackImageSmall"
+          width="77"
+          height="77"
+          alt="{{ variety.name }}"
+        />
+      </mat-card>
+      }
+    </div>
     }
   </mat-card-content>
 </mat-card>

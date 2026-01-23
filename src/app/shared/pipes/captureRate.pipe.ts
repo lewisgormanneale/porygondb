@@ -1,7 +1,7 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: "captureRate",
+  name: 'captureRate',
 })
 export class CaptureRatePipe implements PipeTransform {
   transform(rate: number): string {
