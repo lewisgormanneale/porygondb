@@ -1,0 +1,32 @@
+@use '@angular/material' as mat;
+
+.pokemon-additional-info {
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--mat-sys-surface-container-low),
+    )
+  );
+
+  .info-grid {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .shape-value {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .shape-icon {
+    font-size: 18px;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}

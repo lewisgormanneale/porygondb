@@ -1,0 +1,51 @@
+<mat-card appearance="outlined" class="pokemon-additional-info">
+  <mat-card-header>
+    <mat-card-title>Additional Information</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="label-large">Base Experience</span>
+        <span class="body-medium">{{ pokemonStore.selectedEntity()!.base_experience }} XP</span>
+      </div>
+      <div class="info-item">
+        <span class="label-large">Capture Rate</span>
+        <span class="body-medium"
+          >{{ pokemonStore.speciesDetails()!.capture_rate }} ({{
+            pokemonStore.speciesDetails()!.capture_rate | captureRate
+          }})</span
+        >
+      </div>
+      <div class="info-item">
+        <span class="label-large">Hatch Steps</span>
+        <span class="body-medium">{{
+          pokemonStore.speciesDetails()!.hatch_counter | hatchSteps
+        }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label-large">Shape</span>
+        <span class="body-medium shape-value">
+          <span class="material-icons shape-icon">{{
+            getShapeIcon(pokemonStore.speciesDetails()!.shape.name)
+          }}</span>
+          {{ pokemonStore.speciesDetails()!.shape.name | titlecase }}
+        </span>
+      </div>
+      <div class="info-item">
+        <span class="label-large">Egg Groups</span>
+        <span class="body-medium">
+          @for (
+            group of pokemonStore.speciesDetails()!.egg_groups;
+            track group.name;
+            let isLast = $last
+          ) {
+            {{ group.name | titlecase }}
+            @if (!isLast) {
+              ,
+            }
+          }
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

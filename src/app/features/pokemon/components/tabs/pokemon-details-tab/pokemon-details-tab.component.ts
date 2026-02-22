@@ -4,7 +4,6 @@ import { PokemonStore } from '../../../../../shared/+state/pokemon.store';
 import { DecimetersToInchesPipe } from '../../../../../shared/pipes/decimetersToInches.pipe';
 import { HectogramsToPoundsPipe } from '../../../../../shared/pipes/hectogramsToPounds.pipe';
 import { MatDividerModule } from '@angular/material/divider';
-import { CaptureRatePipe } from '../../../../../shared/pipes/captureRate.pipe';
 import { LocalisePipe } from '../../../../../shared/pipes/localise.pipe';
 import { MatChipsModule } from '@angular/material/chips';
 import { Ability, PokemonAbility } from '../../../../../shared/interfaces/pokeapi';
@@ -26,7 +25,6 @@ interface AbilityInformation {
     DecimetersToInchesPipe,
     HectogramsToPoundsPipe,
     MatDividerModule,
-    CaptureRatePipe,
     LocalisePipe,
     MatChipsModule,
     MatProgressBarModule,

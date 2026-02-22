@@ -7,6 +7,7 @@ import { PokemonStatsTabComponent } from '../../components/tabs/pokemon-stats-ta
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { PokemonDetailsTabComponent } from '../../components/tabs/pokemon-details-tab/pokemon-details-tab.component';
 import { EvolutionLineComponent } from '../../components/evolution-line/evolution-line.component';
+import { PokemonAdditionalInfoComponent } from '../../components/pokemon-additional-info/pokemon-additional-info.component';
 
 @Component({
   imports: [
@@ -17,6 +18,7 @@ import { EvolutionLineComponent } from '../../components/evolution-line/evolutio
     PokemonStatsTabComponent,
     PokemonDetailsTabComponent,
     EvolutionLineComponent,
+    PokemonAdditionalInfoComponent,
   ],
   selector: 'app-pokemon',
   templateUrl: 'pokemon.component.html',
