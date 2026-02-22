@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 
 @Component({
   selector: 'evolution-line',
-  imports: [RouterModule],
+  imports: [RouterModule, MatCardModule],
   templateUrl: './evolution-line.component.html',
   styleUrl: './evolution-line.component.scss',
 })

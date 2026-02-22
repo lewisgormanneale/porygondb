@@ -1,9 +1,11 @@
-.evolution-line {
-  padding: 16px;
+@use '@angular/material' as mat;
 
-  .title-medium {
-    margin-bottom: 16px;
-  }
+.evolution-line {
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--mat-sys-surface-container-low),
+    )
+  );
 
   .evolution-stages {
     display: flex;

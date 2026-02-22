@@ -1,23 +1,28 @@
-<section class="evolution-line">
-  <h3 class="title-medium">Evolution Line</h3>
-  @if (pokemonStore.evolutionLine().length > 1) {
-  <div class="evolution-stages">
-    @for (stage of pokemonStore.evolutionLine(); track $index; let isLast = $last) {
-    <div class="stage">
-      @for (pokemon of stage; track pokemon.speciesId) {
-      <a class="evolution-pokemon" [routerLink]="['/pokemon', pokemon.speciesName]">
-        <img [src]="getSpriteUrl(pokemon.speciesId)" [alt]="pokemon.speciesName" />
-        <span class="label-medium">{{ pokemon.speciesName }}</span>
-      </a>
-      }
-    </div>
-    @if (!isLast) {
-    <div class="arrow">
-      <span class="material-icons">arrow_forward</span>
-    </div>
-    } }
-  </div>
-  } @else {
-  <p class="body-medium no-evolution">This Pokemon does not evolve.</p>
-  }
-</section>
+<mat-card appearance="outlined" class="evolution-line">
+  <mat-card-header>
+    <mat-card-title>Evolution Line</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (pokemonStore.evolutionLine().length > 1) {
+      <div class="evolution-stages">
+        @for (stage of pokemonStore.evolutionLine(); track $index; let isLast = $last) {
+          <div class="stage">
+            @for (pokemon of stage; track pokemon.speciesId) {
+              <a class="evolution-pokemon" [routerLink]="['/pokemon', pokemon.speciesName]">
+                <img [src]="getSpriteUrl(pokemon.speciesId)" [alt]="pokemon.speciesName" />
+                <span class="label-medium">{{ pokemon.speciesName }}</span>
+              </a>
+            }
+          </div>
+          @if (!isLast) {
+            <div class="arrow">
+              <span class="material-icons">arrow_forward</span>
+            </div>
+          }
+        }
+      </div>
+    } @else {
+      <p class="body-medium no-evolution">This Pokemon does not evolve.</p>
+    }
+  </mat-card-content>
+</mat-card>
