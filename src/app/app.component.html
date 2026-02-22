@@ -1,17 +1,6 @@
 <mat-toolbar class="header">
-  <a
-    [routerLink]="['/']"
-    aria-label="Home"
-    class="title"
-    routerLinkActive="active"
-  >
-    <img
-      alt="Porygon"
-      height="60"
-      ngSrc="assets/images/porygon-gen-3.png"
-      priority
-      width="60"
-    />
+  <a [routerLink]="['/']" aria-label="Home" class="title" routerLinkActive="active">
+    <img alt="Porygon" height="60" ngSrc="assets/images/porygon-gen-3.png" priority width="60" />
     <span>PorygonDB</span>
   </a>
   <span class="spacer"></span>
@@ -22,9 +11,9 @@
       mat-icon-button
     >
       @if (themeStore.isDarkTheme()) {
-        <mat-icon>light_mode</mat-icon>
+      <mat-icon>light_mode</mat-icon>
       } @else {
-        <mat-icon>dark_mode</mat-icon>
+      <mat-icon>dark_mode</mat-icon>
       }
     </button>
     <a

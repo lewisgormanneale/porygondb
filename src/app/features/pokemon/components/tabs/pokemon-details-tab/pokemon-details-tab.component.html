@@ -3,7 +3,7 @@
     <span class="label-large">Types</span>
     <mat-chip-set aria-label="Types">
       @for (type of pokemonStore.selectedEntity()!.types; track type.slot) {
-        <type-chip [typeName]="type.type.name"></type-chip>
+      <type-chip [typeName]="type.type.name"></type-chip>
       }
     </mat-chip-set>
   </div>
@@ -12,30 +12,34 @@
     <span class="label-large">Abilities</span>
     <mat-chip-set aria-label="Abilities">
       @if (abilities().length === 0) {
-        <mat-chip><span class="skeleton skeleton-chip"></span></mat-chip>
-      }
-      @for (ability of abilities(); track ability.slot) {
-        <mat-chip [disabled]="ability.isHidden">{{ ability.ability.names || [] | localise : 'en' : 'name' }}
-        </mat-chip>
+      <mat-chip><span class="skeleton skeleton-chip"></span></mat-chip>
+      } @for (ability of abilities(); track ability.slot) {
+      <mat-chip [disabled]="ability.isHidden"
+        >{{ ability.ability.names || [] | localise : 'en' : 'name' }}
+      </mat-chip>
       }
     </mat-chip-set>
   </div>
   <mat-divider></mat-divider>
   @if (pokemonStore.englishSpeciesDescription()) {
-    <div class="detail">
-      <span class="label-large">Description:</span>
-      <p>{{ pokemonStore.englishSpeciesDescription()?.flavor_text }}</p>
-    </div>
+  <div class="detail">
+    <span class="label-large">Description:</span>
+    <p>{{ pokemonStore.englishSpeciesDescription()?.flavor_text }}</p>
+  </div>
   }
   <mat-divider></mat-divider>
   <div class="detail">
     <span class="label-large">Height</span>
-    <span class="body-medium">{{ pokemonStore.selectedEntity()!.height | decimetersToInches }}</span>
+    <span class="body-medium">{{
+      pokemonStore.selectedEntity()!.height | decimetersToInches
+    }}</span>
   </div>
   <mat-divider></mat-divider>
   <div class="detail">
     <span class="label-large">Weight</span>
-    <span class="body-medium">{{ pokemonStore.selectedEntity()!.weight | hectogramsToPounds }}</span>
+    <span class="body-medium">{{
+      pokemonStore.selectedEntity()!.weight | hectogramsToPounds
+    }}</span>
   </div>
   <mat-divider></mat-divider>
   <div class="detail">
@@ -45,26 +49,25 @@
   <mat-divider></mat-divider>
   <div class="detail">
     <span class="label-large">Capture Rate</span>
-    <span
-      class="body-medium">{{ pokemonStore.speciesDetails()!.capture_rate }}
-      ({{ pokemonStore.speciesDetails()!.capture_rate | captureRate }})
-      </span>
+    <span class="body-medium"
+      >{{ pokemonStore.speciesDetails()!.capture_rate }} ({{
+        pokemonStore.speciesDetails()!.capture_rate | captureRate
+      }})
+    </span>
   </div>
   <mat-divider></mat-divider>
   <div class="detail">
     <span class="label-large">Gender Ratio</span>
     @if (pokemonStore.speciesDetails()!.gender_rate >= 0) {
-      <mat-progress-bar [value]="pokemonStore.speciesDetails()!.gender_rate | genderRate"
-                        class="progress-bar gender-rate"
-                        mode="determinate"
-      >
-      </mat-progress-bar>
+    <mat-progress-bar
+      [value]="pokemonStore.speciesDetails()!.gender_rate | genderRate"
+      class="progress-bar gender-rate"
+      mode="determinate"
+    >
+    </mat-progress-bar>
     } @else if (pokemonStore.speciesDetails()!.gender_rate === -1) {
-      <mat-progress-bar [value]="100"
-                        class="progress-bar genderless"
-                        mode="determinate"
-      >
-      </mat-progress-bar>
+    <mat-progress-bar [value]="100" class="progress-bar genderless" mode="determinate">
+    </mat-progress-bar>
     }
   </div>
 </div>

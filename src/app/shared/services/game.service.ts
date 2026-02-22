@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   GameClient,
   Generation,
@@ -6,11 +6,11 @@ import {
   Pokedex,
   Version,
   VersionGroup,
-} from "pokenode-ts";
-import { Observable, from } from "rxjs";
+} from 'pokenode-ts';
+import { Observable, from } from 'rxjs';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class GameService {
   private readonly gameClient: GameClient;

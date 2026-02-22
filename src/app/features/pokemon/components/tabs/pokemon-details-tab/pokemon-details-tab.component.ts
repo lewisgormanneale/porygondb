@@ -1,17 +1,17 @@
-import { Component, effect, inject, signal } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { PokemonStore } from "../../../../../shared/+state/pokemon.store";
-import { DecimetersToInchesPipe } from "../../../../../shared/pipes/decimetersToInches.pipe";
-import { HectogramsToPoundsPipe } from "../../../../../shared/pipes/hectogramsToPounds.pipe";
-import { MatDividerModule } from "@angular/material/divider";
-import { CaptureRatePipe } from "../../../../../shared/pipes/captureRate.pipe";
-import { LocalisePipe } from "../../../../../shared/pipes/localise.pipe";
-import { MatChipsModule } from "@angular/material/chips";
-import { Ability } from "pokenode-ts";
-import { PokemonService } from "../../../../../shared/services/pokemon.service";
-import { TypeChipComponent } from "../../../../../shared/components/type-chip/type-chip.component";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { GenderRatePipe } from "../../../../../shared/pipes/genderRate.pipe";
+import { Component, effect, inject, signal } from '@angular/core';
+
+import { PokemonStore } from '../../../../../shared/+state/pokemon.store';
+import { DecimetersToInchesPipe } from '../../../../../shared/pipes/decimetersToInches.pipe';
+import { HectogramsToPoundsPipe } from '../../../../../shared/pipes/hectogramsToPounds.pipe';
+import { MatDividerModule } from '@angular/material/divider';
+import { CaptureRatePipe } from '../../../../../shared/pipes/captureRate.pipe';
+import { LocalisePipe } from '../../../../../shared/pipes/localise.pipe';
+import { MatChipsModule } from '@angular/material/chips';
+import { Ability, PokemonAbility } from 'pokenode-ts';
+import { PokemonService } from '../../../../../shared/services/pokemon.service';
+import { TypeChipComponent } from '../../../../../shared/components/type-chip/type-chip.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { GenderRatePipe } from '../../../../../shared/pipes/genderRate.pipe';
 
 interface AbilityInformation {
   ability: Ability;
@@ -20,9 +20,8 @@ interface AbilityInformation {
 }
 
 @Component({
-  selector: "pokemon-details-tab",
+  selector: 'pokemon-details-tab',
   imports: [
-    CommonModule,
     DecimetersToInchesPipe,
     HectogramsToPoundsPipe,
     MatDividerModule,
@@ -33,8 +32,8 @@ interface AbilityInformation {
     TypeChipComponent,
     GenderRatePipe,
   ],
-  templateUrl: "./pokemon-details-tab.component.html",
-  styleUrl: "./pokemon-details-tab.component.scss",
+  templateUrl: './pokemon-details-tab.component.html',
+  styleUrl: './pokemon-details-tab.component.scss',
 })
 export class PokemonDetailsTabComponent {
   readonly pokemonStore = inject(PokemonStore);
@@ -43,12 +42,10 @@ export class PokemonDetailsTabComponent {
 
   constructor() {
     effect(() => {
-      if (
-        this.pokemonStore.selectedEntity()?.abilities &&
-        this.pokemonStore.selectedEntity()!.abilities!.length > 0
-      ) {
+      const selectedEntity = this.pokemonStore.selectedEntity();
+      if (selectedEntity?.abilities?.length) {
         this.abilities.set([]);
-        this.pokemonStore.selectedEntity()!.abilities.map((pokemonAbility) => {
+        selectedEntity.abilities.forEach((pokemonAbility: PokemonAbility) => {
           this.pokemonService
             .getAbilityByName(pokemonAbility.ability.name)
             .subscribe((ability: Ability) => {

@@ -1,11 +1,6 @@
-import { computed } from "@angular/core";
-import { PageEvent } from "@angular/material/paginator";
-import {
-  signalState,
-  signalStoreFeature,
-  withComputed,
-  withState,
-} from "@ngrx/signals";
+import { computed } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { signalState, signalStoreFeature, withComputed, withState } from '@ngrx/signals';
 
 const initialState = signalState<{ pageEvent: PageEvent }>({
   pageEvent: { pageSize: 25, pageIndex: 0, length: 0 },

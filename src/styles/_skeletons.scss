@@ -1,10 +1,10 @@
 .skeleton {
   display: inline-block;
   background: linear-gradient(
-                  -90deg,
-                  var(--primary-color-opacity-10, rgba(240, 240, 240, 0.1)) 0%,
-                  var(--primary-color-opacity-20, rgba(210, 210, 210, 0.2)) 50%,
-                  var(--primary-color-opacity-10, rgba(240, 240, 240, 0.1)) 100%
+    -90deg,
+    var(--primary-color-opacity-10, rgba(240, 240, 240, 0.1)) 0%,
+    var(--primary-color-opacity-20, rgba(210, 210, 210, 0.2)) 50%,
+    var(--primary-color-opacity-10, rgba(240, 240, 240, 0.1)) 100%
   );
 
   background-size: 200% 100%;

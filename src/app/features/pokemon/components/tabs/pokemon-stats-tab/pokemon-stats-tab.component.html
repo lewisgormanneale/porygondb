@@ -1,13 +1,12 @@
 <div class="pokemon-stats-tab">
-  <table
-    [dataSource]="dataSource" mat-table matSort>
+  <table [dataSource]="dataSource" mat-table matSort>
     <ng-container>
       <ng-container matColumnDef="name">
         <th *matHeaderCellDef mat-header-cell>Name</th>
         <td *matCellDef="let row" mat-cell>
           {{ row.name }}
         </td>
-        <td *matFooterCellDef mat-footer-cell> Total</td>
+        <td *matFooterCellDef mat-footer-cell>Total</td>
       </ng-container>
 
       <ng-container matColumnDef="baseValue">
@@ -15,7 +14,7 @@
         <td *matCellDef="let row" mat-cell>
           {{ row.baseValue }}
         </td>
-        <td *matFooterCellDef mat-footer-cell> {{ baseStatTotal() }}</td>
+        <td *matFooterCellDef mat-footer-cell>{{ baseStatTotal() }}</td>
       </ng-container>
     </ng-container>
 

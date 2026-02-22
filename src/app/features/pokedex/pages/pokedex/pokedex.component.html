@@ -1,18 +1,18 @@
 @if (versionGroupStore.selectedEntity()) {
-  <div class="pokedex">
-    <div class="pokedex-options">
-      <version-group-select></version-group-select>
-    </div>
-    <mat-tab-group animationDuration="0ms">
-      @for (pokedex of versionGroupStore.selectedEntity()?.pokedexes; track pokedex.name) {
-        <mat-tab [label]="pokedex.formattedName">
-          <ng-template matTabContent>
-            <pokedex-entries [pokedexName]="pokedex.name"></pokedex-entries>
-          </ng-template>
-        </mat-tab>
-      }
-    </mat-tab-group>
+<div class="pokedex">
+  <div class="pokedex-options">
+    <version-group-select></version-group-select>
   </div>
+  <mat-tab-group animationDuration="0ms">
+    @for (pokedex of versionGroupStore.selectedEntity()?.pokedexes; track pokedex.name) {
+    <mat-tab [label]="pokedex.formattedName">
+      <ng-template matTabContent>
+        <pokedex-entries [pokedexName]="pokedex.name"></pokedex-entries>
+      </ng-template>
+    </mat-tab>
+    }
+  </mat-tab-group>
+</div>
 } @else {
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }

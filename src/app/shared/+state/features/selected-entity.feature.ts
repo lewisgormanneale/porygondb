@@ -1,4 +1,4 @@
-import { computed } from "@angular/core";
+import { computed } from '@angular/core';
 import {
   patchState,
   signalStoreFeature,
@@ -6,8 +6,8 @@ import {
   withComputed,
   withMethods,
   withState,
-} from "@ngrx/signals";
-import { EntityId, EntityState } from "@ngrx/signals/entities";
+} from '@ngrx/signals';
+import { EntityId, EntityState } from '@ngrx/signals/entities';
 
 export type SelectedEntityState = { selectedEntityId: EntityId | null };
 

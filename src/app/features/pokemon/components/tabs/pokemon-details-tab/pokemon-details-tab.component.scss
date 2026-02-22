@@ -15,23 +15,29 @@
   .progress-bar {
     margin-top: 4px;
     border-radius: 5px;
-    @include mat.progress-bar-overrides((
-            active-indicator-height: 10px,
-            track-height: 10px,
-    ));
+    @include mat.progress-bar-overrides(
+      (
+        active-indicator-height: 10px,
+        track-height: 10px,
+      )
+    );
 
     &.gender-rate {
-      @include mat.progress-bar-overrides((
-              active-indicator-color: #0075BE,
-              track-color: #F57694,
-      ));
+      @include mat.progress-bar-overrides(
+        (
+          active-indicator-color: #0075be,
+          track-color: #f57694,
+        )
+      );
     }
 
     &.genderless {
-      @include mat.progress-bar-overrides((
-              active-indicator-color: #50C878,
-              track-color: #50C878,
-      ));
+      @include mat.progress-bar-overrides(
+        (
+          active-indicator-color: #50c878,
+          track-color: #50c878,
+        )
+      );
     }
   }
 }

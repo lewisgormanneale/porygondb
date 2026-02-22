@@ -1,31 +1,18 @@
-import { computed, inject } from "@angular/core";
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withMethods,
-  withState,
-} from "@ngrx/signals";
-import { FlavorText, Pokemon, PokemonSpecies } from "pokenode-ts";
-import { rxMethod } from "@ngrx/signals/rxjs-interop";
-import {
-  debounceTime,
-  distinctUntilChanged,
-  forkJoin,
-  pipe,
-  switchMap,
-  tap,
-} from "rxjs";
-import { tapResponse } from "@ngrx/operators";
-import { setAllEntities, withEntities } from "@ngrx/signals/entities";
-import { PokemonService } from "../services/pokemon.service";
+import { computed, inject } from '@angular/core';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { FlavorText, Pokemon, PokemonSpecies } from 'pokenode-ts';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { debounceTime, distinctUntilChanged, forkJoin, pipe, switchMap, tap } from 'rxjs';
+import { tapResponse } from '@ngrx/operators';
+import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { PokemonService } from '../services/pokemon.service';
 import {
   setCompleted,
   setError,
   setLoading,
   withRequestStatus,
-} from "./features/request-status.feature";
-import { withSelectedEntity } from "./features/selected-entity.feature";
+} from './features/request-status.feature';
+import { withSelectedEntity } from './features/selected-entity.feature';
 
 type PokemonState = {
   speciesDetails: PokemonSpecies;
@@ -58,12 +45,10 @@ export const PokemonStore = signalStore(
     englishSpeciesDescription: computed(() => {
       return store
         .speciesDetails()
-        .flavor_text_entries.find(
-          (entry: FlavorText) => entry.language.name === "en"
-        );
+        .flavor_text_entries.find((entry: FlavorText) => entry.language.name === 'en');
     }),
     selectedPokemonHomeFrontSprite: computed(() => {
-      return store.selectedEntity()?.sprites.other?.home?.front_default ?? "";
+      return store.selectedEntity()?.sprites.other?.home?.front_default ?? '';
     }),
   })),
   withMethods((store, pokemonService = inject(PokemonService)) => ({
@@ -75,22 +60,16 @@ export const PokemonStore = signalStore(
         switchMap((name) => {
           return pokemonService.getPokemonSpeciesByName(name).pipe(
             switchMap((speciesDetails) => {
-              const varietyDetailRequests = speciesDetails.varieties.map(
-                (pokemon) =>
-                  pokemonService.getPokemonByName(pokemon.pokemon.name)
+              const varietyDetailRequests = speciesDetails.varieties.map((pokemon) =>
+                pokemonService.getPokemonByName(pokemon.pokemon.name)
               );
               return forkJoin(varietyDetailRequests).pipe(
                 tapResponse({
                   next: (varietyDetails) => {
-                    patchState(
-                      store,
-                      { speciesDetails },
-                      setAllEntities(varietyDetails)
-                    );
+                    patchState(store, { speciesDetails }, setAllEntities(varietyDetails));
                     store.setSelectedId(varietyDetails[0].id);
                   },
-                  error: (error: Error) =>
-                    patchState(store, setError(error.message)),
+                  error: (error: Error) => patchState(store, setError(error.message)),
                   finalize: () => patchState(store, setCompleted()),
                 })
               );
