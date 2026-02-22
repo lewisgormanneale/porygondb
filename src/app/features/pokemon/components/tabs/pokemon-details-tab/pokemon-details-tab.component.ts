@@ -12,6 +12,7 @@ import { PokemonService } from '../../../../../shared/services/pokemon.service';
 import { TypeChipComponent } from '../../../../../shared/components/type-chip/type-chip.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { GenderRatePipe } from '../../../../../shared/pipes/genderRate.pipe';
+import { CleanFlavorTextPipe } from '../../../../../shared/pipes/cleanFlavorText.pipe';
 
 interface AbilityInformation {
   ability: Ability;
@@ -31,6 +32,7 @@ interface AbilityInformation {
     MatProgressBarModule,
     TypeChipComponent,
     GenderRatePipe,
+    CleanFlavorTextPipe,
   ],
   templateUrl: './pokemon-details-tab.component.html',
   styleUrl: './pokemon-details-tab.component.scss',

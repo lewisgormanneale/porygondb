@@ -24,7 +24,7 @@
   @if (pokemonStore.englishSpeciesDescription()) {
   <div class="detail">
     <span class="label-large">Description:</span>
-    <p>{{ pokemonStore.englishSpeciesDescription()?.flavor_text }}</p>
+    <p>{{ pokemonStore.englishSpeciesDescription()?.flavor_text | cleanFlavorText }}</p>
   </div>
   }
   <mat-divider></mat-divider>
