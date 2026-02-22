@@ -8,6 +8,7 @@ import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { PokemonDetailsTabComponent } from '../../components/tabs/pokemon-details-tab/pokemon-details-tab.component';
 import { EvolutionLineComponent } from '../../components/evolution-line/evolution-line.component';
 import { PokemonAdditionalInfoComponent } from '../../components/pokemon-additional-info/pokemon-additional-info.component';
+import { PokemonNavBarComponent } from '../../components/pokemon-nav-bar/pokemon-nav-bar.component';
 
 @Component({
   imports: [
@@ -19,6 +20,7 @@ import { PokemonAdditionalInfoComponent } from '../../components/pokemon-additio
     PokemonDetailsTabComponent,
     EvolutionLineComponent,
     PokemonAdditionalInfoComponent,
+    PokemonNavBarComponent,
   ],
   selector: 'app-pokemon',
   templateUrl: 'pokemon.component.html',

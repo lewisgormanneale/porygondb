@@ -1,4 +1,5 @@
 <div class="pokemon-page">
+  <pokemon-nav-bar [currentPokemonName]="pokemonName()"></pokemon-nav-bar>
   @if (pokemonStore.isLoading()) {
     <div class="loading-container">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>

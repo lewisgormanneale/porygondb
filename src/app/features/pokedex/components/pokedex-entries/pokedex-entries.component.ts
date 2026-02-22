@@ -5,6 +5,7 @@ import { PokedexEntryComponent } from './pokedex-entry/pokedex-entry.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PokedexNavigationService } from '../../../../shared/services/pokedex-navigation.service';
 
 @Component({
   selector: 'pokedex-entries',
@@ -16,9 +17,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 export class PokedexEntriesComponent implements OnInit {
   hidePageSize = signal(true);
   readonly pokedexName = input('');
+  readonly versionGroupName = input('');
   readonly gameService = inject(GameService);
   readonly pokedexEntriesStore = inject(PokedexEntriesStore);
   readonly breakpointObserver = inject(BreakpointObserver);
+  readonly navService = inject(PokedexNavigationService);
 
   constructor() {
     effect(() => {
@@ -26,6 +29,8 @@ export class PokedexEntriesComponent implements OnInit {
         this.gameService.getPokedexByName(this.pokedexName()).subscribe((pokedex) => {
           this.pokedexEntriesStore.setPokedexEntries(pokedex.pokemon_entries);
           this.pokedexEntriesStore.loadPokemonSpecies(undefined);
+          // Set navigation context for Pokemon page
+          this.navService.setContext(this.versionGroupName(), pokedex.pokemon_entries);
         });
       }
     });
