@@ -288,4 +288,19 @@ export const VersionGroups: StoredVersionGroup[] = [
       },
     ],
   },
+  {
+    id: 26,
+    name: 'legends-za',
+    formattedName: 'Legends: Z-A',
+    pokedexes: [
+      {
+        name: 'lumiose-city',
+        formattedName: 'Lumiose City',
+      },
+      {
+        name: 'hyperspace',
+        formattedName: 'Hyperspace',
+      },
+    ],
+  },
 ];

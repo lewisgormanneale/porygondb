@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  Ability,
-  NamedAPIResourceList,
-  Pokemon,
-  PokemonSpecies,
-  Stat,
-  Type,
+    Ability,
+    EvolutionChain,
+    NamedAPIResourceList,
+    Pokemon,
+    PokemonSpecies,
+    Stat,
+    Type,
 } from '../interfaces/pokeapi';
 
 const POKEAPI_BASE_URL = 'https://pokeapi.co/api/v2';
@@ -56,6 +57,14 @@ export class PokemonService {
 
   getTypeById(id: number): Observable<Type> {
     return this.http.get<Type>(`${POKEAPI_BASE_URL}/type/${id}`);
+  }
+
+  getEvolutionChainById(id: number): Observable<EvolutionChain> {
+    return this.http.get<EvolutionChain>(`${POKEAPI_BASE_URL}/evolution-chain/${id}`);
+  }
+
+  getEvolutionChainByUrl(url: string): Observable<EvolutionChain> {
+    return this.http.get<EvolutionChain>(url);
   }
 
   listPokemonSpecies(offset?: number, limit?: number): Observable<NamedAPIResourceList> {

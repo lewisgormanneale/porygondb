@@ -1,0 +1,65 @@
+.evolution-line {
+  padding: 16px;
+
+  .title-medium {
+    margin-bottom: 16px;
+  }
+
+  .evolution-stages {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .evolution-pokemon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    border-radius: 12px;
+    background-color: var(--mat-sys-surface-container);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container-high);
+    }
+
+    img {
+      width: 80px;
+      height: 80px;
+      image-rendering: pixelated;
+    }
+
+    span {
+      text-transform: capitalize;
+      margin-top: 4px;
+    }
+  }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mat-sys-on-surface-variant);
+    padding: 0 8px;
+
+    .material-icons {
+      font-size: 24px;
+    }
+  }
+
+  .no-evolution {
+    color: var(--mat-sys-on-surface-variant);
+    text-align: center;
+  }
+}
