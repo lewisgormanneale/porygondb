@@ -7,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { CaptureRatePipe } from '../../../../../shared/pipes/captureRate.pipe';
 import { LocalisePipe } from '../../../../../shared/pipes/localise.pipe';
 import { MatChipsModule } from '@angular/material/chips';
-import { Ability, PokemonAbility } from 'pokenode-ts';
+import { Ability, PokemonAbility } from '../../../../../shared/interfaces/pokeapi';
 import { PokemonService } from '../../../../../shared/services/pokemon.service';
 import { TypeChipComponent } from '../../../../../shared/components/type-chip/type-chip.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';

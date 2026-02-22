@@ -1,6 +1,6 @@
 import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { FlavorText, Pokemon, PokemonSpecies } from 'pokenode-ts';
+import { FlavorText, Pokemon, PokemonSpecies } from '../interfaces/pokeapi';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { debounceTime, distinctUntilChanged, forkJoin, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';

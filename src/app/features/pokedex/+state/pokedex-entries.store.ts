@@ -12,7 +12,7 @@ import {
   tap,
 } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import { PokemonEntry, PokemonSpecies } from 'pokenode-ts';
+import { PokemonEntry, PokemonSpecies } from '../../../shared/interfaces/pokeapi';
 import { removeAllEntities, setEntities, withEntities } from '@ngrx/signals/entities';
 import { PageEvent } from '@angular/material/paginator';
 import { withPagination } from '../../../shared/+state/features/pagination.feature';

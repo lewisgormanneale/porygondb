@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PokedexEntryComponent } from './pokedex-entry.component';
-import { PokemonSpecies } from 'pokenode-ts';
+import { PokemonSpecies } from '../../../../../shared/interfaces/pokeapi';
 import { RouterModule } from '@angular/router';
 
 describe('PokedexEntryComponent', () => {

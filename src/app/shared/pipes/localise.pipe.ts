@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { NamedAPIResource } from 'pokenode-ts';
+import { NamedAPIResource } from '../interfaces/pokeapi';
 
 interface Localisable {
   language: NamedAPIResource;
