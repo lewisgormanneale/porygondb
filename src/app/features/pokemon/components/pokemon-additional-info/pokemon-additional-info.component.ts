@@ -24,7 +24,7 @@ export class PokemonAdditionalInfoComponent {
       upright: 'accessibility_new',
       legs: 'directions_walk',
       quadruped: 'pets',
-      wings: 'raven',
+      wings: 'flight',
       tentacles: 'waves',
       heads: 'add_reaction',
       humanoid: 'person',
