@@ -14,23 +14,24 @@ import { TitleCasePipe } from '@angular/common';
 export class PokemonAdditionalInfoComponent {
   readonly pokemonStore = inject(PokemonStore);
 
+  private readonly shapeIcons: Record<string, string> = {
+    ball: 'circle',
+    squiggle: 'gesture',
+    fish: 'water',
+    arms: 'back_hand',
+    blob: 'bubble_chart',
+    upright: 'accessibility_new',
+    legs: 'directions_walk',
+    quadruped: 'pets',
+    wings: 'flight',
+    tentacles: 'waves',
+    heads: 'add_reaction',
+    humanoid: 'person',
+    'bug-wings': 'pest_control',
+    armor: 'shield',
+  };
+
   getShapeIcon(shapeName: string): string {
-    const shapeIcons: Record<string, string> = {
-      ball: 'circle',
-      squiggle: 'gesture',
-      fish: 'water',
-      arms: 'back_hand',
-      blob: 'bubble_chart',
-      upright: 'accessibility_new',
-      legs: 'directions_walk',
-      quadruped: 'pets',
-      wings: 'flight',
-      tentacles: 'waves',
-      heads: 'add_reaction',
-      humanoid: 'person',
-      'bug-wings': 'pest_control',
-      armor: 'shield',
-    };
-    return shapeIcons[shapeName] || 'help';
+    return this.shapeIcons[shapeName] || 'help';
   }
 }
