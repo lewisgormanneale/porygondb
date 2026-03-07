@@ -1,4 +1,6 @@
-import { Component, effect, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { combineLatest, filter, switchMap, tap } from 'rxjs';
 import { GameService } from '../../../../shared/services/game.service';
 import { PokedexEntriesStore } from '../../+state/pokedex-entries.store';
 import { PokedexEntryComponent } from './pokedex-entry/pokedex-entry.component';
@@ -23,26 +25,32 @@ export class PokedexEntriesComponent implements OnInit {
   readonly breakpointObserver = inject(BreakpointObserver);
   readonly navService = inject(PokedexNavigationService);
 
-  constructor() {
-    effect(() => {
-      if (this.pokedexName()) {
-        this.gameService.getPokedexByName(this.pokedexName()).subscribe((pokedex) => {
-          this.pokedexEntriesStore.setPokedexEntries(pokedex.pokemon_entries);
-          this.pokedexEntriesStore.loadPokemonSpecies(undefined);
-          // Set navigation context for Pokemon page
-          this.navService.setContext(this.versionGroupName(), pokedex.pokemon_entries);
-        });
-      }
-    });
-  }
-
   ngOnInit() {
-    this.breakpointObserver.observe([Breakpoints.HandsetPortrait]).subscribe((result) => {
-      if (result.matches) {
-        this.hidePageSize.set(true);
-      } else {
-        this.hidePageSize.set(false);
-      }
-    });
+    combineLatest([toObservable(this.pokedexName), toObservable(this.versionGroupName)])
+      .pipe(
+        filter(([pokedex, versionGroup]) => !!pokedex && !!versionGroup),
+        switchMap(([pokedexName, versionGroupName]) =>
+          this.gameService.getPokedexByName(pokedexName).pipe(
+            tap((pokedex) => {
+              this.pokedexEntriesStore.setPokedexEntries(pokedex.pokemon_entries);
+              this.pokedexEntriesStore.loadPokemonSpecies();
+              this.navService.setContext(versionGroupName, pokedex.pokemon_entries);
+            })
+          )
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe();
+
+    this.breakpointObserver
+      .observe([Breakpoints.HandsetPortrait])
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        if (result.matches) {
+          this.hidePageSize.set(true);
+        } else {
+          this.hidePageSize.set(false);
+        }
+      });
   }
 }
