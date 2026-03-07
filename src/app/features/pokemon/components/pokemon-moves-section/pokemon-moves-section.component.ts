@@ -57,40 +57,28 @@ export class PokemonMovesSectionComponent {
       });
   });
 
-  readonly levelUpMovesRows = computed<MoveTableRow[]>(() => {
-    return this.movesTableRows()
-      .filter((move) => move.learnMethodKey === 'level-up')
-      .sort((a, b) => {
-        if (a.levelLearnedAt !== b.levelLearnedAt) {
-          return a.levelLearnedAt - b.levelLearnedAt;
-        }
-        return a.moveName.localeCompare(b.moveName);
-      });
-  });
-
-  readonly tmHmMovesRows = computed<MoveTableRow[]>(() => {
-    return this.movesTableRows()
-      .filter((move) => move.learnMethodKey === 'machine')
-      .sort((a, b) => a.moveName.localeCompare(b.moveName));
-  });
-
-  readonly otherMoveMethodTabs = computed<MoveMethodTab[]>(() => {
+  readonly moveMethodTabs = computed<MoveMethodTab[]>(() => {
     const grouped = new Map<string, MoveTableRow[]>();
-    this.movesTableRows()
-      .filter((move) => move.learnMethodKey !== 'level-up' && move.learnMethodKey !== 'machine')
-      .forEach((move) => {
-        const existing = grouped.get(move.learnMethodKey) ?? [];
-        existing.push(move);
-        grouped.set(move.learnMethodKey, existing);
-      });
+    this.movesTableRows().forEach((move) => {
+      const existing = grouped.get(move.learnMethodKey) ?? [];
+      existing.push(move);
+      grouped.set(move.learnMethodKey, existing);
+    });
 
     return [...grouped.entries()]
       .map(([key, moves]) => ({
         key,
         label: this.formatMethodLabel(key),
-        moves: [...moves].sort((a, b) => a.moveName.localeCompare(b.moveName)),
+        moves: this.sortMovesForMethod(key, moves),
       }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+      .sort((a, b) => {
+        const priorityDiff = this.getMethodPriority(a.key) - this.getMethodPriority(b.key);
+        if (priorityDiff !== 0) {
+          return priorityDiff;
+        }
+
+        return a.label.localeCompare(b.label);
+      });
   });
 
   getPaginatedRows(methodKey: string, rows: MoveTableRow[]): MoveTableRow[] {
@@ -127,5 +115,31 @@ export class PokemonMovesSectionComponent {
     }
 
     return this.formatName(methodKey);
+  }
+
+  private getMethodPriority(methodKey: string): number {
+    if (methodKey === 'level-up') {
+      return 0;
+    }
+
+    if (methodKey === 'machine') {
+      return 1;
+    }
+
+    return 2;
+  }
+
+  private sortMovesForMethod(methodKey: string, moves: MoveTableRow[]): MoveTableRow[] {
+    if (methodKey === 'level-up') {
+      return [...moves].sort((a, b) => {
+        if (a.levelLearnedAt !== b.levelLearnedAt) {
+          return a.levelLearnedAt - b.levelLearnedAt;
+        }
+
+        return a.moveName.localeCompare(b.moveName);
+      });
+    }
+
+    return [...moves].sort((a, b) => a.moveName.localeCompare(b.moveName));
   }
 }
