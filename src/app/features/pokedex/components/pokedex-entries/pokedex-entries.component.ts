@@ -7,7 +7,6 @@ import { PokedexEntryComponent } from './pokedex-entry/pokedex-entry.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { PokedexNavigationService } from '../../../../shared/services/pokedex-navigation.service';
 
 @Component({
   selector: 'pokedex-entries',
@@ -25,19 +24,17 @@ export class PokedexEntriesComponent implements OnInit {
   readonly gameService = inject(GameService);
   readonly pokedexEntriesStore = inject(PokedexEntriesStore);
   readonly breakpointObserver = inject(BreakpointObserver);
-  readonly navService = inject(PokedexNavigationService);
   readonly destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     combineLatest([this.pokedexName$, this.versionGroupName$])
       .pipe(
         filter(([pokedex, versionGroup]) => !!pokedex && !!versionGroup),
-        switchMap(([pokedexName, versionGroupName]) =>
+        switchMap(([pokedexName]) =>
           this.gameService.getPokedexByName(pokedexName).pipe(
             tap((pokedex) => {
               this.pokedexEntriesStore.setPokedexEntries(pokedex.pokemon_entries);
               this.pokedexEntriesStore.loadPokemonSpecies();
-              this.navService.setContext(versionGroupName, pokedex.pokemon_entries);
             })
           )
         ),

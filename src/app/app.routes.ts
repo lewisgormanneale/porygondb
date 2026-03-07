@@ -6,6 +6,6 @@ import { PageNotFoundComponent } from './shared/components/page-not-found/page-n
 export const routes: Routes = [
   { path: '', redirectTo: '/pokedex/legends-za', pathMatch: 'full' },
   { path: 'pokedex/:versionGroupName', component: PokedexComponent },
-  { path: 'pokemon/:name', component: PokemonComponent },
+  { path: 'pokedex/:versionGroupName/:pokedexName/:name', component: PokemonComponent },
   { path: '**', component: PageNotFoundComponent },
 ];

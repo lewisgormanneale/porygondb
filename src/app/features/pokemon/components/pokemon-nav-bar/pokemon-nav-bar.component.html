@@ -1,8 +1,8 @@
-@if (context()) {
+@if (versionGroupName() && pokedexName()) {
   <nav class="pokemon-nav-bar">
     <a
       class="back-to-pokedex"
-      [routerLink]="['/pokedex', context()!.versionGroupName]"
+      [routerLink]="['/pokedex', versionGroupName()]"
       mat-stroked-button
     >
       <span class="material-icons">arrow_back</span>
@@ -13,7 +13,12 @@
       @if (navigation().prev) {
         <a
           class="nav-button prev"
-          [routerLink]="['/pokemon', navigation().prev!.pokemon_species.name]"
+          [routerLink]="[
+            '/pokedex',
+            versionGroupName(),
+            pokedexName(),
+            navigation().prev!.pokemon_species.name,
+          ]"
           [matTooltip]="navigation().prev!.pokemon_species.name | titlecase"
           [attr.aria-label]="
             'Previous Pokémon: ' + (navigation().prev!.pokemon_species.name | titlecase)
@@ -40,7 +45,12 @@
       @if (navigation().next) {
         <a
           class="nav-button next"
-          [routerLink]="['/pokemon', navigation().next!.pokemon_species.name]"
+          [routerLink]="[
+            '/pokedex',
+            versionGroupName(),
+            pokedexName(),
+            navigation().next!.pokemon_species.name,
+          ]"
           [matTooltip]="navigation().next!.pokemon_species.name | titlecase"
         >
           <img

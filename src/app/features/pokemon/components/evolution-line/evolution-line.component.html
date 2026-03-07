@@ -8,7 +8,10 @@
         @for (stage of pokemonStore.evolutionLine(); track $index; let isLast = $last) {
           <div class="stage">
             @for (pokemon of stage; track pokemon.speciesId) {
-              <a class="evolution-pokemon" [routerLink]="['/pokemon', pokemon.speciesName]">
+              <a
+                class="evolution-pokemon"
+                [routerLink]="['/pokedex', versionGroupName(), pokedexName(), pokemon.speciesName]"
+              >
                 <img [src]="getSpriteUrl(pokemon.speciesId)" [alt]="pokemon.speciesName" />
                 <span class="label-medium">{{ pokemon.speciesName }}</span>
               </a>

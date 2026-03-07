@@ -1,5 +1,10 @@
 <div class="pokemon-page">
-  <pokemon-nav-bar [currentPokemonName]="pokemonName()"></pokemon-nav-bar>
+  <pokemon-nav-bar
+    [currentPokemonName]="pokemonName()"
+    [pokedexEntries]="pokedexEntries()"
+    [pokedexName]="pokedexName()"
+    [versionGroupName]="versionGroupName()"
+  ></pokemon-nav-bar>
   @if (pokemonStore.isLoading()) {
     <div class="loading-container">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
@@ -30,7 +35,10 @@
         <pokemon-additional-info></pokemon-additional-info>
       </section>
       <section class="evolution-info">
-        <evolution-line></evolution-line>
+        <evolution-line
+          [pokedexName]="pokedexName()"
+          [versionGroupName]="versionGroupName()"
+        ></evolution-line>
       </section>
     </div>
   }

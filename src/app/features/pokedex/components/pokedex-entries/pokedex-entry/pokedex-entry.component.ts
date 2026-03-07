@@ -14,6 +14,8 @@ import { LocalisePipe } from '../../../../../shared/pipes/localise.pipe';
 })
 export class PokedexEntryComponent {
   pokemon = input<PokemonSpecies>();
+  versionGroupName = input.required<string>();
+  pokedexName = input.required<string>();
   imageLoading: WritableSignal<boolean> = signal(true);
 
   onImageLoad() {
