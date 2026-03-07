@@ -1,13 +1,13 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { map, of, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { PokemonSummaryComponent } from '../../components/pokemon-summary/pokemon-summary.component';
-import { PokemonStatsTabComponent } from '../../components/tabs/pokemon-stats-tab/pokemon-stats-tab.component';
+import { PokemonStatsSectionComponent } from '../../components/pokemon-stats-section/pokemon-stats-section.component';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { PokemonDetailsTabComponent } from '../../components/tabs/pokemon-details-tab/pokemon-details-tab.component';
 import { EvolutionLineComponent } from '../../components/evolution-line/evolution-line.component';
@@ -28,10 +28,10 @@ interface PokemonVersionGroupOption {
 @Component({
   imports: [
     MatProgressBarModule,
-    MatTabsModule,
+    MatCardModule,
     RouterModule,
     PokemonSummaryComponent,
-    PokemonStatsTabComponent,
+    PokemonStatsSectionComponent,
     PokemonDetailsTabComponent,
     EvolutionLineComponent,
     PokemonMovesSectionComponent,

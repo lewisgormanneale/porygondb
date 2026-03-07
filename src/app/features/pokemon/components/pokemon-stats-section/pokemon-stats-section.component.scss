@@ -1,0 +1,65 @@
+.pokemon-stats-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-table-wrap {
+    overflow-x: auto;
+  }
+
+  .stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent;
+
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
+
+    thead th,
+    tfoot td {
+      font-weight: 600;
+    }
+  }
+
+  .stats-radar-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .stats-radar {
+    max-width: 100%;
+    height: auto;
+
+    .grid {
+      fill: none;
+      stroke: var(--mat-sys-outline-variant);
+      stroke-width: 1;
+    }
+
+    .axis {
+      stroke: var(--mat-sys-outline-variant);
+      stroke-width: 1;
+    }
+
+    .shape {
+      fill: color-mix(in srgb, var(--mat-sys-primary) 25%, transparent);
+      stroke: var(--mat-sys-primary);
+      stroke-width: 2;
+    }
+
+    .label {
+      fill: var(--mat-sys-on-surface-variant);
+      font-size: 11px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+  }
+}

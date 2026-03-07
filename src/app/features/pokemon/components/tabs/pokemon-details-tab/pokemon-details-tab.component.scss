@@ -34,8 +34,8 @@
     &.genderless {
       @include mat.progress-bar-overrides(
         (
-          active-indicator-color: #50c878,
-          track-color: #50c878,
+          active-indicator-color: var(--mat-sys-tertiary),
+          track-color: var(--mat-sys-tertiary-container),
         )
       );
     }

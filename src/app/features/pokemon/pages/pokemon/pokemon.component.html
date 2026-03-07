@@ -33,19 +33,15 @@
         <section class="summary-info">
           <pokemon-summary></pokemon-summary>
         </section>
-        <section class="tabs-info">
-          <mat-tab-group animationDuration="0ms">
-            <mat-tab label="Details">
-              <ng-template matTabContent>
-                <pokemon-details-tab></pokemon-details-tab>
-              </ng-template>
-            </mat-tab>
-            <mat-tab label="Stats">
-              <ng-template matTabContent>
-                <pokemon-stats-tab></pokemon-stats-tab>
-              </ng-template>
-            </mat-tab>
-          </mat-tab-group>
+        <section class="details-info">
+          <mat-card appearance="outlined" class="section-card">
+            <mat-card-header>
+              <mat-card-title>Details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <pokemon-details-tab></pokemon-details-tab>
+            </mat-card-content>
+          </mat-card>
         </section>
       </div>
       <section class="additional-info">
@@ -56,6 +52,16 @@
           [pokedexName]="pokedexName()"
           [versionGroupName]="versionGroupName()"
         ></evolution-line>
+      </section>
+      <section class="stats-info">
+        <mat-card appearance="outlined" class="section-card">
+          <mat-card-header>
+            <mat-card-title>Stats</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <pokemon-stats-section></pokemon-stats-section>
+          </mat-card-content>
+        </mat-card>
       </section>
       <section class="moves-info">
         <pokemon-moves-section [versionGroupName]="versionGroupName()"></pokemon-moves-section>

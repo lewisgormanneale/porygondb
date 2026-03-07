@@ -1,0 +1,56 @@
+<div class="pokemon-stats-section">
+  <div class="stats-table-wrap">
+    <table class="stats-table">
+      <thead>
+        <tr>
+          <th>Stat</th>
+          <th>Base Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (stat of statRows(); track stat.key) {
+          <tr>
+            <td>{{ stat.label }}</td>
+            <td>{{ stat.value }}</td>
+          </tr>
+        }
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Total</td>
+          <td>{{ baseStatTotal() }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="stats-radar-wrap" aria-label="Base stat radar chart">
+    <svg
+      class="stats-radar"
+      [attr.width]="chartSize"
+      [attr.height]="chartSize"
+      [attr.viewBox]="'0 0 ' + chartSize + ' ' + chartSize"
+      role="img"
+    >
+      @for (polygon of gridPolygons(); track $index) {
+        <polygon class="grid" [attr.points]="polygon"></polygon>
+      }
+
+      @for (line of axisLines(); track $index) {
+        <line
+          class="axis"
+          [attr.x1]="line.x1"
+          [attr.y1]="line.y1"
+          [attr.x2]="line.x2"
+          [attr.y2]="line.y2"
+        ></line>
+      }
+
+      <polygon class="shape" [attr.points]="radarPoints()"></polygon>
+
+      @for (label of axisLabelPoints(); track label.label) {
+        <text class="label" [attr.x]="label.x" [attr.y]="label.y">{{ label.label }}</text>
+      }
+    </svg>
+  </div>
+</div>

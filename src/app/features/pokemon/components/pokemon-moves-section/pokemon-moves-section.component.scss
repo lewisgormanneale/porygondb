@@ -1,5 +1,12 @@
+@use '@angular/material' as mat;
+
 .moves-card {
   width: 100%;
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--mat-sys-surface-container-low),
+    )
+  );
 
   .moves-table-wrap {
     overflow-x: auto;
