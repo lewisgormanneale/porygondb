@@ -1,4 +1,6 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { forkJoin, map, of, switchMap } from 'rxjs';
 
 import { PokemonStore } from '../../../../../shared/+state/pokemon.store';
 import { DecimetersToInchesPipe } from '../../../../../shared/pipes/decimetersToInches.pipe';
@@ -39,31 +41,34 @@ export class PokemonDetailsTabComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly abilities = signal<AbilityInformation[]>([]);
   readonly pokemonService = inject(PokemonService);
+  readonly destroyRef = inject(DestroyRef);
+  readonly selectedEntity$ = toObservable(this.pokemonStore.selectedEntity);
 
   constructor() {
-    effect(() => {
-      const selectedEntity = this.pokemonStore.selectedEntity();
-      if (selectedEntity?.abilities?.length) {
-        this.abilities.set([]);
-        selectedEntity.abilities.forEach((pokemonAbility: PokemonAbility) => {
-          this.pokemonService
-            .getAbilityByName(pokemonAbility.ability.name)
-            .subscribe((ability: Ability) => {
-              this.abilities.update((currentAbilities) =>
-                [
-                  ...currentAbilities,
-                  {
-                    ability,
-                    slot: pokemonAbility.slot,
-                    isHidden: pokemonAbility.is_hidden,
-                  },
-                ].sort((a, b) => a.slot - b.slot)
-              );
-            });
-        });
-      } else {
-        this.abilities.set([]);
-      }
-    });
+    this.selectedEntity$
+      .pipe(
+        map((selectedEntity) => selectedEntity?.abilities ?? []),
+        switchMap((pokemonAbilities: PokemonAbility[]) => {
+          if (!pokemonAbilities.length) {
+            return of<AbilityInformation[]>([]);
+          }
+
+          return forkJoin(
+            pokemonAbilities.map((pokemonAbility) =>
+              this.pokemonService.getAbilityByName(pokemonAbility.ability.name).pipe(
+                map((ability: Ability) => ({
+                  ability,
+                  slot: pokemonAbility.slot,
+                  isHidden: pokemonAbility.is_hidden,
+                }))
+              )
+            )
+          ).pipe(map((abilities) => abilities.sort((a, b) => a.slot - b.slot)));
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((abilities) => {
+        this.abilities.set(abilities);
+      });
   }
 }

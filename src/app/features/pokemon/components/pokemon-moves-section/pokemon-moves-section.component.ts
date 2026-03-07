@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
@@ -80,6 +80,31 @@ export class PokemonMovesSectionComponent {
         return a.label.localeCompare(b.label);
       });
   });
+
+  constructor() {
+    effect(() => {
+      const tabs = this.moveMethodTabs();
+      const currentPages = untracked(() => this.pageByMethodKey());
+      const nextPages: Record<string, number> = {};
+
+      let hasChanges = Object.keys(currentPages).length !== tabs.length;
+
+      tabs.forEach((tab) => {
+        const maxPage = Math.max(Math.ceil(tab.moves.length / this.pageSize) - 1, 0);
+        const currentPage = currentPages[tab.key] ?? 0;
+        const clampedPage = Math.min(currentPage, maxPage);
+        nextPages[tab.key] = clampedPage;
+
+        if (clampedPage !== currentPage) {
+          hasChanges = true;
+        }
+      });
+
+      if (hasChanges) {
+        this.pageByMethodKey.set(nextPages);
+      }
+    });
+  }
 
   getPaginatedRows(methodKey: string, rows: MoveTableRow[]): MoveTableRow[] {
     const pageIndex = this.getPageIndex(methodKey);

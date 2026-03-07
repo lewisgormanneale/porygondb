@@ -1,8 +1,8 @@
-import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { forkJoin } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { forkJoin, map, of, switchMap, catchError, finalize, combineLatest } from 'rxjs';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
 import { GameService } from '../../../../shared/services/game.service';
@@ -55,53 +55,62 @@ export class PokemonLocationsSectionComponent {
   readonly gameService = inject(GameService);
   readonly destroyRef = inject(DestroyRef);
   readonly versionGroupName = input.required<string>();
+  readonly encounterUrl = computed(
+    () => this.pokemonStore.selectedEntity()?.location_area_encounters ?? ''
+  );
+  readonly encounterUrl$ = toObservable(this.encounterUrl);
+  readonly versionGroupName$ = toObservable(this.versionGroupName);
 
   readonly isLoading = signal(false);
   readonly locationRows = signal<LocationRow[]>([]);
 
   constructor() {
-    effect(() => {
-      const encounterUrl = this.pokemonStore.selectedEntity()?.location_area_encounters;
-      const versionGroupName = this.versionGroupName();
+    combineLatest([this.encounterUrl$, this.versionGroupName$])
+      .pipe(
+        switchMap(([encounterUrl, versionGroupName]) => {
+          this.locationRows.set([]);
 
-      this.locationRows.set([]);
-
-      if (!encounterUrl || !versionGroupName) {
-        return;
-      }
-
-      this.isLoading.set(true);
-
-      forkJoin({
-        encounters: this.pokemonService.getPokemonEncountersByUrl(encounterUrl),
-        versionGroup: this.gameService.getVersionGroupByName(versionGroupName),
-      })
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: ({ encounters, versionGroup }) => {
-            const typedEncounters: PokemonLocationEncounterApi[] = Array.isArray(encounters)
-              ? (encounters as PokemonLocationEncounterApi[])
-              : [];
-            const typedVersionGroup = versionGroup as VersionGroupApi;
-            const selectedVersionNames = new Set<string>(
-              typedVersionGroup.versions.map((version) => version.name)
-            );
-
-            const rows: LocationRow[] = typedEncounters
-              .map((encounter) => this.toLocationRow(encounter, selectedVersionNames))
-              .filter((row): row is LocationRow => row !== null)
-              .sort((a, b) => a.locationName.localeCompare(b.locationName));
-
-            this.locationRows.set(rows);
-          },
-          error: () => {
-            this.locationRows.set([]);
-          },
-          complete: () => {
+          if (!encounterUrl || !versionGroupName) {
             this.isLoading.set(false);
-          },
-        });
-    });
+            return of<LocationRow[]>([]);
+          }
+
+          this.isLoading.set(true);
+
+          return forkJoin({
+            encounters: this.pokemonService.getPokemonEncountersByUrl(encounterUrl),
+            versionGroup: this.gameService.getVersionGroupByName(versionGroupName),
+          }).pipe(
+            map(({ encounters, versionGroup }) => this.toLocationRows(encounters, versionGroup)),
+            catchError(() => of<LocationRow[]>([])),
+            finalize(() => this.isLoading.set(false))
+          );
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((rows) => {
+        this.locationRows.set(rows);
+      });
+  }
+
+  private toLocationRows(encounters: unknown[], versionGroup: unknown): LocationRow[] {
+    if (!this.isVersionGroupApi(versionGroup)) {
+      return [];
+    }
+
+    const selectedVersionNames = new Set<string>(
+      versionGroup.versions.map((version) => version.name)
+    );
+
+    const typedEncounters = encounters.filter(
+      (encounter): encounter is PokemonLocationEncounterApi =>
+        this.isPokemonLocationEncounterApi(encounter)
+    );
+
+    return typedEncounters
+      .map((encounter) => this.toLocationRow(encounter, selectedVersionNames))
+      .filter((row): row is LocationRow => row !== null)
+      .sort((a, b) => a.locationName.localeCompare(b.locationName));
   }
 
   private toLocationRow(
@@ -137,6 +146,16 @@ export class PokemonLocationsSectionComponent {
       minLevel: Math.min(...levels),
       maxLevel: Math.max(...levels),
     };
+  }
+
+  private isVersionGroupApi(value: unknown): value is VersionGroupApi {
+    const candidate = value as VersionGroupApi | undefined;
+    return !!candidate && Array.isArray(candidate.versions);
+  }
+
+  private isPokemonLocationEncounterApi(value: unknown): value is PokemonLocationEncounterApi {
+    const candidate = value as PokemonLocationEncounterApi | undefined;
+    return !!candidate && !!candidate.location_area && Array.isArray(candidate.version_details);
   }
 
   private formatLevelRange(minLevel: number, maxLevel: number): string {

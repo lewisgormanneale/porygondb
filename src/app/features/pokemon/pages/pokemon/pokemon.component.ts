@@ -18,13 +18,10 @@ import { PokemonLocationsSectionComponent } from '../../components/pokemon-locat
 import { GameService } from '../../../../shared/services/game.service';
 import { PokemonEntry } from '../../../../shared/interfaces/pokeapi';
 import { VersionGroups } from '../../../../shared/+state/data/version-group.constants';
-
-interface PokemonVersionGroupOption {
-  versionGroupName: string;
-  versionGroupFormattedName: string;
-  pokedexName: string;
-  pokedexFormattedName: string;
-}
+import {
+  getVersionGroupOptions,
+  PokemonVersionGroupOption,
+} from '../../utils/get-version-group-options.util';
 
 @Component({
   imports: [
@@ -58,90 +55,13 @@ export class PokemonComponent {
   pokedexEntries = signal<PokemonEntry[]>([]);
 
   readonly availableVersionGroupOptions = computed<PokemonVersionGroupOption[]>(() => {
-    const selectedPokemon = this.pokemonStore.selectedEntity();
-    const speciesDetails = this.pokemonStore.speciesDetails();
-    const currentVersionGroupName = this.versionGroupName();
-    const currentPokedexName = this.pokedexName();
-
-    if (!selectedPokemon?.moves?.length || !speciesDetails?.pokedex_numbers?.length) {
-      if (!currentVersionGroupName || !currentPokedexName) {
-        return [];
-      }
-
-      const currentVersionGroup = VersionGroups.find(
-        (entry) => entry.name === currentVersionGroupName
-      );
-      const currentPokedex = currentVersionGroup?.pokedexes.find(
-        (entry) => entry.name === currentPokedexName
-      );
-
-      if (!currentVersionGroup || !currentPokedex) {
-        return [];
-      }
-
-      return [
-        {
-          versionGroupName: currentVersionGroup.name,
-          versionGroupFormattedName: currentVersionGroup.formattedName,
-          pokedexName: currentPokedex.name,
-          pokedexFormattedName: currentPokedex.formattedName,
-        },
-      ];
-    }
-
-    const pokemonVersionGroupNames = new Set(
-      selectedPokemon.moves.flatMap((move) =>
-        move.version_group_details.map((detail) => detail.version_group.name)
-      )
-    );
-    const pokemonPokedexNames = new Set(
-      speciesDetails.pokedex_numbers.map((entry) => entry.pokedex.name)
-    );
-
-    const options = VersionGroups.filter((versionGroup) =>
-      pokemonVersionGroupNames.has(versionGroup.name)
-    )
-      .map((versionGroup) => {
-        const matchedPokedex = versionGroup.pokedexes.find((pokedex) =>
-          pokemonPokedexNames.has(pokedex.name)
-        );
-
-        if (!matchedPokedex) {
-          return null;
-        }
-
-        return {
-          versionGroupName: versionGroup.name,
-          versionGroupFormattedName: versionGroup.formattedName,
-          pokedexName: matchedPokedex.name,
-          pokedexFormattedName: matchedPokedex.formattedName,
-        };
-      })
-      .filter((option): option is PokemonVersionGroupOption => option !== null);
-
-    if (currentVersionGroupName && currentPokedexName) {
-      const currentVersionGroup = VersionGroups.find(
-        (entry) => entry.name === currentVersionGroupName
-      );
-      const currentPokedex = currentVersionGroup?.pokedexes.find(
-        (entry) => entry.name === currentPokedexName
-      );
-
-      if (
-        currentVersionGroup &&
-        currentPokedex &&
-        !options.some((option) => option.versionGroupName === currentVersionGroupName)
-      ) {
-        options.unshift({
-          versionGroupName: currentVersionGroup.name,
-          versionGroupFormattedName: currentVersionGroup.formattedName,
-          pokedexName: currentPokedex.name,
-          pokedexFormattedName: currentPokedex.formattedName,
-        });
-      }
-    }
-
-    return options;
+    return getVersionGroupOptions({
+      versionGroups: VersionGroups,
+      selectedPokemon: this.pokemonStore.selectedEntity(),
+      speciesDetails: this.pokemonStore.speciesDetails(),
+      currentVersionGroupName: this.versionGroupName(),
+      currentPokedexName: this.pokedexName(),
+    });
   });
 
   constructor(private route: ActivatedRoute) {
