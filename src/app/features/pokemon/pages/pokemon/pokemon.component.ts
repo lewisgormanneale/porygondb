@@ -14,6 +14,7 @@ import { EvolutionLineComponent } from '../../components/evolution-line/evolutio
 import { PokemonAdditionalInfoComponent } from '../../components/pokemon-additional-info/pokemon-additional-info.component';
 import { PokemonNavBarComponent } from '../../components/pokemon-nav-bar/pokemon-nav-bar.component';
 import { PokemonMovesSectionComponent } from '../../components/pokemon-moves-section/pokemon-moves-section.component';
+import { PokemonLocationsSectionComponent } from '../../components/pokemon-locations-section/pokemon-locations-section.component';
 import { GameService } from '../../../../shared/services/game.service';
 import { PokemonEntry } from '../../../../shared/interfaces/pokeapi';
 import { VersionGroups } from '../../../../shared/+state/data/version-group.constants';
@@ -35,6 +36,7 @@ interface PokemonVersionGroupOption {
     PokemonDetailsTabComponent,
     EvolutionLineComponent,
     PokemonMovesSectionComponent,
+    PokemonLocationsSectionComponent,
     PokemonAdditionalInfoComponent,
     PokemonNavBarComponent,
     MatFormFieldModule,

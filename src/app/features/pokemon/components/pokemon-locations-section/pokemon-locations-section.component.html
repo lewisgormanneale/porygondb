@@ -1,0 +1,36 @@
+<mat-card appearance="outlined" class="locations-card">
+  <mat-card-header>
+    <mat-card-title>Locations</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (isLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    } @else if (locationRows().length > 0) {
+      <div class="locations-table-wrap">
+        <table class="locations-table">
+          <thead>
+            <tr>
+              <th>Location</th>
+              <th>Methods</th>
+              <th>Level</th>
+              <th>Max Chance</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of locationRows(); track row.locationName + '-' + row.methods) {
+              <tr>
+                <td>{{ row.locationName }}</td>
+                <td>{{ row.methods }}</td>
+                <td>{{ row.levelRange }}</td>
+                <td>{{ row.maxChance }}%</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="body-medium no-locations">No location data available for this version group.</p>
+    }
+  </mat-card-content>
+</mat-card>

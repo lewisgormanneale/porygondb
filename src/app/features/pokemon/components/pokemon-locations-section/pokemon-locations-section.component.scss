@@ -1,0 +1,30 @@
+@use '@angular/material' as mat;
+
+.locations-card {
+  width: 100%;
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--mat-sys-surface-container-low),
+    )
+  );
+
+  .locations-table-wrap {
+    overflow-x: auto;
+  }
+
+  .locations-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+      vertical-align: top;
+    }
+  }
+
+  .no-locations {
+    margin: 16px 0;
+  }
+}

@@ -69,6 +69,10 @@ export class PokemonService {
     return this.http.get<EvolutionChain>(url);
   }
 
+  getPokemonEncountersByUrl(url: string): Observable<unknown[]> {
+    return this.http.get<unknown[]>(url);
+  }
+
   listPokemonSpecies(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
     const params: Record<string, string> = {};
     if (offset !== undefined) params['offset'] = offset.toString();

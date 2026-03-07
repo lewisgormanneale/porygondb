@@ -111,6 +111,25 @@ export interface PokemonTypePast {
   types: PokemonType[];
 }
 
+export interface PokemonLocationAreaEncounter {
+  location_area: NamedAPIResource;
+  version_details: PokemonLocationVersionDetail[];
+}
+
+export interface PokemonLocationVersionDetail {
+  version: NamedAPIResource;
+  max_chance: number;
+  encounter_details: PokemonEncounterDetail[];
+}
+
+export interface PokemonEncounterDetail {
+  min_level: number;
+  max_level: number;
+  condition_values: NamedAPIResource[];
+  chance: number;
+  method: NamedAPIResource;
+}
+
 export interface PokemonSpecies {
   id: number;
   name: string;
