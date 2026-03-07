@@ -5,6 +5,23 @@
     [pokedexName]="pokedexName()"
     [versionGroupName]="versionGroupName()"
   ></pokemon-nav-bar>
+  @if (availableVersionGroupOptions().length > 1) {
+    <div class="version-group-switcher">
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Version Group</mat-label>
+        <mat-select
+          (selectionChange)="onVersionGroupChange($event.value)"
+          [value]="versionGroupName()"
+        >
+          @for (option of availableVersionGroupOptions(); track option.versionGroupName) {
+            <mat-option [value]="option.versionGroupName">
+              {{ option.versionGroupFormattedName }} · {{ option.pokedexFormattedName }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  }
   @if (pokemonStore.isLoading()) {
     <div class="loading-container">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
