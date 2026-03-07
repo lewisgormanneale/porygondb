@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PokedexEntryComponent } from './pokedex-entry.component';
-import { PokemonSpecies } from 'pokenode-ts';
+import { PokemonSpecies } from '../../../../../shared/interfaces/pokeapi';
 import { RouterModule } from '@angular/router';
 
 describe('PokedexEntryComponent', () => {
@@ -20,6 +20,8 @@ describe('PokedexEntryComponent', () => {
   describe('Given the pokedex entry component is rendered', () => {
     describe('When the component loads while a pokemon still has not passed in as an input', () => {
       beforeEach(() => {
+        fixture.componentRef.setInput('versionGroupName', 'legends-za');
+        fixture.componentRef.setInput('pokedexName', 'lumiose-city');
         fixture.componentRef.setInput('pokemon', undefined);
         fixture.detectChanges();
       });
@@ -54,6 +56,8 @@ describe('PokedexEntryComponent', () => {
     });
     describe('When a valid pokemon is passed in as an input', () => {
       beforeEach(() => {
+        fixture.componentRef.setInput('versionGroupName', 'legends-za');
+        fixture.componentRef.setInput('pokedexName', 'lumiose-city');
         fixture.componentRef.setInput('pokemon', {
           id: 1,
           name: 'bulbasaur',
@@ -78,7 +82,7 @@ describe('PokedexEntryComponent', () => {
       it("Then a view button should be displayed that routes to that pokemon's page", () => {
         const viewButton = fixture.debugElement.query(By.css('a[mat-button]'));
         expect(viewButton).toBeTruthy();
-        expect(viewButton.attributes['href']).toBe('/pokemon/bulbasaur');
+        expect(viewButton.attributes['href']).toBe('/pokedex/legends-za/lumiose-city/bulbasaur');
       });
     });
   });

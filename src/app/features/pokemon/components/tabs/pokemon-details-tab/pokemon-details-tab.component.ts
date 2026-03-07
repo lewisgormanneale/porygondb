@@ -4,14 +4,14 @@ import { PokemonStore } from '../../../../../shared/+state/pokemon.store';
 import { DecimetersToInchesPipe } from '../../../../../shared/pipes/decimetersToInches.pipe';
 import { HectogramsToPoundsPipe } from '../../../../../shared/pipes/hectogramsToPounds.pipe';
 import { MatDividerModule } from '@angular/material/divider';
-import { CaptureRatePipe } from '../../../../../shared/pipes/captureRate.pipe';
 import { LocalisePipe } from '../../../../../shared/pipes/localise.pipe';
 import { MatChipsModule } from '@angular/material/chips';
-import { Ability, PokemonAbility } from 'pokenode-ts';
+import { Ability, PokemonAbility } from '../../../../../shared/interfaces/pokeapi';
 import { PokemonService } from '../../../../../shared/services/pokemon.service';
 import { TypeChipComponent } from '../../../../../shared/components/type-chip/type-chip.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { GenderRatePipe } from '../../../../../shared/pipes/genderRate.pipe';
+import { CleanFlavorTextPipe } from '../../../../../shared/pipes/cleanFlavorText.pipe';
 
 interface AbilityInformation {
   ability: Ability;
@@ -25,12 +25,12 @@ interface AbilityInformation {
     DecimetersToInchesPipe,
     HectogramsToPoundsPipe,
     MatDividerModule,
-    CaptureRatePipe,
     LocalisePipe,
     MatChipsModule,
     MatProgressBarModule,
     TypeChipComponent,
     GenderRatePipe,
+    CleanFlavorTextPipe,
   ],
   templateUrl: './pokemon-details-tab.component.html',
   styleUrl: './pokemon-details-tab.component.scss',

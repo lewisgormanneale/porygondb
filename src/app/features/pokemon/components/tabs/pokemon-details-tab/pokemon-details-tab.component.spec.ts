@@ -4,12 +4,14 @@ import type { DeepSignal } from '@ngrx/signals';
 import { PokemonDetailsTabComponent } from './pokemon-details-tab.component';
 import { PokemonService } from '../../../../../shared/services/pokemon.service';
 import { PokemonStore } from '../../../../../shared/+state/pokemon.store';
-import type { Pokemon, PokemonSpecies } from 'pokenode-ts';
+import type { Pokemon, PokemonSpecies } from '../../../../../shared/interfaces/pokeapi';
 
 describe('PokemonDetailsTabComponent', () => {
   const pokemonStoreStub: Partial<PokemonStore> = {
     selectedEntity: signal<Pokemon | null>(null),
-    speciesDetails: signal<PokemonSpecies>({} as PokemonSpecies) as unknown as DeepSignal<PokemonSpecies>,
+    speciesDetails: signal<PokemonSpecies>(
+      {} as PokemonSpecies
+    ) as unknown as DeepSignal<PokemonSpecies>,
     setSelectedId: jest.fn(),
   };
   const pokemonServiceStub: Partial<PokemonService> = {

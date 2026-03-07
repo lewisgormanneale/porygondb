@@ -6,23 +6,49 @@
 
   .pokemon-container {
     display: flex;
+    flex-direction: column;
     gap: 20px;
     width: 100%;
     max-width: 800px;
     padding-top: 20px;
 
-    @media (max-width: 800px) {
-      flex-direction: column;
-      align-items: center;
+    .main-info {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      align-items: stretch;
+
+      @media (max-width: 800px) {
+        flex-direction: column;
+        align-items: stretch;
+      }
     }
 
     .summary-info {
-      width: 100%;
+      flex: 1;
+      display: flex;
+      min-width: 0;
+    }
+
+    .tabs-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+
+      mat-tab-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
     }
 
     .additional-info {
       width: 100%;
-      min-height: 469px;
+    }
+
+    .evolution-info {
+      width: 100%;
     }
   }
 }

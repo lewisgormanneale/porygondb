@@ -1,4 +1,4 @@
-import { VersionGroup } from 'pokenode-ts';
+import { VersionGroup } from '../../shared/interfaces/pokeapi';
 
 export interface StoredVersionGroup {
   id: number;

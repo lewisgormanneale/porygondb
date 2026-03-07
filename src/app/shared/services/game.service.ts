@@ -1,65 +1,69 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
-  GameClient,
   Generation,
   NamedAPIResourceList,
   Pokedex,
   Version,
   VersionGroup,
-} from 'pokenode-ts';
-import { Observable, from } from 'rxjs';
+} from '../interfaces/pokeapi';
+
+const POKEAPI_BASE_URL = 'https://pokeapi.co/api/v2';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
-  private readonly gameClient: GameClient;
-
-  constructor() {
-    this.gameClient = new GameClient();
-  }
+  private readonly http = inject(HttpClient);
 
   getGenerationByName(name: string): Observable<Generation> {
-    return from(this.gameClient.getGenerationByName(name));
+    return this.http.get<Generation>(`${POKEAPI_BASE_URL}/generation/${name}`);
   }
 
   getGenerationById(id: number): Observable<Generation> {
-    return from(this.gameClient.getGenerationById(id));
+    return this.http.get<Generation>(`${POKEAPI_BASE_URL}/generation/${id}`);
   }
 
   getPokedexByName(name: string): Observable<Pokedex> {
-    return from(this.gameClient.getPokedexByName(name));
+    return this.http.get<Pokedex>(`${POKEAPI_BASE_URL}/pokedex/${name}`);
   }
 
   getPokedexById(id: number): Observable<Pokedex> {
-    return from(this.gameClient.getPokedexById(id));
+    return this.http.get<Pokedex>(`${POKEAPI_BASE_URL}/pokedex/${id}`);
   }
 
   getVersionByName(name: string): Observable<Version> {
-    return from(this.gameClient.getVersionByName(name));
+    return this.http.get<Version>(`${POKEAPI_BASE_URL}/version/${name}`);
   }
 
   getVersionById(id: number): Observable<Version> {
-    return from(this.gameClient.getVersionById(id));
+    return this.http.get<Version>(`${POKEAPI_BASE_URL}/version/${id}`);
   }
 
   getVersionGroupByName(name: string): Observable<VersionGroup> {
-    return from(this.gameClient.getVersionGroupByName(name));
+    return this.http.get<VersionGroup>(`${POKEAPI_BASE_URL}/version-group/${name}`);
   }
 
   getVersionGroupById(id: number): Observable<VersionGroup> {
-    return from(this.gameClient.getVersionGroupById(id));
+    return this.http.get<VersionGroup>(`${POKEAPI_BASE_URL}/version-group/${id}`);
   }
 
   listPokedexes(): Observable<NamedAPIResourceList> {
-    return from(this.gameClient.listPokedexes(0, 1000));
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/pokedex`, {
+      params: { offset: '0', limit: '1000' },
+    });
   }
 
   listVersions(): Observable<NamedAPIResourceList> {
-    return from(this.gameClient.listVersions(0, 1000));
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/version`, {
+      params: { offset: '0', limit: '1000' },
+    });
   }
 
   listVersionGroups(): Observable<NamedAPIResourceList> {
-    return from(this.gameClient.listVersionGroups(0, 1000));
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/version-group`, {
+      params: { offset: '0', limit: '1000' },
+    });
   }
 }

@@ -1,70 +1,85 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
   Ability,
+  EvolutionChain,
   NamedAPIResourceList,
   Pokemon,
-  PokemonClient,
   PokemonSpecies,
   Stat,
   Type,
-} from 'pokenode-ts';
-import { from, Observable } from 'rxjs';
+} from '../interfaces/pokeapi';
+
+const POKEAPI_BASE_URL = 'https://pokeapi.co/api/v2';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonService {
-  private readonly pokemonClient: PokemonClient;
-
-  constructor() {
-    this.pokemonClient = new PokemonClient();
-  }
+  private readonly http = inject(HttpClient);
 
   getPokemonByName(name: string): Observable<Pokemon> {
-    return from(this.pokemonClient.getPokemonByName(name));
+    return this.http.get<Pokemon>(`${POKEAPI_BASE_URL}/pokemon/${encodeURIComponent(name)}`);
   }
 
   getPokemonById(id: number): Observable<Pokemon> {
-    return from(this.pokemonClient.getPokemonById(id));
+    return this.http.get<Pokemon>(`${POKEAPI_BASE_URL}/pokemon/${id}`);
   }
 
   getPokemonSpeciesByName(name: string): Observable<PokemonSpecies> {
-    return from(this.pokemonClient.getPokemonSpeciesByName(name));
+    return this.http.get<PokemonSpecies>(
+      `${POKEAPI_BASE_URL}/pokemon-species/${encodeURIComponent(name)}`
+    );
   }
 
   getPokemonSpeciesById(id: number): Observable<PokemonSpecies> {
-    return from(this.pokemonClient.getPokemonSpeciesById(id));
+    return this.http.get<PokemonSpecies>(`${POKEAPI_BASE_URL}/pokemon-species/${id}`);
   }
 
   getAbilityByName(name: string): Observable<Ability> {
-    return from(this.pokemonClient.getAbilityByName(name));
+    return this.http.get<Ability>(`${POKEAPI_BASE_URL}/ability/${encodeURIComponent(name)}`);
   }
 
   getAbilityById(id: number): Observable<Ability> {
-    return from(this.pokemonClient.getAbilityById(id));
+    return this.http.get<Ability>(`${POKEAPI_BASE_URL}/ability/${id}`);
   }
 
   getStatByName(name: string): Observable<Stat> {
-    return from(this.pokemonClient.getStatByName(name));
+    return this.http.get<Stat>(`${POKEAPI_BASE_URL}/stat/${encodeURIComponent(name)}`);
   }
 
   getStatById(id: number): Observable<Stat> {
-    return from(this.pokemonClient.getStatById(id));
+    return this.http.get<Stat>(`${POKEAPI_BASE_URL}/stat/${id}`);
   }
 
   getTypeByName(name: string): Observable<Type> {
-    return from(this.pokemonClient.getTypeByName(name));
+    return this.http.get<Type>(`${POKEAPI_BASE_URL}/type/${encodeURIComponent(name)}`);
   }
 
   getTypeById(id: number): Observable<Type> {
-    return from(this.pokemonClient.getTypeById(id));
+    return this.http.get<Type>(`${POKEAPI_BASE_URL}/type/${id}`);
+  }
+
+  getEvolutionChainById(id: number): Observable<EvolutionChain> {
+    return this.http.get<EvolutionChain>(`${POKEAPI_BASE_URL}/evolution-chain/${id}`);
+  }
+
+  getEvolutionChainByUrl(url: string): Observable<EvolutionChain> {
+    return this.http.get<EvolutionChain>(url);
   }
 
   listPokemonSpecies(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
-    return from(this.pokemonClient.listPokemonSpecies(offset, limit));
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/pokemon-species`, { params });
   }
 
   listStats(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
-    return from(this.pokemonClient.listStats(offset, limit));
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/stat`, { params });
   }
 }

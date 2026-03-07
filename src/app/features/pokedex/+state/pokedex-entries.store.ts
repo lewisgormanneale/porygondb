@@ -12,7 +12,7 @@ import {
   tap,
 } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import { PokemonEntry, PokemonSpecies } from 'pokenode-ts';
+import { PokemonEntry, PokemonSpecies } from '../../../shared/interfaces/pokeapi';
 import { removeAllEntities, setEntities, withEntities } from '@ngrx/signals/entities';
 import { PageEvent } from '@angular/material/paginator';
 import { withPagination } from '../../../shared/+state/features/pagination.feature';
@@ -50,16 +50,16 @@ export const PokedexEntriesStore = signalStore(
     setPokedexEntries(pokedexEntries: PokemonEntry[]) {
       patchState(store, { pokedexEntries });
     },
-    loadPokemonSpecies: rxMethod<PageEvent | undefined>(
+    loadPokemonSpecies: rxMethod<PageEvent | void>(
       pipe(
         debounceTime(300),
         distinctUntilChanged(),
         tap(() => patchState(store, setLoading())),
-        switchMap((pageEvent?: PageEvent) => {
+        switchMap((pageEvent) => {
           patchState(store, {
             pageEvent: {
-              pageIndex: pageEvent?.pageIndex ? pageEvent.pageIndex : 0,
-              pageSize: pageEvent?.pageSize ? pageEvent.pageSize : 25,
+              pageIndex: pageEvent?.pageIndex ?? 0,
+              pageSize: pageEvent?.pageSize ?? 50,
               length: store.pokedexEntries().length,
             },
           });

@@ -1,0 +1,71 @@
+@if (versionGroupName() && pokedexName()) {
+  <nav class="pokemon-nav-bar">
+    <a
+      class="back-to-pokedex"
+      [routerLink]="['/pokedex', versionGroupName()]"
+      mat-stroked-button
+    >
+      <span class="material-icons">arrow_back</span>
+      Back to Pokédex
+    </a>
+
+    <div class="pokemon-navigation">
+      @if (navigation().prev) {
+        <a
+          class="nav-button prev"
+          [routerLink]="[
+            '/pokedex',
+            versionGroupName(),
+            pokedexName(),
+            navigation().prev!.pokemon_species.name,
+          ]"
+          [matTooltip]="navigation().prev!.pokemon_species.name | titlecase"
+          [attr.aria-label]="
+            'Previous Pokémon: ' + (navigation().prev!.pokemon_species.name | titlecase)
+          "
+        >
+          <mat-icon aria-hidden="true">chevron_left</mat-icon>
+          <img
+            [src]="getSpriteUrl(navigation().prev!.pokemon_species.url)"
+            [alt]="navigation().prev!.pokemon_species.name"
+            class="pokemon-sprite"
+          />
+        </a>
+      } @else {
+        <div class="nav-button prev disabled" aria-disabled="true" role="button" tabindex="-1">
+          <span class="material-icons">chevron_left</span>
+          <div class="sprite-placeholder"></div>
+        </div>
+      }
+
+      <span class="position-indicator">
+        {{ navigation().currentIndex + 1 }} / {{ navigation().total }}
+      </span>
+
+      @if (navigation().next) {
+        <a
+          class="nav-button next"
+          [routerLink]="[
+            '/pokedex',
+            versionGroupName(),
+            pokedexName(),
+            navigation().next!.pokemon_species.name,
+          ]"
+          [matTooltip]="navigation().next!.pokemon_species.name | titlecase"
+        >
+          <img
+            [src]="getSpriteUrl(navigation().next!.pokemon_species.url)"
+            [alt]="navigation().next!.pokemon_species.name"
+            class="pokemon-sprite"
+          />
+          <span class="material-icons">chevron_right</span>
+        </a>
+      } @else {
+        <div class="nav-button next disabled" aria-disabled="true" role="button" tabindex="-1">
+          <div class="sprite-placeholder"></div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+      }
+    </div>
+  </nav>
+}
