@@ -27,6 +27,13 @@ export class VersionGroupSelectComponent implements OnInit {
   }
 
   navigateToVersionGroupPokedex(versionGroupName: string): void {
-    void this._router.navigate(['/pokedex', versionGroupName]);
+    const versionGroup = this.versionGroupStore
+      .entities()
+      .find((entry) => entry.name === versionGroupName);
+    const defaultPokedex = versionGroup?.pokedexes[0]?.name;
+
+    if (defaultPokedex) {
+      void this._router.navigate(['/pokedex', versionGroupName, defaultPokedex]);
+    }
   }
 }

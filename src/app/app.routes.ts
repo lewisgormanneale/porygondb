@@ -4,8 +4,8 @@ import { PokemonComponent } from './features/pokemon/pages/pokemon/pokemon.compo
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/pokedex/legends-za', pathMatch: 'full' },
-  { path: 'pokedex/:versionGroupName', component: PokedexComponent },
+  { path: '', redirectTo: '/pokedex/legends-za/lumiose-city', pathMatch: 'full' },
+  { path: 'pokedex/:versionGroupName/:pokedexName', component: PokedexComponent },
   { path: 'pokedex/:versionGroupName/:pokedexName/:name', component: PokemonComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
