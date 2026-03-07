@@ -1,0 +1,22 @@
+.moves-card {
+  width: 100%;
+
+  .moves-table-wrap {
+    overflow-x: auto;
+  }
+
+  .moves-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
+  }
+
+  .no-moves {
+    margin: 16px 0;
+  }
+}

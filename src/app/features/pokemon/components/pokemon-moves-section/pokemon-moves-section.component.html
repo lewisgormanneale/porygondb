@@ -1,0 +1,135 @@
+<mat-card appearance="outlined" class="moves-card">
+  <mat-card-header>
+    <mat-card-title>Moves</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (movesTableRows().length > 0) {
+      <mat-tab-group animationDuration="0ms">
+        <mat-tab label="Level Up">
+          <ng-template matTabContent>
+            @if (levelUpMovesRows().length > 0) {
+              <div class="moves-table-wrap">
+                <table class="moves-table">
+                  <thead>
+                    <tr>
+                      <th>Move</th>
+                      <th>Level</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (
+                      move of getPaginatedRows('level-up', levelUpMovesRows());
+                      track move.moveName + '-' + move.levelLearnedAt
+                    ) {
+                      <tr>
+                        <td>{{ move.moveName }}</td>
+                        <td>{{ move.levelLearnedAt }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+              <mat-paginator
+                [length]="levelUpMovesRows().length"
+                [pageIndex]="getPageIndex('level-up')"
+                [pageSize]="pageSize"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true"
+                (page)="onMethodPageChange('level-up', $event)"
+              ></mat-paginator>
+            } @else {
+              <p class="body-medium no-moves">No level-up moves in this version group.</p>
+            }
+          </ng-template>
+        </mat-tab>
+
+        <mat-tab label="TM/HMs">
+          <ng-template matTabContent>
+            @if (tmHmMovesRows().length > 0) {
+              <div class="moves-table-wrap">
+                <table class="moves-table">
+                  <thead>
+                    <tr>
+                      <th>Move</th>
+                      <th>Level</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (
+                      move of getPaginatedRows('machine', tmHmMovesRows());
+                      track move.moveName + '-' + move.levelLearnedAt
+                    ) {
+                      <tr>
+                        <td>{{ move.moveName }}</td>
+                        <td>-</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+              <mat-paginator
+                [length]="tmHmMovesRows().length"
+                [pageIndex]="getPageIndex('machine')"
+                [pageSize]="pageSize"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true"
+                (page)="onMethodPageChange('machine', $event)"
+              ></mat-paginator>
+            } @else {
+              <p class="body-medium no-moves">No TM/HM moves in this version group.</p>
+            }
+          </ng-template>
+        </mat-tab>
+
+        @for (methodTab of otherMoveMethodTabs(); track methodTab.key) {
+          <mat-tab [label]="methodTab.label">
+            <ng-template matTabContent>
+              @if (methodTab.moves.length > 0) {
+                <div class="moves-table-wrap">
+                  <table class="moves-table">
+                    <thead>
+                      <tr>
+                        <th>Move</th>
+                        <th>Level</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (
+                        move of getPaginatedRows(methodTab.key, methodTab.moves);
+                        track move.moveName + '-' + move.levelLearnedAt
+                      ) {
+                        <tr>
+                          <td>{{ move.moveName }}</td>
+                          <td>
+                            @if (move.levelLearnedAt > 0) {
+                              {{ move.levelLearnedAt }}
+                            } @else {
+                              -
+                            }
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+                <mat-paginator
+                  [length]="methodTab.moves.length"
+                  [pageIndex]="getPageIndex(methodTab.key)"
+                  [pageSize]="pageSize"
+                  [hidePageSize]="true"
+                  [showFirstLastButtons]="true"
+                  (page)="onMethodPageChange(methodTab.key, $event)"
+                ></mat-paginator>
+              } @else {
+                <p class="body-medium no-moves">No moves for this method in this version group.</p>
+              }
+            </ng-template>
+          </mat-tab>
+        }
+      </mat-tab-group>
+    } @else {
+      <p class="body-medium no-moves">No moves available for this version group.</p>
+    }
+  </mat-card-content>
+</mat-card>

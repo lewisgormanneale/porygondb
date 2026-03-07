@@ -20,6 +20,7 @@
     width: 100%;
     max-width: 800px;
     padding-top: 20px;
+    padding-bottom: 20px;
 
     .main-info {
       display: flex;
@@ -57,6 +58,10 @@
     }
 
     .evolution-info {
+      width: 100%;
+    }
+
+    .moves-info {
       width: 100%;
     }
   }

@@ -13,6 +13,7 @@ import { PokemonDetailsTabComponent } from '../../components/tabs/pokemon-detail
 import { EvolutionLineComponent } from '../../components/evolution-line/evolution-line.component';
 import { PokemonAdditionalInfoComponent } from '../../components/pokemon-additional-info/pokemon-additional-info.component';
 import { PokemonNavBarComponent } from '../../components/pokemon-nav-bar/pokemon-nav-bar.component';
+import { PokemonMovesSectionComponent } from '../../components/pokemon-moves-section/pokemon-moves-section.component';
 import { GameService } from '../../../../shared/services/game.service';
 import { PokemonEntry } from '../../../../shared/interfaces/pokeapi';
 import { VersionGroups } from '../../../../shared/+state/data/version-group.constants';
@@ -33,6 +34,7 @@ interface PokemonVersionGroupOption {
     PokemonStatsTabComponent,
     PokemonDetailsTabComponent,
     EvolutionLineComponent,
+    PokemonMovesSectionComponent,
     PokemonAdditionalInfoComponent,
     PokemonNavBarComponent,
     MatFormFieldModule,
@@ -94,7 +96,9 @@ export class PokemonComponent {
       speciesDetails.pokedex_numbers.map((entry) => entry.pokedex.name)
     );
 
-    const options = VersionGroups.filter((versionGroup) => pokemonVersionGroupNames.has(versionGroup.name))
+    const options = VersionGroups.filter((versionGroup) =>
+      pokemonVersionGroupNames.has(versionGroup.name)
+    )
       .map((versionGroup) => {
         const matchedPokedex = versionGroup.pokedexes.find((pokedex) =>
           pokemonPokedexNames.has(pokedex.name)

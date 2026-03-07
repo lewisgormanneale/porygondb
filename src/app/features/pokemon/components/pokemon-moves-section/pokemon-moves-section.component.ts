@@ -1,0 +1,131 @@
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { PokemonStore } from '../../../../shared/+state/pokemon.store';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+
+interface MoveTableRow {
+  moveName: string;
+  learnMethodKey: string;
+  levelLearnedAt: number;
+}
+
+interface MoveMethodTab {
+  key: string;
+  label: string;
+  moves: MoveTableRow[];
+}
+
+@Component({
+  selector: 'pokemon-moves-section',
+  imports: [MatTabsModule, MatCardModule, MatPaginatorModule],
+  templateUrl: './pokemon-moves-section.component.html',
+  styleUrl: './pokemon-moves-section.component.scss',
+})
+export class PokemonMovesSectionComponent {
+  readonly pokemonStore = inject(PokemonStore);
+  readonly versionGroupName = input.required<string>();
+  readonly pageSize = 10;
+  readonly pageByMethodKey = signal<Record<string, number>>({});
+
+  readonly movesTableRows = computed<MoveTableRow[]>(() => {
+    const selectedPokemon = this.pokemonStore.selectedEntity();
+    const versionGroupName = this.versionGroupName();
+
+    if (!selectedPokemon || !versionGroupName) {
+      return [];
+    }
+
+    return selectedPokemon.moves
+      .flatMap((move) =>
+        move.version_group_details
+          .filter((detail) => detail.version_group.name === versionGroupName)
+          .map((detail) => ({
+            moveName: this.formatName(move.move.name),
+            learnMethodKey: detail.move_learn_method.name,
+            levelLearnedAt: detail.level_learned_at,
+          }))
+      )
+      .sort((a, b) => {
+        if (a.learnMethodKey !== b.learnMethodKey) {
+          return a.learnMethodKey.localeCompare(b.learnMethodKey);
+        }
+        if (a.levelLearnedAt !== b.levelLearnedAt) {
+          return a.levelLearnedAt - b.levelLearnedAt;
+        }
+        return a.moveName.localeCompare(b.moveName);
+      });
+  });
+
+  readonly levelUpMovesRows = computed<MoveTableRow[]>(() => {
+    return this.movesTableRows()
+      .filter((move) => move.learnMethodKey === 'level-up')
+      .sort((a, b) => {
+        if (a.levelLearnedAt !== b.levelLearnedAt) {
+          return a.levelLearnedAt - b.levelLearnedAt;
+        }
+        return a.moveName.localeCompare(b.moveName);
+      });
+  });
+
+  readonly tmHmMovesRows = computed<MoveTableRow[]>(() => {
+    return this.movesTableRows()
+      .filter((move) => move.learnMethodKey === 'machine')
+      .sort((a, b) => a.moveName.localeCompare(b.moveName));
+  });
+
+  readonly otherMoveMethodTabs = computed<MoveMethodTab[]>(() => {
+    const grouped = new Map<string, MoveTableRow[]>();
+    this.movesTableRows()
+      .filter((move) => move.learnMethodKey !== 'level-up' && move.learnMethodKey !== 'machine')
+      .forEach((move) => {
+        const existing = grouped.get(move.learnMethodKey) ?? [];
+        existing.push(move);
+        grouped.set(move.learnMethodKey, existing);
+      });
+
+    return [...grouped.entries()]
+      .map(([key, moves]) => ({
+        key,
+        label: this.formatMethodLabel(key),
+        moves: [...moves].sort((a, b) => a.moveName.localeCompare(b.moveName)),
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  });
+
+  getPaginatedRows(methodKey: string, rows: MoveTableRow[]): MoveTableRow[] {
+    const pageIndex = this.getPageIndex(methodKey);
+    const start = pageIndex * this.pageSize;
+    return rows.slice(start, start + this.pageSize);
+  }
+
+  getPageIndex(methodKey: string): number {
+    return this.pageByMethodKey()[methodKey] || 0;
+  }
+
+  onMethodPageChange(methodKey: string, event: PageEvent): void {
+    this.pageByMethodKey.update((current) => ({
+      ...current,
+      [methodKey]: event.pageIndex,
+    }));
+  }
+
+  private formatName(name: string): string {
+    return name
+      .split('-')
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
+  }
+
+  private formatMethodLabel(methodKey: string): string {
+    if (methodKey === 'machine') {
+      return 'TM/HMs';
+    }
+
+    if (methodKey === 'level-up') {
+      return 'Level Up';
+    }
+
+    return this.formatName(methodKey);
+  }
+}

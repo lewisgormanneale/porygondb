@@ -32,7 +32,9 @@ export class PokedexComponent implements OnInit {
 
       this.versionGroupStore.setSelectedVersionGroupByName(versionGroupName);
 
-      const versionGroup = this.versionGroupStore.entities().find((entry) => entry.name === versionGroupName);
+      const versionGroup = this.versionGroupStore
+        .entities()
+        .find((entry) => entry.name === versionGroupName);
       if (!versionGroup || versionGroup.pokedexes.length === 0) {
         this.selectedPokedexIndex.set(0);
         return;
