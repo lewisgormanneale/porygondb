@@ -15,8 +15,11 @@
           class="nav-button prev"
           [routerLink]="['/pokemon', navigation().prev!.pokemon_species.name]"
           [matTooltip]="navigation().prev!.pokemon_species.name | titlecase"
+          [attr.aria-label]="
+            'Previous Pokémon: ' + (navigation().prev!.pokemon_species.name | titlecase)
+          "
         >
-          <span class="material-icons">chevron_left</span>
+          <mat-icon aria-hidden="true">chevron_left</mat-icon>
           <img
             [src]="getSpriteUrl(navigation().prev!.pokemon_species.url)"
             [alt]="navigation().prev!.pokemon_species.name"
