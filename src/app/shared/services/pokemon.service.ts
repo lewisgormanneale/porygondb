@@ -6,6 +6,7 @@ import {
   EvolutionChain,
   NamedAPIResourceList,
   Pokemon,
+  PokemonForm,
   PokemonSpecies,
   Stat,
   Type,
@@ -25,6 +26,10 @@ export class PokemonService {
 
   getPokemonById(id: number): Observable<Pokemon> {
     return this.http.get<Pokemon>(`${POKEAPI_BASE_URL}/pokemon/${id}`);
+  }
+
+  getPokemonFormByName(name: string): Observable<PokemonForm> {
+    return this.http.get<PokemonForm>(`${POKEAPI_BASE_URL}/pokemon-form/${encodeURIComponent(name)}`);
   }
 
   getPokemonSpeciesByName(name: string): Observable<PokemonSpecies> {

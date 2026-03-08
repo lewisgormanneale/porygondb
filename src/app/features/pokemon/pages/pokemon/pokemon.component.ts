@@ -55,10 +55,13 @@ export class PokemonComponent {
   pokedexEntries = signal<PokemonEntry[]>([]);
 
   readonly availableVersionGroupOptions = computed<PokemonVersionGroupOption[]>(() => {
+    const selectedPokemon = this.pokemonStore.selectedEntity() ?? undefined;
+    const speciesDetails = this.pokemonStore.speciesDetails();
+
     return getVersionGroupOptions({
       versionGroups: VersionGroups,
-      selectedPokemon: this.pokemonStore.selectedEntity(),
-      speciesDetails: this.pokemonStore.speciesDetails(),
+      selectedPokemon,
+      speciesDetails: speciesDetails?.pokedex_numbers ? speciesDetails : undefined,
       currentVersionGroupName: this.versionGroupName(),
       currentPokedexName: this.pokedexName(),
     });

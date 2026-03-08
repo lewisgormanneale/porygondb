@@ -2,14 +2,22 @@
   <mat-card-header>
     <img
       [ngSrc]="pokemonStore.selectedEntity()?.sprites?.front_default || fallbackImageSmall"
-      alt="{{ pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name' }}"
+      alt="{{ selectedFormName() }}"
       class="pokemon-id-avatar"
       height="40"
       mat-card-avatar
       width="40"
     />
-    <mat-card-title
-      >{{ pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name' }}
+    <mat-card-title>
+      @if (selectedFormName()) {
+        {{ selectedFormName() }}
+      } @else {
+        <span
+          aria-hidden="true"
+          class="skeleton skeleton-name"
+          [style.width]="skeletonNameWidth()"
+        ></span>
+      }
     </mat-card-title>
     <mat-card-subtitle
       >{{ pokemonStore.speciesDetails().genera || [] | localise : 'en' : 'genus' }}
@@ -18,7 +26,7 @@
   <mat-card-content class="pokemon-image">
     <img
       [ngSrc]="pokemonStore.selectedPokemonHomeFrontSprite() || fallbackImageLarge"
-      alt="{{ pokemonStore.speciesDetails().names || [] | localise : 'en' : 'name' }}"
+      alt="{{ selectedFormName() }}"
       height="350"
       mat-card-image
       priority
@@ -33,6 +41,8 @@
       <mat-card
         (click)="setSelectedPokemonVariety(variety.id)"
         class="form-option"
+        [class.form-option-active]="isSelectedVariety(variety.id)"
+        [attr.aria-selected]="isSelectedVariety(variety.id)"
         appearance="outlined"
       >
         <img

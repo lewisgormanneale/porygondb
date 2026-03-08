@@ -5,10 +5,11 @@ import {
   EvolutionChain,
   FlavorText,
   Pokemon,
+  PokemonForm,
   PokemonSpecies,
 } from '../interfaces/pokeapi';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { debounceTime, distinctUntilChanged, forkJoin, pipe, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, forkJoin, of, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { PokemonService } from '../services/pokemon.service';
@@ -23,11 +24,13 @@ import { withSelectedEntity } from './features/selected-entity.feature';
 type PokemonState = {
   speciesDetails: PokemonSpecies;
   evolutionChain: EvolutionChain | null;
+  selectedFormDetails: PokemonForm | null;
 };
 
 const initialState: PokemonState = {
   speciesDetails: {} as PokemonSpecies,
   evolutionChain: null,
+  selectedFormDetails: null,
 };
 
 export interface EvolutionStage {
@@ -63,6 +66,46 @@ export const PokemonStore = signalStore(
     selectedPokemonHomeFrontSprite: computed(() => {
       return store.selectedEntity()?.sprites.other?.home?.front_default ?? '';
     }),
+    selectedPokemonDisplayName: computed(() => {
+      const selectedPokemon = store.selectedEntity();
+      const englishSpeciesName = store
+        .speciesDetails()
+        .names?.find((entry) => entry.language.name === 'en')?.name;
+      const selectedFormDetails = store.selectedFormDetails();
+
+      if (!selectedFormDetails) {
+        if (selectedPokemon?.is_default) {
+          return englishSpeciesName || store.speciesDetails().name || selectedPokemon.name || '';
+        }
+
+        return '';
+      }
+
+      const englishDisplayName = selectedFormDetails?.names.find(
+        (entry) => entry.language.name === 'en'
+      )?.name;
+      const englishFormName = selectedFormDetails?.form_names.find(
+        (entry) => entry.language.name === 'en'
+      )?.name;
+
+      if (englishDisplayName?.trim()) {
+        return englishDisplayName;
+      }
+
+      if (englishFormName?.trim()) {
+        return englishFormName;
+      }
+
+      if (selectedFormDetails?.form_name?.trim()) {
+        return selectedFormDetails.form_name;
+      }
+
+      if (selectedPokemon?.is_default) {
+        return englishSpeciesName || store.speciesDetails().name || selectedPokemon.name || '';
+      }
+
+      return '';
+    }),
     evolutionLine: computed(() => {
       const chain = store.evolutionChain();
       if (!chain) return [];
@@ -83,41 +126,73 @@ export const PokemonStore = signalStore(
       return stages;
     }),
   })),
-  withMethods((store, pokemonService = inject(PokemonService)) => ({
-    loadPokemonByName: rxMethod<string>(
+  withMethods((store, pokemonService = inject(PokemonService)) => {
+    const loadPokemonFormDetails = rxMethod<string | null>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        tap(() => patchState(store, setLoading())),
-        switchMap((name) => {
-          return pokemonService.getPokemonSpeciesByName(name).pipe(
-            switchMap((speciesDetails) => {
-              const varietyDetailRequests = speciesDetails.varieties.map((pokemon) =>
-                pokemonService.getPokemonByName(pokemon.pokemon.name)
-              );
-              const evolutionChainRequest = pokemonService.getEvolutionChainByUrl(
-                speciesDetails.evolution_chain.url
-              );
-              return forkJoin([forkJoin(varietyDetailRequests), evolutionChainRequest]).pipe(
-                tapResponse({
-                  next: ([varietyDetails, evolutionChain]) => {
-                    patchState(
-                      store,
-                      { speciesDetails, evolutionChain },
-                      setAllEntities(varietyDetails)
-                    );
-                    store.setSelectedId(varietyDetails[0].id);
-                  },
-                  error: (error: Error) => patchState(store, setError(error.message)),
-                  finalize: () => patchState(store, setCompleted()),
-                })
-              );
-            })
-          );
+        switchMap((formName) => {
+          if (!formName) {
+            return of(null);
+          }
+
+          return pokemonService.getPokemonFormByName(formName).pipe(catchError(() => of(null)));
+        }),
+        tap((selectedFormDetails) => {
+          patchState(store, { selectedFormDetails });
         })
       )
-    ),
-  }))
+    );
+
+    return {
+      setSelectedPokemonVariety(varietyId: number) {
+        store.setSelectedId(varietyId);
+        const selectedPokemon = store.selectedEntity();
+        const primaryFormName = selectedPokemon?.forms[0]?.name ?? selectedPokemon?.name ?? null;
+
+        loadPokemonFormDetails(primaryFormName);
+      },
+      loadPokemonByName: rxMethod<string>(
+        pipe(
+          debounceTime(300),
+          distinctUntilChanged(),
+          tap(() => patchState(store, setLoading())),
+          switchMap((name) => {
+            return pokemonService.getPokemonSpeciesByName(name).pipe(
+              switchMap((speciesDetails) => {
+                const varietyDetailRequests = speciesDetails.varieties.map((pokemon) =>
+                  pokemonService.getPokemonByName(pokemon.pokemon.name)
+                );
+                const evolutionChainRequest = pokemonService.getEvolutionChainByUrl(
+                  speciesDetails.evolution_chain.url
+                );
+                return forkJoin([forkJoin(varietyDetailRequests), evolutionChainRequest]).pipe(
+                  tapResponse({
+                    next: ([varietyDetails, evolutionChain]) => {
+                      patchState(
+                        store,
+                        { speciesDetails, evolutionChain, selectedFormDetails: null },
+                        setAllEntities(varietyDetails)
+                      );
+                      const defaultVarietyId = varietyDetails[0]?.id;
+
+                      if (defaultVarietyId !== undefined) {
+                        store.setSelectedId(defaultVarietyId);
+                        const defaultVariety = store.selectedEntity();
+                        const defaultFormName =
+                          defaultVariety?.forms[0]?.name ?? defaultVariety?.name ?? null;
+                        loadPokemonFormDetails(defaultFormName);
+                      }
+                    },
+                    error: (error: Error) => patchState(store, setError(error.message)),
+                    finalize: () => patchState(store, setCompleted()),
+                  })
+                );
+              })
+            );
+          })
+        )
+      ),
+    };
+  })
 );
 
 export type PokemonStore = InstanceType<typeof PokemonStore>;

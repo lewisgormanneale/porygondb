@@ -23,6 +23,11 @@
       font-weight: bold;
       color: var(--mat-sys-primary-text);
     }
+
+    .skeleton-name {
+      height: 24px;
+      display: inline-block;
+    }
   }
 
   .pokemon-image {
@@ -52,9 +57,15 @@
       .form-option {
         cursor: pointer;
 
-        :hover {
+        &:hover {
           background-color: var(--mat-sys-primary-container);
           transition: 0.2s;
+        }
+
+        &.form-option-active {
+          background-color: var(--mat-sys-primary-container);
+          outline: 2px solid var(--mat-sys-primary);
+          outline-offset: 1px;
         }
 
         .pokemon-form-image {
