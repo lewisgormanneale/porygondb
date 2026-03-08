@@ -55,12 +55,15 @@ export class PokemonComponent {
   pokedexEntries = signal<PokemonEntry[]>([]);
 
   readonly availableVersionGroupOptions = computed<PokemonVersionGroupOption[]>(() => {
-    const selectedPokemon = this.pokemonStore.selectedEntity() ?? undefined;
+    const basePokemon =
+      this.pokemonStore.entities().find((pokemon) => pokemon.is_default) ??
+      this.pokemonStore.selectedEntity() ??
+      undefined;
     const speciesDetails = this.pokemonStore.speciesDetails();
 
     return getVersionGroupOptions({
       versionGroups: VersionGroups,
-      selectedPokemon,
+      selectedPokemon: basePokemon,
       speciesDetails: speciesDetails?.pokedex_numbers ? speciesDetails : undefined,
       currentVersionGroupName: this.versionGroupName(),
       currentPokedexName: this.pokedexName(),
@@ -100,7 +103,9 @@ export class PokemonComponent {
       (option) => option.versionGroupName === versionGroupName
     );
 
-    if (!selectedOption || !this.pokemonName()) {
+    const baseSpeciesName = this.pokemonStore.speciesDetails().name || this.pokemonName();
+
+    if (!selectedOption || !baseSpeciesName) {
       return;
     }
 
@@ -108,7 +113,7 @@ export class PokemonComponent {
       '/pokedex',
       selectedOption.versionGroupName,
       selectedOption.pokedexName,
-      this.pokemonName(),
+      baseSpeciesName,
     ]);
   }
 }
