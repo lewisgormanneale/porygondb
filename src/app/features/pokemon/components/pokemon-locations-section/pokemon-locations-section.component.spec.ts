@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { of, throwError } from 'rxjs';
+import { vi } from 'vitest';
 import { PokemonLocationsSectionComponent } from './pokemon-locations-section.component';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
@@ -16,11 +17,11 @@ describe('PokemonLocationsSectionComponent', () => {
   };
 
   const pokemonServiceStub = {
-    getPokemonEncountersByUrl: jest.fn(),
+    getPokemonEncountersByUrl: vi.fn(),
   };
 
   const gameServiceStub = {
-    getVersionGroupByName: jest.fn(),
+    getVersionGroupByName: vi.fn(),
   };
 
   beforeEach(async () => {

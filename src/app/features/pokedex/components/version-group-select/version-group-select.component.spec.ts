@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
+import { vi } from 'vitest';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { VersionGroupSelectComponent } from './version-group-select.component';
 import { VersionGroupStore } from '../../../../shared/+state/version-group.store';
@@ -9,7 +10,7 @@ describe('VersionGroupSelectComponent', () => {
   let component: VersionGroupSelectComponent;
 
   const paramMapSubject = new BehaviorSubject(convertToParamMap({ versionGroupName: 'red-blue' }));
-  const navigateMock = jest.fn().mockResolvedValue(true);
+  const navigateMock = vi.fn().mockResolvedValue(true);
 
   const versionGroups = [
     {
@@ -84,7 +85,7 @@ describe('VersionGroupSelectComponent', () => {
   });
 
   it('does not navigate when selected version group has no pokedex', () => {
-    const entitiesSpy = jest.spyOn(versionGroupStoreStub, 'entities').mockReturnValue([
+    const entitiesSpy = vi.spyOn(versionGroupStoreStub, 'entities').mockReturnValue([
       {
         id: 3,
         name: 'orphan-group',

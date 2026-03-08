@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { of } from 'rxjs';
+import { vi, type Mock } from 'vitest';
 import type { DeepSignal } from '@ngrx/signals';
 import { PokemonDetailsTabComponent } from './pokemon-details-tab.component';
 import { PokemonService } from '../../../../../shared/services/pokemon.service';
@@ -16,17 +17,17 @@ describe('PokemonDetailsTabComponent', () => {
       {} as PokemonSpecies
     ) as unknown as DeepSignal<PokemonSpecies>,
     englishSpeciesDescription: englishSpeciesDescriptionSignal as any,
-    setSelectedId: jest.fn(),
+    setSelectedId: vi.fn(),
   };
   const pokemonServiceStub: Partial<PokemonService> = {
-    getAbilityByName: jest.fn(),
+    getAbilityByName: vi.fn(),
   };
 
   it('should create component', () => {
     selectedEntitySignal.set(null);
     englishSpeciesDescriptionSignal.set(null);
 
-    (pokemonServiceStub.getAbilityByName as jest.Mock).mockReturnValue(
+    (pokemonServiceStub.getAbilityByName as Mock).mockReturnValue(
       of({ names: [{ language: { name: 'en' }, name: 'Overgrow' }] })
     );
 
@@ -44,7 +45,7 @@ describe('PokemonDetailsTabComponent', () => {
     selectedEntitySignal.set(null);
     englishSpeciesDescriptionSignal.set(null);
 
-    (pokemonServiceStub.getAbilityByName as jest.Mock).mockImplementation((abilityName: string) => {
+    (pokemonServiceStub.getAbilityByName as Mock).mockImplementation((abilityName: string) => {
       if (abilityName === 'chlorophyll') {
         return of({ names: [{ language: { name: 'en' }, name: 'Chlorophyll' }] });
       }
@@ -88,7 +89,7 @@ describe('PokemonDetailsTabComponent', () => {
     selectedEntitySignal.set(null);
     englishSpeciesDescriptionSignal.set(null);
 
-    (pokemonServiceStub.getAbilityByName as jest.Mock).mockReturnValue(of({ names: [] }));
+    (pokemonServiceStub.getAbilityByName as Mock).mockReturnValue(of({ names: [] }));
 
     const fixture = TestBed.configureTestingModule({
       imports: [PokemonDetailsTabComponent],

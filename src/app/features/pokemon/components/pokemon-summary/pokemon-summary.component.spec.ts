@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import { vi } from 'vitest';
 import { PokemonSummaryComponent } from './pokemon-summary.component';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 
@@ -7,7 +8,7 @@ describe('PokemonSummaryComponent', () => {
   let fixture: ComponentFixture<PokemonSummaryComponent>;
   let component: PokemonSummaryComponent;
 
-  const setSelectedIdMock = jest.fn();
+  const setSelectedIdMock = vi.fn();
   const selectedEntitySignal = signal<any>({
     sprites: {
       front_default: 'https://img.test/front.png',

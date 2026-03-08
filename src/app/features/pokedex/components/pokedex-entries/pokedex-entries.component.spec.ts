@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject, of } from 'rxjs';
 import { signal } from '@angular/core';
+import { vi } from 'vitest';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { PokedexEntriesComponent } from './pokedex-entries.component';
 import { GameService } from '../../../../shared/services/game.service';
@@ -14,8 +15,8 @@ describe('PokedexEntriesComponent', () => {
   const entitiesSignal = signal<any[]>([]);
   const pageEventSignal = signal({ pageIndex: 0, pageSize: 50, length: 0 });
 
-  const setPokedexEntriesMock = jest.fn();
-  const loadPokemonSpeciesMock = jest.fn();
+  const setPokedexEntriesMock = vi.fn();
+  const loadPokemonSpeciesMock = vi.fn();
 
   const pokedexEntriesStoreStub = {
     paginatedPokemonEntries: paginatedEntriesSignal,
@@ -25,14 +26,14 @@ describe('PokedexEntriesComponent', () => {
     loadPokemonSpecies: loadPokemonSpeciesMock,
   };
 
-  const getPokedexByNameMock = jest.fn();
+  const getPokedexByNameMock = vi.fn();
   const gameServiceStub = {
     getPokedexByName: getPokedexByNameMock,
   };
 
   const breakpointState$ = new BehaviorSubject<any>({ matches: false });
   const breakpointObserverStub = {
-    observe: jest.fn(() => breakpointState$.asObservable()),
+    observe: vi.fn(() => breakpointState$.asObservable()),
   };
 
   beforeEach(async () => {
@@ -47,7 +48,14 @@ describe('PokedexEntriesComponent', () => {
 
     getPokedexByNameMock.mockReturnValue(
       of({
-        pokemon_entries: [{ pokemon_species: { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon-species/1/' } }],
+        pokemon_entries: [
+          {
+            pokemon_species: {
+              name: 'bulbasaur',
+              url: 'https://pokeapi.co/api/v2/pokemon-species/1/',
+            },
+          },
+        ],
       })
     );
 
@@ -84,7 +92,9 @@ describe('PokedexEntriesComponent', () => {
 
     expect(getPokedexByNameMock).toHaveBeenCalledWith('kanto');
     expect(setPokedexEntriesMock).toHaveBeenCalledWith([
-      { pokemon_species: { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon-species/1/' } },
+      {
+        pokemon_species: { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon-species/1/' },
+      },
     ]);
     expect(loadPokemonSpeciesMock).toHaveBeenCalled();
   });
