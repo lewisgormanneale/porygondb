@@ -1,16 +1,22 @@
 import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { ChainLink, EvolutionChain, FlavorText, Pokemon, PokemonSpecies } from '../interfaces/pokeapi';
+import {
+  ChainLink,
+  EvolutionChain,
+  FlavorText,
+  Pokemon,
+  PokemonSpecies,
+} from '../interfaces/pokeapi';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { debounceTime, distinctUntilChanged, forkJoin, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { PokemonService } from '../services/pokemon.service';
 import {
-    setCompleted,
-    setError,
-    setLoading,
-    withRequestStatus,
+  setCompleted,
+  setError,
+  setLoading,
+  withRequestStatus,
 } from './features/request-status.feature';
 import { withSelectedEntity } from './features/selected-entity.feature';
 
@@ -43,10 +49,10 @@ export const PokemonStore = signalStore(
   withComputed((store) => ({
     selectedPokemonStats: computed(() => {
       return (
-        store.selectedEntity()?.stats?.reduce((acc, stat) => {
+        store.selectedEntity()?.stats?.reduce<Record<string, number>>((acc, stat) => {
           acc[stat.stat.name] = stat.base_stat;
           return acc;
-        }, {} as Record<string, number>) || {}
+        }, {}) || {}
       );
     }),
     englishSpeciesDescription: computed(() => {

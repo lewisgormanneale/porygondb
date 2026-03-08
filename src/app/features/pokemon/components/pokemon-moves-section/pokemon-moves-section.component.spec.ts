@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import type { PageEvent } from '@angular/material/paginator';
 import { PokemonMovesSectionComponent } from './pokemon-moves-section.component';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 
@@ -11,6 +12,13 @@ describe('PokemonMovesSectionComponent', () => {
   const pokemonStoreStub = {
     selectedEntity: selectedEntitySignal,
   };
+
+  const buildPageEvent = (pageIndex: number): PageEvent => ({
+    pageIndex,
+    pageSize: 10,
+    length: 100,
+    previousPageIndex: pageIndex > 0 ? pageIndex - 1 : 0,
+  });
 
   const createMove = (name: string, method: string, level: number, versionGroup = 'red-blue') => ({
     move: { name },
@@ -72,7 +80,7 @@ describe('PokemonMovesSectionComponent', () => {
     const firstPage = component.getPaginatedRows('level-up', levelTab!.moves);
     expect(firstPage).toHaveLength(10);
 
-    component.onMethodPageChange('level-up', { pageIndex: 1 } as any);
+    component.onMethodPageChange('level-up', buildPageEvent(1));
     fixture.detectChanges();
 
     const secondPage = component.getPaginatedRows('level-up', levelTab!.moves);
@@ -88,7 +96,7 @@ describe('PokemonMovesSectionComponent', () => {
     fixture.componentRef.setInput('versionGroupName', 'red-blue');
     fixture.detectChanges();
 
-    component.onMethodPageChange('machine', { pageIndex: 2 } as any);
+    component.onMethodPageChange('machine', buildPageEvent(2));
     fixture.detectChanges();
     expect(component.getPageIndex('machine')).toBe(2);
 

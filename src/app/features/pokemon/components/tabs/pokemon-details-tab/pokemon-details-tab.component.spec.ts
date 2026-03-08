@@ -2,31 +2,34 @@ import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
-import type { DeepSignal } from '@ngrx/signals';
 import { PokemonDetailsTabComponent } from './pokemon-details-tab.component';
 import { PokemonService } from '../../../../../shared/services/pokemon.service';
 import { PokemonStore } from '../../../../../shared/+state/pokemon.store';
-import type { Pokemon, PokemonSpecies } from '../../../../../shared/interfaces/pokeapi';
+import type { FlavorText, Pokemon, PokemonSpecies } from '../../../../../shared/interfaces/pokeapi';
+import {
+  createPokemonMock,
+  createPokemonSpeciesMock,
+} from '../../../../../../testing/mocks/pokemon.mock';
 
 describe('PokemonDetailsTabComponent', () => {
   const selectedEntitySignal = signal<Pokemon | null>(null);
-  const englishSpeciesDescriptionSignal = signal<any>(null);
+  const englishSpeciesDescriptionSignal = signal<FlavorText | undefined>(undefined);
+  const speciesDetailsSignal = signal<PokemonSpecies>(createPokemonSpeciesMock());
   const getAbilityByNameMock = vi.fn();
-  const pokemonStoreStub: Partial<PokemonStore> = {
+  const pokemonStoreStub = {
     selectedEntity: selectedEntitySignal,
-    speciesDetails: signal<PokemonSpecies>(
-      {} as PokemonSpecies
-    ) as unknown as DeepSignal<PokemonSpecies>,
-    englishSpeciesDescription: englishSpeciesDescriptionSignal as any,
+    speciesDetails: speciesDetailsSignal,
+    englishSpeciesDescription: englishSpeciesDescriptionSignal,
     setSelectedId: vi.fn(),
   };
-  const pokemonServiceStub: Partial<PokemonService> = {
+
+  const pokemonServiceStub = {
     getAbilityByName: getAbilityByNameMock,
   };
 
   it('should create component', () => {
     selectedEntitySignal.set(null);
-    englishSpeciesDescriptionSignal.set(null);
+    englishSpeciesDescriptionSignal.set(undefined);
 
     getAbilityByNameMock.mockReturnValue(
       of({ names: [{ language: { name: 'en' }, name: 'Overgrow' }] })
@@ -44,7 +47,7 @@ describe('PokemonDetailsTabComponent', () => {
 
   it('loads and sorts abilities by slot', () => {
     selectedEntitySignal.set(null);
-    englishSpeciesDescriptionSignal.set(null);
+    englishSpeciesDescriptionSignal.set(undefined);
 
     getAbilityByNameMock.mockImplementation((abilityName: string) => {
       if (abilityName === 'chlorophyll') {
@@ -62,20 +65,22 @@ describe('PokemonDetailsTabComponent', () => {
       ],
     }).createComponent(PokemonDetailsTabComponent);
 
-    selectedEntitySignal.set({
-      abilities: [
-        {
-          ability: { name: 'chlorophyll' },
-          slot: 3,
-          is_hidden: true,
-        },
-        {
-          ability: { name: 'overgrow' },
-          slot: 1,
-          is_hidden: false,
-        },
-      ],
-    } as unknown as Pokemon);
+    selectedEntitySignal.set(
+      createPokemonMock({
+        abilities: [
+          {
+            ability: { name: 'chlorophyll', url: 'https://pokeapi.co/api/v2/ability/34/' },
+            slot: 3,
+            is_hidden: true,
+          },
+          {
+            ability: { name: 'overgrow', url: 'https://pokeapi.co/api/v2/ability/65/' },
+            slot: 1,
+            is_hidden: false,
+          },
+        ],
+      })
+    );
 
     fixture.detectChanges();
 
@@ -88,7 +93,7 @@ describe('PokemonDetailsTabComponent', () => {
 
   it('clears abilities when selected entity has no abilities', () => {
     selectedEntitySignal.set(null);
-    englishSpeciesDescriptionSignal.set(null);
+    englishSpeciesDescriptionSignal.set(undefined);
 
     getAbilityByNameMock.mockReturnValue(of({ names: [] }));
 
@@ -100,19 +105,21 @@ describe('PokemonDetailsTabComponent', () => {
       ],
     }).createComponent(PokemonDetailsTabComponent);
 
-    selectedEntitySignal.set({
-      abilities: [
-        {
-          ability: { name: 'overgrow' },
-          slot: 1,
-          is_hidden: false,
-        },
-      ],
-    } as unknown as Pokemon);
+    selectedEntitySignal.set(
+      createPokemonMock({
+        abilities: [
+          {
+            ability: { name: 'overgrow', url: 'https://pokeapi.co/api/v2/ability/65/' },
+            slot: 1,
+            is_hidden: false,
+          },
+        ],
+      })
+    );
     fixture.detectChanges();
     expect(fixture.componentInstance.abilities().length).toBe(1);
 
-    selectedEntitySignal.set({ abilities: [] } as unknown as Pokemon);
+    selectedEntitySignal.set(createPokemonMock({ abilities: [] }));
     fixture.detectChanges();
     expect(fixture.componentInstance.abilities()).toEqual([]);
   });

@@ -149,13 +149,21 @@ export class PokemonLocationsSectionComponent {
   }
 
   private isVersionGroupApi(value: unknown): value is VersionGroupApi {
-    const candidate = value as VersionGroupApi | undefined;
-    return !!candidate && Array.isArray(candidate.versions);
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    return 'versions' in value && Array.isArray(value.versions);
   }
 
   private isPokemonLocationEncounterApi(value: unknown): value is PokemonLocationEncounterApi {
-    const candidate = value as PokemonLocationEncounterApi | undefined;
-    return !!candidate && !!candidate.location_area && Array.isArray(candidate.version_details);
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    return (
+      'location_area' in value && 'version_details' in value && Array.isArray(value.version_details)
+    );
   }
 
   private formatLevelRange(minLevel: number, maxLevel: number): string {

@@ -13,6 +13,15 @@ interface ThemeState {
   theme: Theme;
 }
 
+function isTheme(value: string | null): value is Theme {
+  return (
+    value === Theme.LIGHT ||
+    value === Theme.DARK ||
+    value === Theme.LIGHT_CONTRAST ||
+    value === Theme.DARK_CONTRAST
+  );
+}
+
 export const ThemeStore = signalStore(
   { providedIn: 'root' },
   withState<ThemeState>({ theme: Theme.LIGHT }),
@@ -31,8 +40,8 @@ export const ThemeStore = signalStore(
   })),
   withHooks({
     onInit(store) {
-      const storedTheme = localStorage.getItem('theme') as Theme | null;
-      if (storedTheme) {
+      const storedTheme = localStorage.getItem('theme');
+      if (isTheme(storedTheme)) {
         patchState(store, { theme: storedTheme });
         document.body.setAttribute('data-theme', storedTheme);
       } else {

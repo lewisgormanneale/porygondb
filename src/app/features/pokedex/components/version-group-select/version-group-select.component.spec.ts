@@ -4,6 +4,7 @@ import { vi } from 'vitest';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { VersionGroupSelectComponent } from './version-group-select.component';
 import { VersionGroupStore } from '../../../../shared/+state/version-group.store';
+import type { StoredVersionGroup } from '../../../../core/interfaces/stored-version-group.interface';
 
 describe('VersionGroupSelectComponent', () => {
   let fixture: ComponentFixture<VersionGroupSelectComponent>;
@@ -12,18 +13,18 @@ describe('VersionGroupSelectComponent', () => {
   const paramMapSubject = new BehaviorSubject(convertToParamMap({ versionGroupName: 'red-blue' }));
   const navigateMock = vi.fn().mockResolvedValue(true);
 
-  const versionGroups = [
+  const versionGroups: StoredVersionGroup[] = [
     {
       id: 1,
       name: 'red-blue',
       formattedName: 'Red/Blue',
-      pokedexes: [{ name: 'kanto' }],
+      pokedexes: [{ name: 'kanto', formattedName: 'Kanto' }],
     },
     {
       id: 2,
       name: 'gold-silver',
       formattedName: 'Gold/Silver',
-      pokedexes: [{ name: 'johto' }],
+      pokedexes: [{ name: 'johto', formattedName: 'Johto' }],
     },
   ];
 
@@ -92,7 +93,7 @@ describe('VersionGroupSelectComponent', () => {
         formattedName: 'Orphan Group',
         pokedexes: [],
       },
-    ] as any);
+    ]);
 
     fixture.detectChanges();
     component.navigateToVersionGroupPokedex('orphan-group');

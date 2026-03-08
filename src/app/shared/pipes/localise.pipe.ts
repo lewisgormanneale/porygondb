@@ -1,19 +1,25 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { NamedAPIResource } from '../interfaces/pokeapi';
 
-interface Localisable {
+interface LocalisableBase {
   language: NamedAPIResource;
-  // TODO: Fix any type
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
 }
 
 @Pipe({
   name: 'localise',
 })
 export class LocalisePipe implements PipeTransform {
-  transform(items: Localisable[], language: string, key = 'name'): string {
+  transform<T extends LocalisableBase>(items: T[], language: string, key = 'name'): string {
     const item = items.find((item) => item.language.name === language);
-    return item ? (item[key] as string) : '';
+    if (!item) {
+      return '';
+    }
+
+    if (!(key in item)) {
+      return '';
+    }
+
+    const value = item[key as keyof T];
+    return typeof value === 'string' ? value : '';
   }
 }

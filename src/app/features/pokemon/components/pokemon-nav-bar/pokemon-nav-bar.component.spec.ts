@@ -1,31 +1,35 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { PokemonNavBarComponent } from './pokemon-nav-bar.component';
+import type { PokemonEntry } from '../../../../shared/interfaces/pokeapi';
 
 describe('PokemonNavBarComponent', () => {
   let fixture: ComponentFixture<PokemonNavBarComponent>;
   let component: PokemonNavBarComponent;
 
-  const entries = [
+  const entries: PokemonEntry[] = [
     {
+      entry_number: 1,
       pokemon_species: {
         name: 'bulbasaur',
         url: 'https://pokeapi.co/api/v2/pokemon-species/1/',
       },
     },
     {
+      entry_number: 2,
       pokemon_species: {
         name: 'ivysaur',
         url: 'https://pokeapi.co/api/v2/pokemon-species/2/',
       },
     },
     {
+      entry_number: 3,
       pokemon_species: {
         name: 'venusaur',
         url: 'https://pokeapi.co/api/v2/pokemon-species/3/',
       },
     },
-  ] as any[];
+  ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

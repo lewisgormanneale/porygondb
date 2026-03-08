@@ -1,5 +1,5 @@
 import { StoredVersionGroup } from '../../../core/interfaces/stored-version-group.interface';
-import { Pokemon, PokemonSpecies } from '../../../shared/interfaces/pokeapi';
+import type { Pokemon, PokemonSpecies } from '../../../shared/interfaces/pokeapi';
 
 export interface PokemonVersionGroupOption {
   versionGroupName: string;
@@ -10,8 +10,8 @@ export interface PokemonVersionGroupOption {
 
 interface GetVersionGroupOptionsParams {
   versionGroups: StoredVersionGroup[];
-  selectedPokemon: Pokemon | undefined;
-  speciesDetails: PokemonSpecies | undefined;
+  selectedPokemon: Pick<Pokemon, 'moves'> | undefined;
+  speciesDetails: Pick<PokemonSpecies, 'pokedex_numbers'> | undefined;
   currentVersionGroupName: string;
   currentPokedexName: string;
 }
