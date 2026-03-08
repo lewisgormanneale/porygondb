@@ -7,6 +7,7 @@ import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 describe('PokemonSummaryComponent', () => {
   let fixture: ComponentFixture<PokemonSummaryComponent>;
   let component: PokemonSummaryComponent;
+  let preconnectLink: HTMLLinkElement;
 
   const setSelectedIdMock = vi.fn();
   const selectedEntitySignal = signal<any>({
@@ -39,6 +40,17 @@ describe('PokemonSummaryComponent', () => {
     entities: entitiesSignal,
     setSelectedId: setSelectedIdMock,
   };
+
+  beforeAll(() => {
+    preconnectLink = document.createElement('link');
+    preconnectLink.rel = 'preconnect';
+    preconnectLink.href = 'https://img.test';
+    document.head.appendChild(preconnectLink);
+  });
+
+  afterAll(() => {
+    preconnectLink.remove();
+  });
 
   beforeEach(async () => {
     setSelectedIdMock.mockClear();

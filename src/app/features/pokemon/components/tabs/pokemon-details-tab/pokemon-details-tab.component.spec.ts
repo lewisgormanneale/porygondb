@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { of } from 'rxjs';
-import { vi, type Mock } from 'vitest';
+import { vi } from 'vitest';
 import type { DeepSignal } from '@ngrx/signals';
 import { PokemonDetailsTabComponent } from './pokemon-details-tab.component';
 import { PokemonService } from '../../../../../shared/services/pokemon.service';
@@ -11,6 +11,7 @@ import type { Pokemon, PokemonSpecies } from '../../../../../shared/interfaces/p
 describe('PokemonDetailsTabComponent', () => {
   const selectedEntitySignal = signal<Pokemon | null>(null);
   const englishSpeciesDescriptionSignal = signal<any>(null);
+  const getAbilityByNameMock = vi.fn();
   const pokemonStoreStub: Partial<PokemonStore> = {
     selectedEntity: selectedEntitySignal,
     speciesDetails: signal<PokemonSpecies>(
@@ -20,14 +21,14 @@ describe('PokemonDetailsTabComponent', () => {
     setSelectedId: vi.fn(),
   };
   const pokemonServiceStub: Partial<PokemonService> = {
-    getAbilityByName: vi.fn(),
+    getAbilityByName: getAbilityByNameMock,
   };
 
   it('should create component', () => {
     selectedEntitySignal.set(null);
     englishSpeciesDescriptionSignal.set(null);
 
-    (pokemonServiceStub.getAbilityByName as Mock).mockReturnValue(
+    getAbilityByNameMock.mockReturnValue(
       of({ names: [{ language: { name: 'en' }, name: 'Overgrow' }] })
     );
 
@@ -45,7 +46,7 @@ describe('PokemonDetailsTabComponent', () => {
     selectedEntitySignal.set(null);
     englishSpeciesDescriptionSignal.set(null);
 
-    (pokemonServiceStub.getAbilityByName as Mock).mockImplementation((abilityName: string) => {
+    getAbilityByNameMock.mockImplementation((abilityName: string) => {
       if (abilityName === 'chlorophyll') {
         return of({ names: [{ language: { name: 'en' }, name: 'Chlorophyll' }] });
       }
@@ -89,7 +90,7 @@ describe('PokemonDetailsTabComponent', () => {
     selectedEntitySignal.set(null);
     englishSpeciesDescriptionSignal.set(null);
 
-    (pokemonServiceStub.getAbilityByName as Mock).mockReturnValue(of({ names: [] }));
+    getAbilityByNameMock.mockReturnValue(of({ names: [] }));
 
     const fixture = TestBed.configureTestingModule({
       imports: [PokemonDetailsTabComponent],
