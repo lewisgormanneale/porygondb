@@ -15,6 +15,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { GenderRatePipe } from '../../../../../shared/pipes/genderRate.pipe';
 import { CleanFlavorTextPipe } from '../../../../../shared/pipes/cleanFlavorText.pipe';
 import { RouterLink } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface AbilityInformation {
   ability: Ability;
@@ -36,6 +37,7 @@ interface AbilityInformation {
     GenderRatePipe,
     CleanFlavorTextPipe,
     RouterLink,
+    MatTooltipModule,
   ],
   templateUrl: './pokemon-details-tab.component.html',
   styleUrl: './pokemon-details-tab.component.scss',
@@ -104,5 +106,24 @@ export class PokemonDetailsTabComponent {
     return (
       englishEntry?.short_effect || englishEntry?.effect || 'No English description available.'
     );
+  }
+
+  getGenderRatioTooltip(genderRate: number): string {
+    if (genderRate === -1) {
+      return 'This Pokémon is genderless.';
+    }
+
+    if (genderRate === 8) {
+      return 'This Pokémon is always female.';
+    }
+
+    if (genderRate === 0) {
+      return 'This Pokémon is always male.';
+    }
+
+    const femalePercentage = genderRate * 12.5;
+    const malePercentage = 100 - femalePercentage;
+
+    return `Gender ratio: ${malePercentage}% male, ${femalePercentage}% female.`;
   }
 }

@@ -256,4 +256,28 @@ describe('PokemonDetailsTabComponent', () => {
     popover = fixture.nativeElement.querySelector('[data-testid="ability-description-popover"]');
     expect(popover).toBeNull();
   });
+
+  it('returns gender tooltip messages for all ratio cases', () => {
+    selectedEntitySignal.set(null);
+    englishSpeciesDescriptionSignal.set(undefined);
+
+    getAbilityByNameMock.mockReturnValue(of({ names: [], effect_entries: [] }));
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [PokemonDetailsTabComponent],
+      providers: [
+        provideRouter([]),
+        provideLocationMocks(),
+        { provide: PokemonStore, useValue: pokemonStoreStub },
+        { provide: PokemonService, useValue: pokemonServiceStub },
+      ],
+    }).createComponent(PokemonDetailsTabComponent);
+
+    const component = fixture.componentInstance;
+
+    expect(component.getGenderRatioTooltip(-1)).toBe('This Pokémon is genderless.');
+    expect(component.getGenderRatioTooltip(8)).toBe('This Pokémon is always female.');
+    expect(component.getGenderRatioTooltip(0)).toBe('This Pokémon is always male.');
+    expect(component.getGenderRatioTooltip(1)).toBe('Gender ratio: 87.5% male, 12.5% female.');
+  });
 });

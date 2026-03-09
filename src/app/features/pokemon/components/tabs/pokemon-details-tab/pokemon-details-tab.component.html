@@ -71,12 +71,18 @@
     @if (pokemonStore.speciesDetails()!.gender_rate >= 0) {
       <mat-progress-bar
         [value]="pokemonStore.speciesDetails()!.gender_rate | genderRate"
+        [matTooltip]="getGenderRatioTooltip(pokemonStore.speciesDetails()!.gender_rate)"
         class="progress-bar gender-rate"
         mode="determinate"
       >
       </mat-progress-bar>
     } @else if (pokemonStore.speciesDetails()!.gender_rate === -1) {
-      <mat-progress-bar [value]="100" class="progress-bar genderless" mode="determinate">
+      <mat-progress-bar
+        [value]="100"
+        [matTooltip]="getGenderRatioTooltip(pokemonStore.speciesDetails()!.gender_rate)"
+        class="progress-bar genderless"
+        mode="determinate"
+      >
       </mat-progress-bar>
     }
   </div>
