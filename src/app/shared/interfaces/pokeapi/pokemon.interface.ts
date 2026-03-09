@@ -111,6 +111,25 @@ export interface PokemonTypePast {
   types: PokemonType[];
 }
 
+export interface PokemonLocationAreaEncounter {
+  location_area: NamedAPIResource;
+  version_details: PokemonLocationVersionDetail[];
+}
+
+export interface PokemonLocationVersionDetail {
+  version: NamedAPIResource;
+  max_chance: number;
+  encounter_details: PokemonEncounterDetail[];
+}
+
+export interface PokemonEncounterDetail {
+  min_level: number;
+  max_level: number;
+  condition_values: NamedAPIResource[];
+  chance: number;
+  method: NamedAPIResource;
+}
+
 export interface PokemonSpecies {
   id: number;
   name: string;
@@ -157,6 +176,35 @@ export interface Genus {
 export interface PokemonSpeciesVariety {
   is_default: boolean;
   pokemon: NamedAPIResource;
+}
+
+export interface PokemonForm {
+  id: number;
+  name: string;
+  order: number;
+  form_order: number;
+  is_default: boolean;
+  is_battle_only: boolean;
+  is_mega: boolean;
+  form_name: string;
+  form_names: Name[];
+  names: Name[];
+  pokemon: NamedAPIResource;
+  sprites: PokemonFormSprites;
+  types: PokemonFormType[];
+  version_group: NamedAPIResource;
+}
+
+export interface PokemonFormSprites {
+  front_default: string | null;
+  front_shiny: string | null;
+  back_default: string | null;
+  back_shiny: string | null;
+}
+
+export interface PokemonFormType {
+  slot: number;
+  type: NamedAPIResource;
 }
 
 export interface Ability {

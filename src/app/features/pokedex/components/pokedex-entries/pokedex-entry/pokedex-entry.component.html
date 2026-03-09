@@ -14,11 +14,7 @@
         <img
           (load)="onImageLoad()"
           [hidden]="imageLoading()"
-          [src]="
-            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-            pokemon()?.id +
-            '.png'
-          "
+          [src]="spriteUrl()"
           alt="{{ pokemon()?.name }}"
           height="90"
           mat-card-image

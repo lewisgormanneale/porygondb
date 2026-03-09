@@ -6,6 +6,7 @@ import {
   EvolutionChain,
   NamedAPIResourceList,
   Pokemon,
+  PokemonForm,
   PokemonSpecies,
   Stat,
   Type,
@@ -25,6 +26,12 @@ export class PokemonService {
 
   getPokemonById(id: number): Observable<Pokemon> {
     return this.http.get<Pokemon>(`${POKEAPI_BASE_URL}/pokemon/${id}`);
+  }
+
+  getPokemonFormByName(name: string): Observable<PokemonForm> {
+    return this.http.get<PokemonForm>(
+      `${POKEAPI_BASE_URL}/pokemon-form/${encodeURIComponent(name)}`
+    );
   }
 
   getPokemonSpeciesByName(name: string): Observable<PokemonSpecies> {
@@ -67,6 +74,10 @@ export class PokemonService {
 
   getEvolutionChainByUrl(url: string): Observable<EvolutionChain> {
     return this.http.get<EvolutionChain>(url);
+  }
+
+  getPokemonEncountersByUrl(url: string): Observable<unknown[]> {
+    return this.http.get<unknown[]>(url);
   }
 
   listPokemonSpecies(offset?: number, limit?: number): Observable<NamedAPIResourceList> {

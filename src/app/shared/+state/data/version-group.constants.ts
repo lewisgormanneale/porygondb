@@ -1,6 +1,20 @@
 import { StoredVersionGroup } from '../../../core/interfaces/stored-version-group.interface';
 
+export const NATIONAL_VERSION_GROUP_NAME = 'national';
+export const NATIONAL_POKEDEX_NAME = 'national';
+
 export const VersionGroups: StoredVersionGroup[] = [
+  {
+    id: 9999,
+    name: NATIONAL_VERSION_GROUP_NAME,
+    formattedName: 'National Dex',
+    pokedexes: [
+      {
+        name: NATIONAL_POKEDEX_NAME,
+        formattedName: 'National',
+      },
+    ],
+  },
   {
     id: 1,
     name: 'red-blue',

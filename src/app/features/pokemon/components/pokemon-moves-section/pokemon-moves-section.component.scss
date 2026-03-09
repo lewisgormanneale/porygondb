@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+.moves-card {
+  width: 100%;
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--mat-sys-surface-container-low),
+    )
+  );
+
+  .moves-table-wrap {
+    overflow-x: auto;
+  }
+
+  .moves-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
+  }
+
+  .no-moves,
+  .national-mode-message {
+    margin: 16px 0;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}

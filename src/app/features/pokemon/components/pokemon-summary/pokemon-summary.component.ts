@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { LocalisePipe } from '../../../../shared/pipes/localise.pipe';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
@@ -15,7 +15,23 @@ export class PokemonSummaryComponent {
   fallbackImageSmall = 'assets/images/question-mark.png';
   fallbackImageLarge = 'assets/images/question-mark-2.png';
 
+  readonly selectedFormName = computed(() => {
+    return this.pokemonStore.selectedPokemonDisplayName();
+  });
+
+  readonly skeletonNameWidth = computed(() => {
+    const fallbackName = this.pokemonStore.selectedEntity()?.name || '';
+    const length = fallbackName.replaceAll('-', ' ').trim().length;
+    const clampedLength = Math.min(Math.max(length, 10), 24);
+
+    return `${clampedLength}ch`;
+  });
+
+  isSelectedVariety(varietyId: number): boolean {
+    return this.pokemonStore.selectedEntity()?.id === varietyId;
+  }
+
   setSelectedPokemonVariety(varietyId: number) {
-    this.pokemonStore.setSelectedId(varietyId);
+    this.pokemonStore.setSelectedPokemonVariety(varietyId);
   }
 }

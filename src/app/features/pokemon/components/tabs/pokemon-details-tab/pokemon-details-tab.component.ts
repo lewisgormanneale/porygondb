@@ -1,4 +1,6 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { forkJoin, map, of, switchMap } from 'rxjs';
 
 import { PokemonStore } from '../../../../../shared/+state/pokemon.store';
 import { DecimetersToInchesPipe } from '../../../../../shared/pipes/decimetersToInches.pipe';
@@ -38,32 +40,70 @@ interface AbilityInformation {
 export class PokemonDetailsTabComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly abilities = signal<AbilityInformation[]>([]);
+  readonly activeAbilitySlot = signal<number | null>(null);
   readonly pokemonService = inject(PokemonService);
+  readonly destroyRef = inject(DestroyRef);
+  readonly selectedEntity$ = toObservable(this.pokemonStore.selectedEntity);
 
   constructor() {
-    effect(() => {
-      const selectedEntity = this.pokemonStore.selectedEntity();
-      if (selectedEntity?.abilities?.length) {
-        this.abilities.set([]);
-        selectedEntity.abilities.forEach((pokemonAbility: PokemonAbility) => {
-          this.pokemonService
-            .getAbilityByName(pokemonAbility.ability.name)
-            .subscribe((ability: Ability) => {
-              this.abilities.update((currentAbilities) =>
-                [
-                  ...currentAbilities,
-                  {
-                    ability,
-                    slot: pokemonAbility.slot,
-                    isHidden: pokemonAbility.is_hidden,
-                  },
-                ].sort((a, b) => a.slot - b.slot)
-              );
-            });
-        });
-      } else {
-        this.abilities.set([]);
-      }
-    });
+    this.selectedEntity$
+      .pipe(
+        map((selectedEntity) => selectedEntity?.abilities ?? []),
+        switchMap((pokemonAbilities: PokemonAbility[]) => {
+          if (!pokemonAbilities.length) {
+            return of<AbilityInformation[]>([]);
+          }
+
+          return forkJoin(
+            pokemonAbilities.map((pokemonAbility) =>
+              this.pokemonService.getAbilityByName(pokemonAbility.ability.name).pipe(
+                map((ability: Ability) => ({
+                  ability,
+                  slot: pokemonAbility.slot,
+                  isHidden: pokemonAbility.is_hidden,
+                }))
+              )
+            )
+          ).pipe(map((abilities) => abilities.sort((a, b) => a.slot - b.slot)));
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((abilities) => {
+        this.abilities.set(abilities);
+
+        if (!abilities.some((ability) => ability.slot === this.activeAbilitySlot())) {
+          this.activeAbilitySlot.set(null);
+        }
+      });
+  }
+
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.activeAbilitySlot.set(null);
+  }
+
+  onAbilityHover(slot: number): void {
+    this.activeAbilitySlot.set(slot);
+  }
+
+  onAbilityLeave(): void {
+    this.activeAbilitySlot.set(null);
+  }
+
+  onAbilityTap(event: Event, slot: number): void {
+    event.stopPropagation();
+    this.activeAbilitySlot.set(this.activeAbilitySlot() === slot ? null : slot);
+  }
+
+  onAbilityPopoverClick(event: Event): void {
+    event.stopPropagation();
+  }
+
+  getEnglishAbilityDescription(ability: Ability): string {
+    const englishEntry = ability.effect_entries?.find((entry) => entry.language.name === 'en');
+
+    return (
+      englishEntry?.short_effect || englishEntry?.effect || 'No English description available.'
+    );
   }
 }

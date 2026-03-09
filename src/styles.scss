@@ -9,6 +9,10 @@
   padding: 0;
 }
 
+:root {
+  --app-content-max-width: 1200px;
+}
+
 html {
   height: 100%;
   color-scheme: light dark;

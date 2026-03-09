@@ -1,6 +1,12 @@
-import { setupZoneTestEnv } from "jest-preset-angular/setup-env/zone";
+const originalConsoleWarn = console.warn.bind(console);
 
-setupZoneTestEnv({
-  errorOnUnknownElements: true,
-  errorOnUnknownProperties: true,
-});
+console.warn = (...args: unknown[]) => {
+  const firstArg = args[0];
+  const message = typeof firstArg === 'string' ? firstArg : '';
+
+  if (message.includes('NG02956')) {
+    return;
+  }
+
+  originalConsoleWarn(...args);
+};

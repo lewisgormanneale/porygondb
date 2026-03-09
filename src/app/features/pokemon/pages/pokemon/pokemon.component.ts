@@ -1,30 +1,47 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { map, of, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { PokemonSummaryComponent } from '../../components/pokemon-summary/pokemon-summary.component';
-import { PokemonStatsTabComponent } from '../../components/tabs/pokemon-stats-tab/pokemon-stats-tab.component';
+import { PokemonStatsSectionComponent } from '../../components/pokemon-stats-section/pokemon-stats-section.component';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { PokemonDetailsTabComponent } from '../../components/tabs/pokemon-details-tab/pokemon-details-tab.component';
 import { EvolutionLineComponent } from '../../components/evolution-line/evolution-line.component';
 import { PokemonAdditionalInfoComponent } from '../../components/pokemon-additional-info/pokemon-additional-info.component';
 import { PokemonNavBarComponent } from '../../components/pokemon-nav-bar/pokemon-nav-bar.component';
+import { PokemonMovesSectionComponent } from '../../components/pokemon-moves-section/pokemon-moves-section.component';
+import { PokemonLocationsSectionComponent } from '../../components/pokemon-locations-section/pokemon-locations-section.component';
 import { GameService } from '../../../../shared/services/game.service';
 import { PokemonEntry } from '../../../../shared/interfaces/pokeapi';
+import {
+  NATIONAL_POKEDEX_NAME,
+  NATIONAL_VERSION_GROUP_NAME,
+  VersionGroups,
+} from '../../../../shared/+state/data/version-group.constants';
+import {
+  getVersionGroupOptions,
+  PokemonVersionGroupOption,
+} from '../../utils/get-version-group-options.util';
 
 @Component({
   imports: [
     MatProgressBarModule,
-    MatTabsModule,
+    MatCardModule,
     RouterModule,
     PokemonSummaryComponent,
-    PokemonStatsTabComponent,
+    PokemonStatsSectionComponent,
     PokemonDetailsTabComponent,
     EvolutionLineComponent,
+    PokemonMovesSectionComponent,
+    PokemonLocationsSectionComponent,
     PokemonAdditionalInfoComponent,
     PokemonNavBarComponent,
+    MatFormFieldModule,
+    MatSelectModule,
   ],
   selector: 'app-pokemon',
   templateUrl: 'pokemon.component.html',
@@ -35,10 +52,43 @@ export class PokemonComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly gameService = inject(GameService);
   readonly destroyRef = inject(DestroyRef);
+  readonly router = inject(Router);
   pokemonName = signal<string>('');
   versionGroupName = signal<string>('');
   pokedexName = signal<string>('');
   pokedexEntries = signal<PokemonEntry[]>([]);
+
+  readonly isNationalMode = computed(() => this.versionGroupName() === NATIONAL_VERSION_GROUP_NAME);
+
+  readonly availableVersionGroupOptions = computed<PokemonVersionGroupOption[]>(() => {
+    const basePokemon =
+      this.pokemonStore.entities().find((pokemon) => pokemon.is_default) ??
+      this.pokemonStore.selectedEntity() ??
+      undefined;
+    const speciesDetails = this.pokemonStore.speciesDetails();
+
+    const options = getVersionGroupOptions({
+      versionGroups: VersionGroups,
+      selectedPokemon: basePokemon,
+      speciesDetails: speciesDetails?.pokedex_numbers ? speciesDetails : undefined,
+      currentVersionGroupName: this.versionGroupName(),
+      currentPokedexName: this.pokedexName(),
+    });
+
+    // Always include National option so users can switch back to National mode
+    const nationalOption: PokemonVersionGroupOption = {
+      versionGroupName: NATIONAL_VERSION_GROUP_NAME,
+      versionGroupFormattedName: 'National Dex',
+      pokedexName: NATIONAL_POKEDEX_NAME,
+      pokedexFormattedName: 'National',
+    };
+
+    if (!options.some((opt) => opt.versionGroupName === NATIONAL_VERSION_GROUP_NAME)) {
+      options.unshift(nationalOption);
+    }
+
+    return options;
+  });
 
   constructor(private route: ActivatedRoute) {
     this.route.paramMap
@@ -66,5 +116,24 @@ export class PokemonComponent {
       .subscribe((pokedex) => {
         this.pokedexEntries.set(pokedex?.pokemon_entries || []);
       });
+  }
+
+  onVersionGroupChange(versionGroupName: string): void {
+    const selectedOption = this.availableVersionGroupOptions().find(
+      (option) => option.versionGroupName === versionGroupName
+    );
+
+    const baseSpeciesName = this.pokemonStore.speciesDetails().name || this.pokemonName();
+
+    if (!selectedOption || !baseSpeciesName) {
+      return;
+    }
+
+    void this.router.navigate([
+      '/pokedex',
+      selectedOption.versionGroupName,
+      selectedOption.pokedexName,
+      baseSpeciesName,
+    ]);
   }
 }

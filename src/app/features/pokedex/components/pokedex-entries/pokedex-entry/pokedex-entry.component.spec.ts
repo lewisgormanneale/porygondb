@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PokedexEntryComponent } from './pokedex-entry.component';
 import { PokemonSpecies } from '../../../../../shared/interfaces/pokeapi';
@@ -36,13 +36,13 @@ describe('PokedexEntryComponent', () => {
         expect(skeleton).toBeTruthy();
       });
 
-      it("Then a spinner is displayed instead of the pokemon's image", fakeAsync(() => {
+      it("Then a spinner is displayed instead of the pokemon's image", () => {
         const spinner = fixture.debugElement.query(By.css('mat-progress-spinner'));
         const image = fixture.debugElement.query(By.css('img'));
 
         expect(spinner).toBeTruthy();
         expect(image).toBeFalsy();
-      }));
+      });
 
       it('Then a skeleton button element will be displayed as pokemon data is missing', () => {
         const skeleton = fixture.debugElement.query(By.css('.skeleton.skeleton-button'));
@@ -72,13 +72,13 @@ describe('PokedexEntryComponent', () => {
         const titleElement = title.nativeElement as HTMLElement;
         expect((titleElement.textContent ?? '').trim()).toBe('Bulbasaur');
       });
-      it('Then should display the image and hide progress spinner when it finishes loading', fakeAsync(() => {
+      it('Then should display the image and hide progress spinner when it finishes loading', () => {
         const spinner = fixture.debugElement.query(By.css('mat-progress-spinner'));
         const image = fixture.debugElement.query(By.css('img'));
 
         expect(spinner).toBeNull();
         expect(image).toBeTruthy();
-      }));
+      });
       it("Then a view button should be displayed that routes to that pokemon's page", () => {
         const viewButton = fixture.debugElement.query(By.css('a[mat-button]'));
         expect(viewButton).toBeTruthy();
