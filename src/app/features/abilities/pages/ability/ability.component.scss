@@ -1,0 +1,51 @@
+@use '@angular/material' as mat;
+
+.ability-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  .ability-summary,
+  .ability-pokemon-group {
+    @include mat.card-overrides(
+      (
+        outlined-container-color: var(--mat-sys-surface-container-low),
+      )
+    );
+  }
+
+  .short-effect {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .pokemon-sprites-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pokemon-sprite-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    background-color: var(--mat-sys-surface-container);
+    text-decoration: none;
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container-high);
+    }
+  }
+
+  .pokemon-sprite {
+    width: 40px;
+    height: 40px;
+    image-rendering: pixelated;
+  }
+
+}

@@ -47,7 +47,6 @@
   .active-nav-item {
     background-color: var(--mat-sys-secondary-container);
     color: var(--mat-sys-on-secondary-container);
-    border-radius: 10px;
   }
 }
 
@@ -117,5 +116,17 @@ main {
 .page-container {
   width: 100%;
   max-width: var(--app-content-max-width);
+  padding-inline: 16px;
   box-sizing: border-box;
+
+  &.page-container-full-bleed {
+    max-width: 100%;
+    padding-inline: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-container {
+    padding-inline: 8px;
+  }
 }

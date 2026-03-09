@@ -93,4 +93,11 @@ export class PokemonService {
     if (limit !== undefined) params['limit'] = limit.toString();
     return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/stat`, { params });
   }
+
+  listAbilities(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/ability`, { params });
+  }
 }

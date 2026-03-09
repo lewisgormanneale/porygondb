@@ -9,6 +9,16 @@
   padding: 0;
 }
 
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 :root {
   --app-content-max-width: 1200px;
 }

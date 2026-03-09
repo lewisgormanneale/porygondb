@@ -19,6 +19,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { filter } from 'rxjs';
+import { NavigationEnd } from '@angular/router';
 import {
   NATIONAL_POKEDEX_NAME,
   NATIONAL_VERSION_GROUP_NAME,
@@ -63,6 +65,8 @@ export class AppComponent implements OnInit {
   filteredPokemonOptions = signal<PokemonSearchOption[]>([]);
   readonly isMobile = signal(false);
   readonly isDrawerOpen = signal(true);
+  readonly currentUrl = signal('');
+  readonly isPokedexListRoute = signal(false);
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
@@ -72,6 +76,19 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUrl.set(this.router.url);
+    this.updateLayoutForRoute(this.router.url);
+
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((event) => {
+        this.currentUrl.set(event.urlAfterRedirects);
+        this.updateLayoutForRoute(event.urlAfterRedirects);
+      });
+
     this.breakpointObserver
       .observe([Breakpoints.Handset])
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -147,5 +164,10 @@ export class AppComponent implements OnInit {
       .split('-')
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join(' ');
+  }
+
+  private updateLayoutForRoute(url: string): void {
+    const path = url.split('?')[0]?.split('#')[0] ?? '';
+    this.isPokedexListRoute.set(/^\/pokedex\/[^/]+\/[^/]+$/.test(path));
   }
 }

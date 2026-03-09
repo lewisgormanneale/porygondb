@@ -1,0 +1,38 @@
+<div class="abilities-page">
+  <mat-card appearance="outlined" class="abilities-header">
+    <mat-card-header>
+      <mat-card-title>Abilities</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+        <mat-label>Search abilities</mat-label>
+        <input matInput [value]="searchValue()" (input)="onSearchInput($any($event.target).value)" />
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @else {
+    <mat-card appearance="outlined" class="abilities-list">
+      <mat-card-content>
+        <div class="abilities-grid">
+          @for (ability of paginatedAbilities(); track ability.name) {
+            <a class="ability-link" [routerLink]="['/abilities', ability.name]">
+              {{ ability.displayName }}
+            </a>
+          }
+        </div>
+      </mat-card-content>
+      <mat-paginator
+        (page)="onPageChange($event)"
+        [length]="filteredAbilities().length"
+        [pageIndex]="pageEvent().pageIndex"
+        [pageSize]="pageEvent().pageSize"
+        [pageSizeOptions]="[25, 50, 100]"
+        [showFirstLastButtons]="true"
+        aria-label="Ability pagination"
+      ></mat-paginator>
+    </mat-card>
+  }
+</div>

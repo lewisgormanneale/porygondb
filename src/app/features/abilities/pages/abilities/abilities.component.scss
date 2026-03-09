@@ -1,0 +1,42 @@
+@use '@angular/material' as mat;
+
+.abilities-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  .abilities-header,
+  .abilities-list {
+    @include mat.card-overrides(
+      (
+        outlined-container-color: var(--mat-sys-surface-container-low),
+      )
+    );
+  }
+
+  .search-field {
+    width: 100%;
+  }
+
+  .abilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+  } 
+
+  .ability-link {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--mat-sys-on-surface);
+    background-color: var(--mat-sys-surface-container);
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container-high);
+    }
+  }
+
+}
