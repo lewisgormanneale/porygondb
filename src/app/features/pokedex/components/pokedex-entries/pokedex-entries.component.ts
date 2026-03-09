@@ -22,6 +22,7 @@ export class PokedexEntriesComponent implements OnInit {
   hidePageSize = signal(true);
   readonly pokedexName = input('');
   readonly versionGroupName = input('');
+  readonly showShiny = input(false);
   readonly pokedexName$ = toObservable(this.pokedexName);
   readonly versionGroupName$ = toObservable(this.versionGroupName);
   readonly gameService = inject(GameService);

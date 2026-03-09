@@ -2,6 +2,16 @@
   <div class="pokedex">
     <div class="pokedex-options">
       <version-group-select></version-group-select>
+      <button
+        mat-icon-button
+        (click)="toggleShiny()"
+        [matTooltip]="showShiny() ? 'Show normal sprites' : 'Show shiny sprites'"
+        [class.active]="showShiny()"
+        class="shiny-toggle"
+        aria-label="Toggle shiny sprites"
+      >
+        <mat-icon>auto_awesome</mat-icon>
+      </button>
     </div>
     <mat-tab-group
       animationDuration="0ms"
@@ -14,6 +24,7 @@
             <pokedex-entries
               [pokedexName]="pokedex.name"
               [versionGroupName]="versionGroupStore.selectedEntity()!.name"
+              [showShiny]="showShiny()"
             ></pokedex-entries>
           </ng-template>
         </mat-tab>

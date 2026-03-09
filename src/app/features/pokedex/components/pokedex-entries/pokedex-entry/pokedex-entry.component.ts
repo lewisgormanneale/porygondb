@@ -1,4 +1,4 @@
-import { Component, input, signal, WritableSignal } from '@angular/core';
+import { Component, computed, input, signal, WritableSignal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -16,7 +16,15 @@ export class PokedexEntryComponent {
   pokemon = input<PokemonSpecies>();
   versionGroupName = input.required<string>();
   pokedexName = input.required<string>();
+  showShiny = input(false);
   imageLoading: WritableSignal<boolean> = signal(true);
+
+  readonly spriteUrl = computed(() => {
+    const id = this.pokemon()?.id;
+    if (!id) return '';
+    const shinyPath = this.showShiny() ? 'shiny/' : '';
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${shinyPath}${id}.png`;
+  });
 
   onImageLoad() {
     this.imageLoading.set(false);

@@ -2,6 +2,9 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { VersionGroupSelectComponent } from '../../components/version-group-select/version-group-select.component';
 import { PokedexEntriesComponent } from '../../components/pokedex-entries/pokedex-entries.component';
 import { VersionGroupStore } from '../../../../shared/+state/version-group.store';
@@ -10,6 +13,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 @Component({
   imports: [
     MatTabsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
     VersionGroupSelectComponent,
     PokedexEntriesComponent,
     MatProgressBarModule,
@@ -21,6 +27,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 export class PokedexComponent implements OnInit {
   readonly versionGroupStore = inject(VersionGroupStore);
   readonly selectedPokedexIndex = signal(0);
+  readonly showShiny = signal(false);
+
+  toggleShiny(): void {
+    this.showShiny.update((v) => !v);
+  }
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _router = inject(Router);
   private readonly _destroy$ = inject(DestroyRef);

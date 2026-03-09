@@ -8,5 +8,23 @@
 
   .pokedex-options {
     background-color: var(--mat-sys-secondary-container);
+    display: flex;
+    align-items: center;
+    padding-right: 8px;
+
+    .shiny-toggle {
+      color: var(--mat-sys-on-secondary-container);
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &.active {
+        opacity: 1;
+        color: #ffd700;
+      }
+    }
   }
 }
