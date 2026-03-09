@@ -21,6 +21,12 @@
 - Preserve current ordering decisions already agreed in the project.
 - Keep gender ratio visual treatment unchanged unless explicitly requested.
 
+## Material Styling Rules
+
+- Prefer Angular Material theming mixins (`@include mat.*-overrides(...)`) for component styling changes.
+- Avoid targeting MDC internals (`.mdc-*`, `.mat-mdc-*`, `--mdc-*`) unless there is no supported Material token/mixin alternative.
+- Do not use `::ng-deep` for Material component internals when an override mixin can express the same styling.
+
 ## Testing Standards
 
 - Test runner is **Vitest via Angular unit-test builder** (`ng test`).

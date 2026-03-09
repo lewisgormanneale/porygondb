@@ -1,10 +1,11 @@
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Ability, AbilityPokemon } from '../../../../shared/interfaces/pokeapi';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
+import { catchError, of, take } from 'rxjs';
 
 @Component({
   selector: 'app-ability',
@@ -14,11 +15,13 @@ import { PokemonService } from '../../../../shared/services/pokemon.service';
 })
 export class AbilityComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly pokemonService = inject(PokemonService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly isLoading = signal(true);
   readonly ability = signal<Ability | null>(null);
+  readonly speciesNameByPokemonName = signal<Record<string, string>>({});
 
   readonly displayName = computed(() => {
     const ability = this.ability();
@@ -83,6 +86,34 @@ export class AbilityComponent {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
   }
 
+  onAbilityPokemonClick(event: MouseEvent, pokemonName: string): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const cachedSpeciesName = this.speciesNameByPokemonName()[pokemonName];
+    if (cachedSpeciesName) {
+      this.navigateToSpecies(cachedSpeciesName);
+      return;
+    }
+
+    this.pokemonService
+      .getPokemonByName(pokemonName)
+      .pipe(
+        take(1),
+        catchError(() => of(null))
+      )
+      .subscribe((pokemon) => {
+        const speciesName = pokemon?.species?.name ?? pokemonName;
+
+        this.speciesNameByPokemonName.update((mapping) => ({
+          ...mapping,
+          [pokemonName]: speciesName,
+        }));
+
+        this.navigateToSpecies(speciesName);
+      });
+  }
+
   private groupedPokemon(isHidden: boolean): AbilityPokemon[] {
     const ability = this.ability();
     if (!ability) {
@@ -92,6 +123,10 @@ export class AbilityComponent {
     return ability.pokemon
       .filter((entry) => entry.is_hidden === isHidden)
       .sort((a, b) => a.pokemon.name.localeCompare(b.pokemon.name));
+  }
+
+  private navigateToSpecies(speciesName: string): void {
+    void this.router.navigate(['/pokedex', 'national', 'national', speciesName]);
   }
 
   private formatName(name: string): string {
