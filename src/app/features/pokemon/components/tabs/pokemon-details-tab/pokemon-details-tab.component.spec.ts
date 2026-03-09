@@ -189,7 +189,9 @@ describe('PokemonDetailsTabComponent', () => {
     chip.click();
     fixture.detectChanges();
 
-    let popover = fixture.nativeElement.querySelector('[data-testid="ability-description-popover"]');
+    let popover = fixture.nativeElement.querySelector(
+      '[data-testid="ability-description-popover"]'
+    );
     expect(popover?.textContent).toContain('Boosts grass moves in a pinch.');
 
     document.dispatchEvent(new MouseEvent('click'));

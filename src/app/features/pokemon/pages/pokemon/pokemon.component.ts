@@ -17,7 +17,11 @@ import { PokemonMovesSectionComponent } from '../../components/pokemon-moves-sec
 import { PokemonLocationsSectionComponent } from '../../components/pokemon-locations-section/pokemon-locations-section.component';
 import { GameService } from '../../../../shared/services/game.service';
 import { PokemonEntry } from '../../../../shared/interfaces/pokeapi';
-import { VersionGroups } from '../../../../shared/+state/data/version-group.constants';
+import {
+  NATIONAL_POKEDEX_NAME,
+  NATIONAL_VERSION_GROUP_NAME,
+  VersionGroups,
+} from '../../../../shared/+state/data/version-group.constants';
 import {
   getVersionGroupOptions,
   PokemonVersionGroupOption,
@@ -54,6 +58,8 @@ export class PokemonComponent {
   pokedexName = signal<string>('');
   pokedexEntries = signal<PokemonEntry[]>([]);
 
+  readonly isNationalMode = computed(() => this.versionGroupName() === NATIONAL_VERSION_GROUP_NAME);
+
   readonly availableVersionGroupOptions = computed<PokemonVersionGroupOption[]>(() => {
     const basePokemon =
       this.pokemonStore.entities().find((pokemon) => pokemon.is_default) ??
@@ -61,13 +67,27 @@ export class PokemonComponent {
       undefined;
     const speciesDetails = this.pokemonStore.speciesDetails();
 
-    return getVersionGroupOptions({
+    const options = getVersionGroupOptions({
       versionGroups: VersionGroups,
       selectedPokemon: basePokemon,
       speciesDetails: speciesDetails?.pokedex_numbers ? speciesDetails : undefined,
       currentVersionGroupName: this.versionGroupName(),
       currentPokedexName: this.pokedexName(),
     });
+
+    // Always include National option so users can switch back to National mode
+    const nationalOption: PokemonVersionGroupOption = {
+      versionGroupName: NATIONAL_VERSION_GROUP_NAME,
+      versionGroupFormattedName: 'National Dex',
+      pokedexName: NATIONAL_POKEDEX_NAME,
+      pokedexFormattedName: 'National',
+    };
+
+    if (!options.some((opt) => opt.versionGroupName === NATIONAL_VERSION_GROUP_NAME)) {
+      options.unshift(nationalOption);
+    }
+
+    return options;
   });
 
   constructor(private route: ActivatedRoute) {

@@ -102,6 +102,8 @@ export class PokemonDetailsTabComponent {
   getEnglishAbilityDescription(ability: Ability): string {
     const englishEntry = ability.effect_entries?.find((entry) => entry.language.name === 'en');
 
-    return englishEntry?.short_effect || englishEntry?.effect || 'No English description available.';
+    return (
+      englishEntry?.short_effect || englishEntry?.effect || 'No English description available.'
+    );
   }
 }

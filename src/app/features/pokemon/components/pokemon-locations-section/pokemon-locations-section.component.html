@@ -4,7 +4,11 @@
   </mat-card-header>
 
   <mat-card-content>
-    @if (isLoading()) {
+    @if (isNationalMode()) {
+      <p class="body-medium national-mode-message">
+        Select a version group from the dropdown above to view location data for that game.
+      </p>
+    } @else if (isLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     } @else if (locationRows().length > 0) {
       <div class="locations-table-wrap">

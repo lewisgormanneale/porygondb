@@ -5,6 +5,28 @@
       <span>PorygonDB</span>
     </a>
     <span class="spacer"></span>
+    <div class="search-container">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          type="text"
+          matInput
+          placeholder="Search Pokémon..."
+          [(ngModel)]="searchValue"
+          (input)="onSearchInput()"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onPokemonSelected($event)"
+          autoActiveFirstOption
+        >
+          @for (option of filteredPokemonOptions(); track option.name) {
+            <mat-option [value]="option.name">{{ option.displayName }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
     <div class="toolbar-actions">
       <button
         (click)="themeStore.toggleTheme()"

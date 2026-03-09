@@ -64,11 +64,15 @@
         </mat-card>
       </section>
       <section class="moves-info">
-        <pokemon-moves-section [versionGroupName]="versionGroupName()"></pokemon-moves-section>
+        <pokemon-moves-section
+          [versionGroupName]="versionGroupName()"
+          [isNationalMode]="isNationalMode()"
+        ></pokemon-moves-section>
       </section>
       <section class="locations-info">
         <pokemon-locations-section
           [versionGroupName]="versionGroupName()"
+          [isNationalMode]="isNationalMode()"
         ></pokemon-locations-section>
       </section>
     </div>

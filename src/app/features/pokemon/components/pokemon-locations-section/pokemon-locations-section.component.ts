@@ -55,6 +55,7 @@ export class PokemonLocationsSectionComponent {
   readonly gameService = inject(GameService);
   readonly destroyRef = inject(DestroyRef);
   readonly versionGroupName = input.required<string>();
+  readonly isNationalMode = input<boolean>(false);
   readonly encounterUrl = computed(
     () => this.pokemonStore.selectedEntity()?.location_area_encounters ?? ''
   );

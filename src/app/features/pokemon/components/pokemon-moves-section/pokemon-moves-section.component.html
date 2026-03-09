@@ -4,7 +4,11 @@
   </mat-card-header>
 
   <mat-card-content>
-    @if (movesTableRows().length > 0) {
+    @if (isNationalMode()) {
+      <p class="body-medium national-mode-message">
+        Select a version group from the dropdown above to view move data for that game.
+      </p>
+    } @else if (movesTableRows().length > 0) {
       <mat-tab-group animationDuration="0ms">
         @for (methodTab of moveMethodTabs(); track methodTab.key) {
           <mat-tab [label]="methodTab.label">

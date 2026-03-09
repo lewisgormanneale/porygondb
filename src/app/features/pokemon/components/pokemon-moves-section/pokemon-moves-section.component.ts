@@ -25,6 +25,7 @@ interface MoveMethodTab {
 export class PokemonMovesSectionComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly versionGroupName = input.required<string>();
+  readonly isNationalMode = input<boolean>(false);
   readonly pageSize = 10;
   readonly pageByMethodKey = signal<Record<string, number>>({});
 

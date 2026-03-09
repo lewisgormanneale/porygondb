@@ -23,7 +23,9 @@
     }
   }
 
-  .no-moves {
+  .no-moves,
+  .national-mode-message {
     margin: 16px 0;
+    color: var(--mat-sys-on-surface-variant);
   }
 }
