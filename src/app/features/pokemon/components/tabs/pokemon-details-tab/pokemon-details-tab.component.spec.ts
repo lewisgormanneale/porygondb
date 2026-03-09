@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import { provideLocationMocks } from '@angular/common/testing';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 import { PokemonDetailsTabComponent } from './pokemon-details-tab.component';
@@ -38,6 +40,8 @@ describe('PokemonDetailsTabComponent', () => {
     const fixture = TestBed.configureTestingModule({
       imports: [PokemonDetailsTabComponent],
       providers: [
+        provideRouter([]),
+        provideLocationMocks(),
         { provide: PokemonStore, useValue: pokemonStoreStub },
         { provide: PokemonService, useValue: pokemonServiceStub },
       ],
@@ -78,6 +82,8 @@ describe('PokemonDetailsTabComponent', () => {
     const fixture = TestBed.configureTestingModule({
       imports: [PokemonDetailsTabComponent],
       providers: [
+        provideRouter([]),
+        provideLocationMocks(),
         { provide: PokemonStore, useValue: pokemonStoreStub },
         { provide: PokemonService, useValue: pokemonServiceStub },
       ],
@@ -123,6 +129,8 @@ describe('PokemonDetailsTabComponent', () => {
     const fixture = TestBed.configureTestingModule({
       imports: [PokemonDetailsTabComponent],
       providers: [
+        provideRouter([]),
+        provideLocationMocks(),
         { provide: PokemonStore, useValue: pokemonStoreStub },
         { provide: PokemonService, useValue: pokemonServiceStub },
       ],
@@ -147,7 +155,7 @@ describe('PokemonDetailsTabComponent', () => {
     expect(fixture.componentInstance.abilities()).toEqual([]);
   });
 
-  it('shows ability description on chip tap and hides on outside click', () => {
+  it('renders ability chip as a link to the ability page', () => {
     selectedEntitySignal.set(null);
     englishSpeciesDescriptionSignal.set(undefined);
 
@@ -167,6 +175,8 @@ describe('PokemonDetailsTabComponent', () => {
     const fixture = TestBed.configureTestingModule({
       imports: [PokemonDetailsTabComponent],
       providers: [
+        provideRouter([]),
+        provideLocationMocks(),
         { provide: PokemonStore, useValue: pokemonStoreStub },
         { provide: PokemonService, useValue: pokemonServiceStub },
       ],
@@ -185,8 +195,54 @@ describe('PokemonDetailsTabComponent', () => {
     );
     fixture.detectChanges();
 
-    const chip = fixture.nativeElement.querySelector('mat-chip');
-    chip.click();
+    const abilityLink: HTMLAnchorElement | null =
+      fixture.nativeElement.querySelector('a[mat-chip]');
+    expect(abilityLink).not.toBeNull();
+    expect(abilityLink?.getAttribute('href')).toBe('/abilities/overgrow');
+  });
+
+  it('shows ability description on hover and hides on outside click', () => {
+    selectedEntitySignal.set(null);
+    englishSpeciesDescriptionSignal.set(undefined);
+
+    getAbilityByNameMock.mockReturnValue(
+      of({
+        names: [{ language: { name: 'en' }, name: 'Overgrow' }],
+        effect_entries: [
+          {
+            language: { name: 'en', url: 'https://pokeapi.co/api/v2/language/9/' },
+            short_effect: 'Boosts grass moves in a pinch.',
+            effect: 'Boosts grass moves in a pinch.',
+          },
+        ],
+      })
+    );
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [PokemonDetailsTabComponent],
+      providers: [
+        provideRouter([]),
+        provideLocationMocks(),
+        { provide: PokemonStore, useValue: pokemonStoreStub },
+        { provide: PokemonService, useValue: pokemonServiceStub },
+      ],
+    }).createComponent(PokemonDetailsTabComponent);
+
+    selectedEntitySignal.set(
+      createPokemonMock({
+        abilities: [
+          {
+            ability: { name: 'overgrow', url: 'https://pokeapi.co/api/v2/ability/65/' },
+            slot: 1,
+            is_hidden: false,
+          },
+        ],
+      })
+    );
+    fixture.detectChanges();
+
+    const wrapper = fixture.nativeElement.querySelector('.ability-chip-wrapper');
+    wrapper.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
     fixture.detectChanges();
 
     let popover = fixture.nativeElement.querySelector(
@@ -199,5 +255,29 @@ describe('PokemonDetailsTabComponent', () => {
 
     popover = fixture.nativeElement.querySelector('[data-testid="ability-description-popover"]');
     expect(popover).toBeNull();
+  });
+
+  it('returns gender tooltip messages for all ratio cases', () => {
+    selectedEntitySignal.set(null);
+    englishSpeciesDescriptionSignal.set(undefined);
+
+    getAbilityByNameMock.mockReturnValue(of({ names: [], effect_entries: [] }));
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [PokemonDetailsTabComponent],
+      providers: [
+        provideRouter([]),
+        provideLocationMocks(),
+        { provide: PokemonStore, useValue: pokemonStoreStub },
+        { provide: PokemonService, useValue: pokemonServiceStub },
+      ],
+    }).createComponent(PokemonDetailsTabComponent);
+
+    const component = fixture.componentInstance;
+
+    expect(component.getGenderRatioTooltip(-1)).toBe('This Pokémon is genderless.');
+    expect(component.getGenderRatioTooltip(8)).toBe('This Pokémon is always female.');
+    expect(component.getGenderRatioTooltip(0)).toBe('This Pokémon is always male.');
+    expect(component.getGenderRatioTooltip(1)).toBe('Gender ratio: 87.5% male, 12.5% female.');
   });
 });

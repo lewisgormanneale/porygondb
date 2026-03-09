@@ -9,8 +9,23 @@
   padding: 0;
 }
 
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 :root {
   --app-content-max-width: 1200px;
+  --mat-sys-corner-extra-small: 2px;
+  --mat-sys-corner-small: 4px;
+  --mat-sys-corner-medium: 6px;
+  --mat-sys-corner-large: 8px;
+  --mat-sys-corner-extra-large: 10px;
 }
 
 html {

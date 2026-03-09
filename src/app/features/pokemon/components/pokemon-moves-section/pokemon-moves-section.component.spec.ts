@@ -3,14 +3,25 @@ import { signal } from '@angular/core';
 import type { PageEvent } from '@angular/material/paginator';
 import { PokemonMovesSectionComponent } from './pokemon-moves-section.component';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
+import { PokemonService } from '../../../../shared/services/pokemon.service';
+import { of } from 'rxjs';
+import { vi } from 'vitest';
+import { ThemeStore } from '../../../../core/+state/theme.store';
 
 describe('PokemonMovesSectionComponent', () => {
   let fixture: ComponentFixture<PokemonMovesSectionComponent>;
   let component: PokemonMovesSectionComponent;
 
   const selectedEntitySignal = signal<any>(undefined);
+  const getMoveByNameMock = vi.fn();
   const pokemonStoreStub = {
     selectedEntity: selectedEntitySignal,
+  };
+  const pokemonServiceStub = {
+    getMoveByName: getMoveByNameMock,
+  };
+  const themeStoreStub = {
+    isDarkTheme: () => false,
   };
 
   const buildPageEvent = (pageIndex: number): PageEvent => ({
@@ -32,9 +43,25 @@ describe('PokemonMovesSectionComponent', () => {
   });
 
   beforeEach(async () => {
+    getMoveByNameMock.mockImplementation((name: string) =>
+      of({
+        id: 1,
+        name,
+        accuracy: 100,
+        power: 90,
+        pp: 15,
+        type: { name: 'electric', url: 'https://pokeapi.co/api/v2/type/13/' },
+        damage_class: { name: 'special', url: 'https://pokeapi.co/api/v2/move-damage-class/3/' },
+      })
+    );
+
     await TestBed.configureTestingModule({
       imports: [PokemonMovesSectionComponent],
-      providers: [{ provide: PokemonStore, useValue: pokemonStoreStub }],
+      providers: [
+        { provide: PokemonStore, useValue: pokemonStoreStub },
+        { provide: PokemonService, useValue: pokemonServiceStub },
+        { provide: ThemeStore, useValue: themeStoreStub },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PokemonMovesSectionComponent);
@@ -106,5 +133,36 @@ describe('PokemonMovesSectionComponent', () => {
     fixture.detectChanges();
 
     expect(component.getPageIndex('machine')).toBe(0);
+  });
+
+  it('loads and caches metadata for currently visible moves', () => {
+    selectedEntitySignal.set({
+      moves: [createMove('thunderbolt', 'machine', 0), createMove('quick-attack', 'level-up', 10)],
+    });
+
+    fixture.componentRef.setInput('versionGroupName', 'red-blue');
+    fixture.detectChanges();
+
+    expect(getMoveByNameMock).toHaveBeenCalled();
+
+    const visibleMoveDetails = component.getMoveDetails('quick-attack');
+    expect(visibleMoveDetails?.typeName).toBe('Electric');
+    expect(visibleMoveDetails?.damageClassKey).toBe('special');
+    expect(visibleMoveDetails?.damageClassName).toBe('Special');
+    expect(visibleMoveDetails?.pp).toBe(15);
+    expect(visibleMoveDetails?.power).toBe(90);
+    expect(visibleMoveDetails?.accuracy).toBe(100);
+
+    expect(fixture.nativeElement.querySelector('type-chip')).not.toBeNull();
+  });
+
+  it('maps move category keys to icons', () => {
+    fixture.componentRef.setInput('versionGroupName', 'red-blue');
+    fixture.detectChanges();
+
+    expect(component.getMoveCategoryIcon('physical')).toBe('explosion');
+    expect(component.getMoveCategoryIcon('special')).toBe('auto_awesome');
+    expect(component.getMoveCategoryIcon('status')).toBe('tune');
+    expect(component.getMoveCategoryIcon('unknown')).toBe('help_outline');
   });
 });

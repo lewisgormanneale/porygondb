@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   Ability,
   EvolutionChain,
+  Move,
   NamedAPIResourceList,
   Pokemon,
   PokemonForm,
@@ -52,6 +53,10 @@ export class PokemonService {
     return this.http.get<Ability>(`${POKEAPI_BASE_URL}/ability/${id}`);
   }
 
+  getMoveByName(name: string): Observable<Move> {
+    return this.http.get<Move>(`${POKEAPI_BASE_URL}/move/${encodeURIComponent(name)}`);
+  }
+
   getStatByName(name: string): Observable<Stat> {
     return this.http.get<Stat>(`${POKEAPI_BASE_URL}/stat/${encodeURIComponent(name)}`);
   }
@@ -92,5 +97,12 @@ export class PokemonService {
     if (offset !== undefined) params['offset'] = offset.toString();
     if (limit !== undefined) params['limit'] = limit.toString();
     return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/stat`, { params });
+  }
+
+  listAbilities(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/ability`, { params });
   }
 }

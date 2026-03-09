@@ -7,10 +7,56 @@
     )
   );
 
+  &.type-chip-small {
+    @include mat.chips-overrides(
+      (
+        container-height: 22px,
+      )
+    );
+
+    border-radius: 4px;
+
+    .chip-text {
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 500;
+    }
+  }
+
+  &.type-chip-medium {
+    @include mat.chips-overrides(
+      (
+        container-height: 28px,
+      )
+    );
+
+    border-radius: 6px;
+  }
+
+  &.type-chip-large {
+    @include mat.chips-overrides(
+      (
+        container-height: 32px,
+      )
+    );
+
+    border-radius: 8px;
+
+    .chip-text {
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 600;
+    }
+  }
+
   .chip-text {
     text-transform: capitalize;
     font-weight: 500;
     color: #f9f9ff;
-    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+    text-shadow:
+      1px 1px 0 #000,
+      -1px 1px 0 #000,
+      -1px -1px 0 #000,
+      1px -1px 0 #000;
   }
 }

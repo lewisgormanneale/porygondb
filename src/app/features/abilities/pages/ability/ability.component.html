@@ -1,0 +1,76 @@
+<div class="ability-page">
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @else if (ability()) {
+    <mat-card appearance="outlined" class="ability-summary">
+      <mat-card-header>
+        <mat-card-title>{{ displayName() }}</mat-card-title>
+        <mat-card-subtitle>Generation: {{ ability()!.generation.name }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        @if (englishShortEffect()) {
+          <p class="short-effect">{{ englishShortEffect() }}</p>
+        }
+        <p>{{ englishEffect() }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="ability-pokemon-group">
+      <mat-card-header>
+        <mat-card-title>Pokémon that can have {{ displayName() }} as an ability:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (normalAbilityPokemon().length === 0) {
+          <p>None listed.</p>
+        } @else {
+          <div class="pokemon-sprites-grid">
+            @for (entry of normalAbilityPokemon(); track entry.pokemon.name) {
+              <a
+                [routerLink]="['/pokedex', 'national', 'national', entry.pokemon.name]"
+                (click)="onAbilityPokemonClick($event, entry.pokemon.name)"
+                [attr.aria-label]="entry.pokemon.name"
+                [title]="entry.pokemon.name"
+                class="pokemon-sprite-link"
+              >
+                <img
+                  [src]="getSpriteUrl(entry.pokemon.url)"
+                  [alt]="entry.pokemon.name"
+                  class="pokemon-sprite"
+                />
+              </a>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="ability-pokemon-group">
+      <mat-card-header>
+        <mat-card-title>Pokémon with {{ displayName() }} as a Hidden Ability:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (hiddenAbilityPokemon().length === 0) {
+          <p>None listed.</p>
+        } @else {
+          <div class="pokemon-sprites-grid">
+            @for (entry of hiddenAbilityPokemon(); track entry.pokemon.name) {
+              <a
+                [routerLink]="['/pokedex', 'national', 'national', entry.pokemon.name]"
+                (click)="onAbilityPokemonClick($event, entry.pokemon.name)"
+                [attr.aria-label]="entry.pokemon.name"
+                [title]="entry.pokemon.name"
+                class="pokemon-sprite-link"
+              >
+                <img
+                  [src]="getSpriteUrl(entry.pokemon.url)"
+                  [alt]="entry.pokemon.name"
+                  class="pokemon-sprite"
+                />
+              </a>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

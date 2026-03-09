@@ -20,15 +20,23 @@
           (mouseenter)="onAbilityHover(ability.slot)"
           (mouseleave)="onAbilityLeave()"
         >
-          <mat-chip [disabled]="ability.isHidden" (click)="onAbilityTap($event, ability.slot)">
+          <a
+            mat-chip
+            [routerLink]="['/abilities', ability.abilityName]"
+            class="ability-chip-link"
+            [class.hidden-ability-chip]="ability.isHidden"
+          >
             {{ ability.ability.names || [] | localise: 'en' : 'name' }}
-          </mat-chip>
+          </a>
           @if (activeAbilitySlot() === ability.slot) {
             <div
               class="ability-description-popover body-small"
               data-testid="ability-description-popover"
               (click)="onAbilityPopoverClick($event)"
             >
+              @if (ability.isHidden) {
+                <span class="hidden-ability-description-label">(Hidden Ability)</span>
+              }
               {{ getEnglishAbilityDescription(ability.ability) }}
             </div>
           }
@@ -63,12 +71,18 @@
     @if (pokemonStore.speciesDetails()!.gender_rate >= 0) {
       <mat-progress-bar
         [value]="pokemonStore.speciesDetails()!.gender_rate | genderRate"
+        [matTooltip]="getGenderRatioTooltip(pokemonStore.speciesDetails()!.gender_rate)"
         class="progress-bar gender-rate"
         mode="determinate"
       >
       </mat-progress-bar>
     } @else if (pokemonStore.speciesDetails()!.gender_rate === -1) {
-      <mat-progress-bar [value]="100" class="progress-bar genderless" mode="determinate">
+      <mat-progress-bar
+        [value]="100"
+        [matTooltip]="getGenderRatioTooltip(pokemonStore.speciesDetails()!.gender_rate)"
+        class="progress-bar genderless"
+        mode="determinate"
+      >
       </mat-progress-bar>
     }
   </div>

@@ -1,5 +1,50 @@
 @use '@angular/material' as mat;
 
+.app-shell {
+  height: 100%;
+}
+
+.app-drawer {
+  width: min(85vw, 320px);
+  border-right: 1px solid var(--mat-sys-outline-variant);
+}
+
+.drawer-content {
+  padding: 12px;
+
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .drawer-search-field {
+    width: 100%;
+    margin-bottom: 8px;
+
+    @include mat.form-field-overrides(
+      (
+        outlined-outline-color: var(--mat-sys-outline-variant),
+        container-height: 40px,
+        container-vertical-padding: 4px,
+      )
+    );
+
+    mat-icon {
+      margin-right: 4px;
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  .active-nav-item {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+  }
+}
+
 .header {
   @include mat.toolbar-overrides(
     (
@@ -11,9 +56,12 @@
   display: flex;
   justify-content: center;
 
+  .menu-button {
+    margin-right: 8px;
+  }
+
   .header-content {
     width: 100%;
-    max-width: var(--app-content-max-width);
     padding-inline: 16px;
     display: flex;
     align-items: center;
@@ -34,37 +82,6 @@
     flex: 1 1 auto;
   }
 
-  .search-container {
-    margin-right: 16px;
-    display: flex;
-    align-items: center;
-
-    .search-field {
-      width: 250px;
-      font-size: 14px;
-
-      @include mat.form-field-overrides(
-        (
-          outlined-outline-color: var(--mat-sys-outline-variant),
-          container-height: 40px,
-          container-vertical-padding: 4px,
-        )
-      );
-
-      ::ng-deep .mat-mdc-form-field-infix {
-        display: flex;
-        align-items: center;
-      }
-
-      mat-icon {
-        margin-right: 4px;
-        font-size: 18px;
-        height: 18px;
-        width: 18px;
-      }
-    }
-  }
-
   .toolbar-actions {
     display: flex;
     justify-content: flex-end;
@@ -74,13 +91,14 @@
 
 @media (max-width: 600px) {
   .header {
-    .search-container {
-      display: none;
-    }
-
     .title span {
       display: none;
     }
+  }
+
+  .app-drawer {
+    width: 100vw;
+    max-width: 100vw;
   }
 }
 
@@ -95,4 +113,15 @@ main {
   max-width: var(--app-content-max-width);
   padding-inline: 16px;
   box-sizing: border-box;
+
+  &.page-container-full-bleed {
+    max-width: 100%;
+    padding-inline: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-container {
+    padding-inline: 8px;
+  }
 }
