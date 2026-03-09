@@ -16,6 +16,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import { PokemonService } from './shared/services/pokemon.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   NATIONAL_POKEDEX_NAME,
   NATIONAL_VERSION_GROUP_NAME,
@@ -40,6 +43,8 @@ interface PokemonSearchOption {
     MatInputModule,
     MatAutocompleteModule,
     FormsModule,
+    MatSidenavModule,
+    MatListModule,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -51,10 +56,13 @@ export class AppComponent implements OnInit {
   private readonly pokemonService = inject(PokemonService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly breakpointObserver = inject(BreakpointObserver);
 
   searchValue = '';
   allPokemonOptions = signal<PokemonSearchOption[]>([]);
   filteredPokemonOptions = signal<PokemonSearchOption[]>([]);
+  readonly isMobile = signal(false);
+  readonly isDrawerOpen = signal(true);
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
@@ -64,6 +72,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((state) => {
+        this.isMobile.set(state.matches);
+        this.isDrawerOpen.set(!state.matches);
+      });
+
     // Load all Pokemon names for autocomplete
     this.pokemonService
       .listPokemonSpecies(0, 10000)
@@ -93,10 +109,27 @@ export class AppComponent implements OnInit {
     this.filteredPokemonOptions.set(filtered);
   }
 
+  toggleMenu(): void {
+    this.isDrawerOpen.update((isOpen) => !isOpen);
+  }
+
+  closeMenu(): void {
+    this.isDrawerOpen.set(false);
+  }
+
+  onNavigationItemClick(): void {
+    if (this.isMobile()) {
+      this.closeMenu();
+    }
+  }
+
   onPokemonSelected(event: MatAutocompleteSelectedEvent): void {
     const selectedName = event.option.value;
     this.searchValue = '';
     this.filteredPokemonOptions.set([]);
+    if (this.isMobile()) {
+      this.closeMenu();
+    }
     void this.router.navigate([
       '/pokedex',
       NATIONAL_VERSION_GROUP_NAME,
