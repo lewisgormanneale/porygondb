@@ -20,15 +20,23 @@
           (mouseenter)="onAbilityHover(ability.slot)"
           (mouseleave)="onAbilityLeave()"
         >
-          <mat-chip [disabled]="ability.isHidden" (click)="onAbilityTap($event, ability.slot)">
+          <a
+            mat-chip
+            [routerLink]="['/abilities', ability.abilityName]"
+            class="ability-chip-link"
+            [class.hidden-ability-chip]="ability.isHidden"
+          >
             {{ ability.ability.names || [] | localise: 'en' : 'name' }}
-          </mat-chip>
+          </a>
           @if (activeAbilitySlot() === ability.slot) {
             <div
               class="ability-description-popover body-small"
               data-testid="ability-description-popover"
               (click)="onAbilityPopoverClick($event)"
             >
+              @if (ability.isHidden) {
+                <span class="hidden-ability-description-label">(Hidden Ability)</span>
+              }
               {{ getEnglishAbilityDescription(ability.ability) }}
             </div>
           }

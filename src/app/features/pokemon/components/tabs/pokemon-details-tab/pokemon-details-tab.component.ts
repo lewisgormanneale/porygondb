@@ -14,9 +14,11 @@ import { TypeChipComponent } from '../../../../../shared/components/type-chip/ty
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { GenderRatePipe } from '../../../../../shared/pipes/genderRate.pipe';
 import { CleanFlavorTextPipe } from '../../../../../shared/pipes/cleanFlavorText.pipe';
+import { RouterLink } from '@angular/router';
 
 interface AbilityInformation {
   ability: Ability;
+  abilityName: string;
   isHidden: boolean;
   slot: number;
 }
@@ -33,6 +35,7 @@ interface AbilityInformation {
     TypeChipComponent,
     GenderRatePipe,
     CleanFlavorTextPipe,
+    RouterLink,
   ],
   templateUrl: './pokemon-details-tab.component.html',
   styleUrl: './pokemon-details-tab.component.scss',
@@ -59,6 +62,7 @@ export class PokemonDetailsTabComponent {
               this.pokemonService.getAbilityByName(pokemonAbility.ability.name).pipe(
                 map((ability: Ability) => ({
                   ability,
+                  abilityName: pokemonAbility.ability.name,
                   slot: pokemonAbility.slot,
                   isHidden: pokemonAbility.is_hidden,
                 }))
@@ -88,11 +92,6 @@ export class PokemonDetailsTabComponent {
 
   onAbilityLeave(): void {
     this.activeAbilitySlot.set(null);
-  }
-
-  onAbilityTap(event: Event, slot: number): void {
-    event.stopPropagation();
-    this.activeAbilitySlot.set(this.activeAbilitySlot() === slot ? null : slot);
   }
 
   onAbilityPopoverClick(event: Event): void {

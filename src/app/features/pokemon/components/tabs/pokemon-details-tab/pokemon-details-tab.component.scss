@@ -17,6 +17,34 @@
       margin-right: 8px;
       margin-bottom: 8px;
 
+      .ability-chip-link {
+        color: var(--mat-sys-on-surface) !important;
+        text-decoration: none !important;
+
+        &:any-link,
+        &:visited,
+        &:hover,
+        &:active,
+        &:focus {
+          color: var(--mat-sys-on-surface) !important;
+          text-decoration: none !important;
+        }
+
+        &.hidden-ability-chip {
+          @include mat.chips-overrides(
+            (
+              outline-color: transparent,
+              disabled-outline-color: transparent,
+            )
+          );
+
+          border: none;
+          outline: 1px dashed var(--mat-sys-outline);
+          outline-offset: 0;
+          background-color: var(--mat-sys-surface-container-low);
+        }
+      }
+
       .ability-description-popover {
         position: absolute;
         top: calc(100% + 6px);
@@ -30,6 +58,12 @@
         background-color: var(--mat-sys-surface-container-high);
         color: var(--mat-sys-on-surface);
         box-shadow: var(--mat-sys-level2);
+
+        .hidden-ability-description-label {
+          font-style: italic;
+          margin-right: 4px;
+          color: var(--mat-sys-on-surface-variant);
+        }
       }
     }
   }
