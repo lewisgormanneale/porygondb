@@ -1,13 +1,28 @@
-import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, input, signal, untracked } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { Move } from '../../../../shared/interfaces/pokeapi';
+import { PokemonService } from '../../../../shared/services/pokemon.service';
+import { TypeChipComponent } from '../../../../shared/components/type-chip/type-chip.component';
 
 interface MoveTableRow {
+  moveKey: string;
   moveName: string;
   learnMethodKey: string;
   levelLearnedAt: number;
+}
+
+interface MoveTableMoveDetails {
+  typeKey: string;
+  typeName: string;
+  damageClassName: string;
+  pp: number | null;
+  power: number | null;
+  accuracy: number | null;
 }
 
 interface MoveMethodTab {
@@ -18,16 +33,20 @@ interface MoveMethodTab {
 
 @Component({
   selector: 'pokemon-moves-section',
-  imports: [MatTabsModule, MatCardModule, MatPaginatorModule],
+  imports: [MatTabsModule, MatCardModule, MatPaginatorModule, TypeChipComponent],
   templateUrl: './pokemon-moves-section.component.html',
   styleUrl: './pokemon-moves-section.component.scss',
 })
 export class PokemonMovesSectionComponent {
   readonly pokemonStore = inject(PokemonStore);
+  readonly pokemonService = inject(PokemonService);
+  readonly destroyRef = inject(DestroyRef);
   readonly versionGroupName = input.required<string>();
   readonly isNationalMode = input<boolean>(false);
   readonly pageSize = 10;
   readonly pageByMethodKey = signal<Record<string, number>>({});
+  readonly activeTabIndex = signal(0);
+  readonly moveDetailsByKey = signal<Record<string, MoveTableMoveDetails>>({});
 
   readonly movesTableRows = computed<MoveTableRow[]>(() => {
     const selectedPokemon = this.pokemonStore.selectedEntity();
@@ -42,6 +61,7 @@ export class PokemonMovesSectionComponent {
         move.version_group_details
           .filter((detail) => detail.version_group.name === versionGroupName)
           .map((detail) => ({
+            moveKey: move.move.name,
             moveName: this.formatName(move.move.name),
             learnMethodKey: detail.move_learn_method.name,
             levelLearnedAt: detail.level_learned_at,
@@ -105,7 +125,82 @@ export class PokemonMovesSectionComponent {
         this.pageByMethodKey.set(nextPages);
       }
     });
+
+    toObservable(this.currentlyVisibleMoves)
+      .pipe(
+        switchMap((rows) => {
+          const cachedMoveDetails = this.moveDetailsByKey();
+          const missingMoveKeys = [...new Set(rows.map((row) => row.moveKey))].filter(
+            (moveKey) => !cachedMoveDetails[moveKey]
+          );
+
+          if (!missingMoveKeys.length) {
+            return of<Record<string, MoveTableMoveDetails>>({});
+          }
+
+          return forkJoin(
+            missingMoveKeys.map((moveKey) =>
+              this.pokemonService.getMoveByName(moveKey).pipe(
+                map((move): [string, MoveTableMoveDetails] => [
+                  moveKey,
+                  {
+                    typeKey: move.type.name,
+                    typeName: this.formatName(move.type.name),
+                    damageClassName: this.formatName(move.damage_class.name),
+                    pp: move.pp,
+                    power: move.power,
+                    accuracy: move.accuracy,
+                  },
+                ]),
+                catchError(() => of<[string, MoveTableMoveDetails] | null>(null))
+              )
+            )
+          ).pipe(
+            map((entries) =>
+              entries.reduce<Record<string, MoveTableMoveDetails>>((accumulator, entry) => {
+                if (!entry) {
+                  return accumulator;
+                }
+
+                const [moveKey, details] = entry;
+                accumulator[moveKey] = details;
+                return accumulator;
+              }, {})
+            )
+          );
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((detailsMap) => {
+        if (!Object.keys(detailsMap).length) {
+          return;
+        }
+
+        this.moveDetailsByKey.update((current) => ({
+          ...current,
+          ...detailsMap,
+        }));
+      });
   }
+
+  readonly currentMethodTab = computed<MoveMethodTab | null>(() => {
+    const tabs = this.moveMethodTabs();
+    if (!tabs.length) {
+      return null;
+    }
+
+    const activeTab = tabs[this.activeTabIndex()];
+    return activeTab ?? tabs[0];
+  });
+
+  readonly currentlyVisibleMoves = computed<MoveTableRow[]>(() => {
+    const activeTab = this.currentMethodTab();
+    if (!activeTab) {
+      return [];
+    }
+
+    return this.getPaginatedRows(activeTab.key, activeTab.moves);
+  });
 
   getPaginatedRows(methodKey: string, rows: MoveTableRow[]): MoveTableRow[] {
     const pageIndex = this.getPageIndex(methodKey);
@@ -122,6 +217,18 @@ export class PokemonMovesSectionComponent {
       ...current,
       [methodKey]: event.pageIndex,
     }));
+  }
+
+  onTabChange(tabIndex: number): void {
+    this.activeTabIndex.set(tabIndex);
+  }
+
+  getMoveDetails(moveKey: string): MoveTableMoveDetails | null {
+    return this.moveDetailsByKey()[moveKey] ?? null;
+  }
+
+  formatStatValue(value: number | null | undefined): string {
+    return value === null || value === undefined ? '-' : `${value}`;
   }
 
   private formatName(name: string): string {

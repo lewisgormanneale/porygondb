@@ -5,6 +5,8 @@ import { getPokemonTypeColor } from '../../utils/get-type-color.util';
 import { ThemeStore } from '../../../core/+state/theme.store';
 import { darkenColor } from '../../utils/darken-color.util';
 
+type TypeChipSize = 'small' | 'medium' | 'large';
+
 @Component({
   selector: 'type-chip',
   imports: [CommonModule, MatChipsModule],
@@ -12,8 +14,9 @@ import { darkenColor } from '../../utils/darken-color.util';
   styleUrl: './type-chip.component.scss',
 })
 export class TypeChipComponent {
-  typeName = input.required<string>();
-  themeStore = inject(ThemeStore);
+  readonly typeName = input.required<string>();
+  readonly size = input<TypeChipSize>('medium');
+  readonly themeStore = inject(ThemeStore);
 
   getTypeColor(typeName: string): string {
     const color = getPokemonTypeColor(typeName);

@@ -288,6 +288,16 @@ export interface Stat {
   names: Name[];
 }
 
+export interface Move {
+  id: number;
+  name: string;
+  accuracy: number | null;
+  power: number | null;
+  pp: number;
+  type: NamedAPIResource;
+  damage_class: NamedAPIResource;
+}
+
 export interface MoveStatAffectSets {
   increase: MoveStatAffect[];
   decrease: MoveStatAffect[];

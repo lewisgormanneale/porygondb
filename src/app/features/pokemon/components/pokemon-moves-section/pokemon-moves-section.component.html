@@ -9,7 +9,7 @@
         Select a version group from the dropdown above to view move data for that game.
       </p>
     } @else if (movesTableRows().length > 0) {
-      <mat-tab-group animationDuration="0ms">
+      <mat-tab-group animationDuration="0ms" (selectedIndexChange)="onTabChange($event)">
         @for (methodTab of moveMethodTabs(); track methodTab.key) {
           <mat-tab [label]="methodTab.label">
             <ng-template matTabContent>
@@ -20,24 +20,54 @@
                       <tr>
                         <th>Move</th>
                         <th>Level</th>
+                        <th>Type</th>
+                        <th>Class</th>
+                        <th>PP</th>
+                        <th>Power</th>
+                        <th>Accuracy</th>
                       </tr>
                     </thead>
                     <tbody>
                       @for (
                         move of getPaginatedRows(methodTab.key, methodTab.moves);
-                        track move.moveName + '-' + move.levelLearnedAt
+                        track move.moveKey + '-' + move.levelLearnedAt
                       ) {
                         <tr>
-                          <td>{{ move.moveName }}</td>
-                          <td>
-                            @if (move.learnMethodKey === 'machine') {
-                              -
-                            } @else if (move.levelLearnedAt > 0) {
-                              {{ move.levelLearnedAt }}
-                            } @else {
-                              -
-                            }
-                          </td>
+                          @if (getMoveDetails(move.moveKey); as moveDetails) {
+                            <td>{{ move.moveName }}</td>
+                            <td>
+                              @if (move.learnMethodKey === 'machine') {
+                                -
+                              } @else if (move.levelLearnedAt > 0) {
+                                {{ move.levelLearnedAt }}
+                              } @else {
+                                -
+                              }
+                            </td>
+                            <td class="move-type-cell">
+                              <type-chip [typeName]="moveDetails.typeKey" size="small"></type-chip>
+                            </td>
+                            <td>{{ moveDetails.damageClassName }}</td>
+                            <td>{{ formatStatValue(moveDetails.pp) }}</td>
+                            <td>{{ formatStatValue(moveDetails.power) }}</td>
+                            <td>{{ formatStatValue(moveDetails.accuracy) }}</td>
+                          } @else {
+                            <td>{{ move.moveName }}</td>
+                            <td>
+                              @if (move.learnMethodKey === 'machine') {
+                                -
+                              } @else if (move.levelLearnedAt > 0) {
+                                {{ move.levelLearnedAt }}
+                              } @else {
+                                -
+                              }
+                            </td>
+                            <td class="move-type-cell">-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                          }
                         </tr>
                       }
                     </tbody>

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   Ability,
   EvolutionChain,
+  Move,
   NamedAPIResourceList,
   Pokemon,
   PokemonForm,
@@ -50,6 +51,10 @@ export class PokemonService {
 
   getAbilityById(id: number): Observable<Ability> {
     return this.http.get<Ability>(`${POKEAPI_BASE_URL}/ability/${id}`);
+  }
+
+  getMoveByName(name: string): Observable<Move> {
+    return this.http.get<Move>(`${POKEAPI_BASE_URL}/move/${encodeURIComponent(name)}`);
   }
 
   getStatByName(name: string): Observable<Stat> {
