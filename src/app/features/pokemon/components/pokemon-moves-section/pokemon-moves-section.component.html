@@ -21,7 +21,7 @@
                         <th>Move</th>
                         <th>Level</th>
                         <th>Type</th>
-                        <th>Class</th>
+                        <th>Category</th>
                         <th>PP</th>
                         <th>Power</th>
                         <th>Accuracy</th>
@@ -47,7 +47,16 @@
                             <td class="move-type-cell">
                               <type-chip [typeName]="moveDetails.typeKey" size="small"></type-chip>
                             </td>
-                            <td>{{ moveDetails.damageClassName }}</td>
+                            <td class="move-class-cell">
+                              <mat-icon
+                                fontSet="material-symbols-outlined"
+                                class="move-class-icon"
+                                [attr.aria-label]="'Category: ' + moveDetails.damageClassName"
+                                [title]="'Category: ' + moveDetails.damageClassName"
+                              >
+                                {{ getMoveCategoryIcon(moveDetails.damageClassKey) }}
+                              </mat-icon>
+                            </td>
                             <td>{{ formatStatValue(moveDetails.pp) }}</td>
                             <td>{{ formatStatValue(moveDetails.power) }}</td>
                             <td>{{ formatStatValue(moveDetails.accuracy) }}</td>

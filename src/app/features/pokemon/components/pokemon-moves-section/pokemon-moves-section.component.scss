@@ -40,7 +40,24 @@
 
     th:nth-child(4),
     td:nth-child(4) {
-      min-width: 90px;
+      width: 72px;
+      text-align: center;
+    }
+
+    .move-class-cell {
+      text-align: center;
+    }
+
+    .move-class-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: var(--mat-sys-on-surface-variant);
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
     }
 
     th:nth-child(5),

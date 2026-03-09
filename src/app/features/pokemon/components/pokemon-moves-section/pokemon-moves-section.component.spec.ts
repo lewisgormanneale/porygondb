@@ -137,10 +137,7 @@ describe('PokemonMovesSectionComponent', () => {
 
   it('loads and caches metadata for currently visible moves', () => {
     selectedEntitySignal.set({
-      moves: [
-        createMove('thunderbolt', 'machine', 0),
-        createMove('quick-attack', 'level-up', 10),
-      ],
+      moves: [createMove('thunderbolt', 'machine', 0), createMove('quick-attack', 'level-up', 10)],
     });
 
     fixture.componentRef.setInput('versionGroupName', 'red-blue');
@@ -150,11 +147,22 @@ describe('PokemonMovesSectionComponent', () => {
 
     const visibleMoveDetails = component.getMoveDetails('quick-attack');
     expect(visibleMoveDetails?.typeName).toBe('Electric');
+    expect(visibleMoveDetails?.damageClassKey).toBe('special');
     expect(visibleMoveDetails?.damageClassName).toBe('Special');
     expect(visibleMoveDetails?.pp).toBe(15);
     expect(visibleMoveDetails?.power).toBe(90);
     expect(visibleMoveDetails?.accuracy).toBe(100);
 
     expect(fixture.nativeElement.querySelector('type-chip')).not.toBeNull();
+  });
+
+  it('maps move category keys to icons', () => {
+    fixture.componentRef.setInput('versionGroupName', 'red-blue');
+    fixture.detectChanges();
+
+    expect(component.getMoveCategoryIcon('physical')).toBe('explosion');
+    expect(component.getMoveCategoryIcon('special')).toBe('auto_awesome');
+    expect(component.getMoveCategoryIcon('status')).toBe('tune');
+    expect(component.getMoveCategoryIcon('unknown')).toBe('help_outline');
   });
 });

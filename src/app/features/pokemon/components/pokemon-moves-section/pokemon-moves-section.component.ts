@@ -1,11 +1,20 @@
-import { Component, computed, DestroyRef, effect, inject, input, signal, untracked } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  signal,
+  untracked,
+} from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
 import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
-import { Move } from '../../../../shared/interfaces/pokeapi';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
 import { TypeChipComponent } from '../../../../shared/components/type-chip/type-chip.component';
 
@@ -19,6 +28,7 @@ interface MoveTableRow {
 interface MoveTableMoveDetails {
   typeKey: string;
   typeName: string;
+  damageClassKey: string;
   damageClassName: string;
   pp: number | null;
   power: number | null;
@@ -33,7 +43,7 @@ interface MoveMethodTab {
 
 @Component({
   selector: 'pokemon-moves-section',
-  imports: [MatTabsModule, MatCardModule, MatPaginatorModule, TypeChipComponent],
+  imports: [MatTabsModule, MatCardModule, MatPaginatorModule, MatIconModule, TypeChipComponent],
   templateUrl: './pokemon-moves-section.component.html',
   styleUrl: './pokemon-moves-section.component.scss',
 })
@@ -146,6 +156,7 @@ export class PokemonMovesSectionComponent {
                   {
                     typeKey: move.type.name,
                     typeName: this.formatName(move.type.name),
+                    damageClassKey: move.damage_class.name,
                     damageClassName: this.formatName(move.damage_class.name),
                     pp: move.pp,
                     power: move.power,
@@ -229,6 +240,22 @@ export class PokemonMovesSectionComponent {
 
   formatStatValue(value: number | null | undefined): string {
     return value === null || value === undefined ? '-' : `${value}`;
+  }
+
+  getMoveCategoryIcon(damageClassKey: string): string {
+    if (damageClassKey === 'physical') {
+      return 'swords';
+    }
+
+    if (damageClassKey === 'special') {
+      return 'auto_awesome';
+    }
+
+    if (damageClassKey === 'status') {
+      return 'tune';
+    }
+
+    return 'help_outline';
   }
 
   private formatName(name: string): string {
