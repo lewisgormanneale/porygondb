@@ -8,7 +8,6 @@
 
   .version-group-switcher {
     width: 100%;
-    max-width: 800px;
 
     mat-form-field {
       width: 100%;
@@ -20,7 +19,6 @@
     flex-direction: column;
     gap: 20px;
     width: 100%;
-    max-width: 800px;
     padding-top: 20px;
     padding-bottom: 20px;
 
@@ -33,25 +31,52 @@
       @media (max-width: 800px) {
         flex-direction: column;
         align-items: stretch;
+
+        .summary-info,
+        .details-info {
+          width: 100%;
+          max-width: 100%;
+          flex: 1 1 auto;
+
+          > * {
+            width: 100%;
+            max-width: 100%;
+          }
+        }
       }
     }
 
     .summary-info {
-      flex: 1;
+      flex: 0 0 auto;
+      width: fit-content;
+      max-width: 100%;
       display: flex;
       min-width: 0;
     }
 
     .details-info {
-      flex: 1;
+      flex: 1 1 0;
       display: flex;
       flex-direction: column;
       min-width: 0;
 
       .section-card {
         flex: 1;
+        height: 100%;
         display: flex;
         flex-direction: column;
+
+        mat-card-content {
+          display: flex;
+          flex: 1;
+        }
+
+        pokemon-details-tab {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+
         @include mat.card-overrides(
           (
             outlined-container-color: var(--mat-sys-surface-container-low),

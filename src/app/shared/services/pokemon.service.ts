@@ -29,7 +29,9 @@ export class PokemonService {
   }
 
   getPokemonFormByName(name: string): Observable<PokemonForm> {
-    return this.http.get<PokemonForm>(`${POKEAPI_BASE_URL}/pokemon-form/${encodeURIComponent(name)}`);
+    return this.http.get<PokemonForm>(
+      `${POKEAPI_BASE_URL}/pokemon-form/${encodeURIComponent(name)}`
+    );
   }
 
   getPokemonSpeciesByName(name: string): Observable<PokemonSpecies> {

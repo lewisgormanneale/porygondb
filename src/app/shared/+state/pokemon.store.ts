@@ -9,7 +9,16 @@ import {
   PokemonSpecies,
 } from '../interfaces/pokeapi';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, debounceTime, distinctUntilChanged, forkJoin, of, pipe, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  forkJoin,
+  of,
+  pipe,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { PokemonService } from '../services/pokemon.service';

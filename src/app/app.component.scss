@@ -8,6 +8,18 @@
     )
   );
 
+  display: flex;
+  justify-content: center;
+
+  .header-content {
+    width: 100%;
+    max-width: var(--app-content-max-width);
+    padding-inline: 16px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
   .title {
     font-family: 'Tektur', serif;
     font-weight: 800;
@@ -27,4 +39,17 @@
     justify-content: flex-end;
     gap: 8px;
   }
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.page-container {
+  width: 100%;
+  max-width: var(--app-content-max-width);
+  padding-inline: 16px;
+  box-sizing: border-box;
 }
