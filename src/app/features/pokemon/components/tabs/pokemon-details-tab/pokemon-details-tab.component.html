@@ -15,9 +15,24 @@
         <mat-chip><span class="skeleton skeleton-chip"></span></mat-chip>
       }
       @for (ability of abilities(); track ability.slot) {
-        <mat-chip [disabled]="ability.isHidden"
-          >{{ ability.ability.names || [] | localise: 'en' : 'name' }}
-        </mat-chip>
+        <div
+          class="ability-chip-wrapper"
+          (mouseenter)="onAbilityHover(ability.slot)"
+          (mouseleave)="onAbilityLeave()"
+        >
+          <mat-chip [disabled]="ability.isHidden" (click)="onAbilityTap($event, ability.slot)">
+            {{ ability.ability.names || [] | localise: 'en' : 'name' }}
+          </mat-chip>
+          @if (activeAbilitySlot() === ability.slot) {
+            <div
+              class="ability-description-popover body-small"
+              data-testid="ability-description-popover"
+              (click)="onAbilityPopoverClick($event)"
+            >
+              {{ getEnglishAbilityDescription(ability.ability) }}
+            </div>
+          }
+        </div>
       }
     </mat-chip-set>
   </div>

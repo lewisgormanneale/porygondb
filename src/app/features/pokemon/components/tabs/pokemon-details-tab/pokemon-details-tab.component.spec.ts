@@ -51,10 +51,28 @@ describe('PokemonDetailsTabComponent', () => {
 
     getAbilityByNameMock.mockImplementation((abilityName: string) => {
       if (abilityName === 'chlorophyll') {
-        return of({ names: [{ language: { name: 'en' }, name: 'Chlorophyll' }] });
+        return of({
+          names: [{ language: { name: 'en' }, name: 'Chlorophyll' }],
+          effect_entries: [
+            {
+              language: { name: 'en', url: 'https://pokeapi.co/api/v2/language/9/' },
+              short_effect: 'Boosts Speed in sunshine.',
+              effect: 'Boosts Speed in sunshine.',
+            },
+          ],
+        });
       }
 
-      return of({ names: [{ language: { name: 'en' }, name: 'Overgrow' }] });
+      return of({
+        names: [{ language: { name: 'en' }, name: 'Overgrow' }],
+        effect_entries: [
+          {
+            language: { name: 'en', url: 'https://pokeapi.co/api/v2/language/9/' },
+            short_effect: 'Boosts grass moves in a pinch.',
+            effect: 'Boosts grass moves in a pinch.',
+          },
+        ],
+      });
     });
 
     const fixture = TestBed.configureTestingModule({
@@ -95,7 +113,12 @@ describe('PokemonDetailsTabComponent', () => {
     selectedEntitySignal.set(null);
     englishSpeciesDescriptionSignal.set(undefined);
 
-    getAbilityByNameMock.mockReturnValue(of({ names: [] }));
+    getAbilityByNameMock.mockReturnValue(
+      of({
+        names: [],
+        effect_entries: [],
+      })
+    );
 
     const fixture = TestBed.configureTestingModule({
       imports: [PokemonDetailsTabComponent],
@@ -122,5 +145,57 @@ describe('PokemonDetailsTabComponent', () => {
     selectedEntitySignal.set(createPokemonMock({ abilities: [] }));
     fixture.detectChanges();
     expect(fixture.componentInstance.abilities()).toEqual([]);
+  });
+
+  it('shows ability description on chip tap and hides on outside click', () => {
+    selectedEntitySignal.set(null);
+    englishSpeciesDescriptionSignal.set(undefined);
+
+    getAbilityByNameMock.mockReturnValue(
+      of({
+        names: [{ language: { name: 'en' }, name: 'Overgrow' }],
+        effect_entries: [
+          {
+            language: { name: 'en', url: 'https://pokeapi.co/api/v2/language/9/' },
+            short_effect: 'Boosts grass moves in a pinch.',
+            effect: 'Boosts grass moves in a pinch.',
+          },
+        ],
+      })
+    );
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [PokemonDetailsTabComponent],
+      providers: [
+        { provide: PokemonStore, useValue: pokemonStoreStub },
+        { provide: PokemonService, useValue: pokemonServiceStub },
+      ],
+    }).createComponent(PokemonDetailsTabComponent);
+
+    selectedEntitySignal.set(
+      createPokemonMock({
+        abilities: [
+          {
+            ability: { name: 'overgrow', url: 'https://pokeapi.co/api/v2/ability/65/' },
+            slot: 1,
+            is_hidden: false,
+          },
+        ],
+      })
+    );
+    fixture.detectChanges();
+
+    const chip = fixture.nativeElement.querySelector('mat-chip');
+    chip.click();
+    fixture.detectChanges();
+
+    let popover = fixture.nativeElement.querySelector('[data-testid="ability-description-popover"]');
+    expect(popover?.textContent).toContain('Boosts grass moves in a pinch.');
+
+    document.dispatchEvent(new MouseEvent('click'));
+    fixture.detectChanges();
+
+    popover = fixture.nativeElement.querySelector('[data-testid="ability-description-popover"]');
+    expect(popover).toBeNull();
   });
 });

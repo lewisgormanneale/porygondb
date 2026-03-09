@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { forkJoin, map, of, switchMap } from 'rxjs';
 
@@ -40,6 +40,7 @@ interface AbilityInformation {
 export class PokemonDetailsTabComponent {
   readonly pokemonStore = inject(PokemonStore);
   readonly abilities = signal<AbilityInformation[]>([]);
+  readonly activeAbilitySlot = signal<number | null>(null);
   readonly pokemonService = inject(PokemonService);
   readonly destroyRef = inject(DestroyRef);
   readonly selectedEntity$ = toObservable(this.pokemonStore.selectedEntity);
@@ -69,6 +70,38 @@ export class PokemonDetailsTabComponent {
       )
       .subscribe((abilities) => {
         this.abilities.set(abilities);
+
+        if (!abilities.some((ability) => ability.slot === this.activeAbilitySlot())) {
+          this.activeAbilitySlot.set(null);
+        }
       });
+  }
+
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.activeAbilitySlot.set(null);
+  }
+
+  onAbilityHover(slot: number): void {
+    this.activeAbilitySlot.set(slot);
+  }
+
+  onAbilityLeave(): void {
+    this.activeAbilitySlot.set(null);
+  }
+
+  onAbilityTap(event: Event, slot: number): void {
+    event.stopPropagation();
+    this.activeAbilitySlot.set(this.activeAbilitySlot() === slot ? null : slot);
+  }
+
+  onAbilityPopoverClick(event: Event): void {
+    event.stopPropagation();
+  }
+
+  getEnglishAbilityDescription(ability: Ability): string {
+    const englishEntry = ability.effect_entries?.find((entry) => entry.language.name === 'en');
+
+    return englishEntry?.short_effect || englishEntry?.effect || 'No English description available.';
   }
 }
