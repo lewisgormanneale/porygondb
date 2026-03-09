@@ -90,8 +90,8 @@
     &.genderless {
       @include mat.progress-bar-overrides(
         (
-          active-indicator-color: var(--mat-sys-tertiary),
-          track-color: var(--mat-sys-tertiary-container),
+          active-indicator-color: #2e7d32,
+          track-color: #a5d6a7,
         )
       );
     }
