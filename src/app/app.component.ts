@@ -133,7 +133,7 @@ export class AppComponent implements OnInit {
   }
 
   onPokemonSelected(event: MatAutocompleteSelectedEvent): void {
-    const selectedName = event.option.value;
+    const selectedName = event.option.value as string;
     this.searchValue = '';
     this.filteredPokemonOptions.set([]);
     if (this.isMobile()) {
