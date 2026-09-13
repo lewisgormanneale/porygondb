@@ -10,7 +10,7 @@ import { PokemonService } from '../../../../shared/services/pokemon.service';
 import { createPokemonMock } from '../../../../../testing/mocks/pokemon.mock';
 import { AbilityComponent } from './ability.component';
 
-function createAbilityMock(): Ability {
+function createAbilityMock(overrides: Partial<Ability> = {}): Ability {
   return {
     id: 34,
     name: 'chlorophyll',
@@ -30,7 +30,13 @@ function createAbilityMock(): Ability {
       },
     ],
     effect_changes: [],
-    flavor_text_entries: [],
+    flavor_text_entries: [
+      {
+        flavor_text: 'Boosts the Speed stat in harsh sunlight.',
+        language: { name: 'en', url: 'https://pokeapi.co/api/v2/language/9/' },
+        version_group: { name: 'ruby-sapphire', url: 'https://pokeapi.co/api/v2/version-group/5/' },
+      },
+    ],
     pokemon: [
       {
         is_hidden: false,
@@ -48,6 +54,7 @@ function createAbilityMock(): Ability {
         pokemon: { name: 'oddish', url: 'https://pokeapi.co/api/v2/pokemon/43/' },
       },
     ],
+    ...overrides,
   };
 }
 
@@ -79,12 +86,55 @@ describe('AbilityComponent', () => {
 
     expect(getAbilityByNameMock).toHaveBeenCalledWith('chlorophyll');
     expect(fixture.componentInstance.displayName()).toBe('Chlorophyll');
+    expect(fixture.componentInstance.generationLabel()).toBe('Generation III');
+    expect(fixture.componentInstance.englishFlavorText()).toBe(
+      'Boosts the Speed stat in harsh sunlight.'
+    );
+    expect(fixture.componentInstance.englishShortEffect()).toBe('Boosts Speed in sunshine.');
+    expect(fixture.componentInstance.englishDetailedEffect()).toBe(
+      'Boosts the Pokémon’s Speed in sunshine.'
+    );
+    expect(fixture.componentInstance.hasNoEffectInfo()).toBe(false);
     expect(
       fixture.componentInstance.normalAbilityPokemon().map((entry) => entry.pokemon.name)
     ).toEqual(['bulbasaur', 'charizard-mega-x']);
     expect(
       fixture.componentInstance.hiddenAbilityPokemon().map((entry) => entry.pokemon.name)
     ).toEqual(['oddish']);
+  });
+
+  it('hides the detailed effect when it duplicates the short effect', () => {
+    getAbilityByNameMock.mockReturnValue(
+      of(
+        createAbilityMock({
+          effect_entries: [
+            {
+              effect: 'Boosts Speed in sunshine.',
+              short_effect: 'Boosts Speed in sunshine.',
+              language: { name: 'en', url: 'https://pokeapi.co/api/v2/language/9/' },
+            },
+          ],
+          flavor_text_entries: [],
+        })
+      )
+    );
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [AbilityComponent],
+      providers: [
+        provideRouter([]),
+        provideLocationMocks(),
+        { provide: ActivatedRoute, useValue: { paramMap: paramMapSubject.asObservable() } },
+        { provide: PokemonService, useValue: pokemonServiceStub },
+      ],
+    }).createComponent(AbilityComponent);
+
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.englishFlavorText()).toBe('');
+    expect(fixture.componentInstance.englishShortEffect()).toBe('Boosts Speed in sunshine.');
+    expect(fixture.componentInstance.englishDetailedEffect()).toBe('');
+    expect(fixture.componentInstance.hasNoEffectInfo()).toBe(false);
   });
 
   it('navigates to species route for form pokemon names on click', () => {

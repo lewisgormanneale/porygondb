@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
 
@@ -21,6 +22,7 @@ interface AbilityListItem {
     MatInputModule,
     MatPaginatorModule,
     MatProgressBarModule,
+    MatTableModule,
     RouterModule,
   ],
   templateUrl: './abilities.component.html',
@@ -30,6 +32,7 @@ export class AbilitiesComponent {
   private readonly pokemonService = inject(PokemonService);
   private readonly destroyRef = inject(DestroyRef);
 
+  readonly displayedColumns = ['name'];
   readonly isLoading = signal(true);
   readonly searchValue = signal('');
   readonly abilities = signal<AbilityListItem[]>([]);

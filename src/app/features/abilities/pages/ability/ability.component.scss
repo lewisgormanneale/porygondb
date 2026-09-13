@@ -14,10 +14,22 @@
         outlined-container-color: var(--mat-sys-surface-container-low),
       )
     );
+
+    mat-card-content {
+      padding-top: 8px;
+    }
+  }
+
+  .field-label {
+    color: var(--mat-sys-on-surface-variant);
+    margin-bottom: 4px;
+
+    &:not(:first-child) {
+      margin-top: 16px;
+    }
   }
 
   .short-effect {
-    font-weight: 600;
     margin-bottom: 8px;
   }
 

@@ -5,13 +5,24 @@
     <mat-card appearance="outlined" class="ability-summary">
       <mat-card-header>
         <mat-card-title>{{ displayName() }}</mat-card-title>
-        <mat-card-subtitle>Generation: {{ ability()!.generation.name }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ generationLabel() }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
+        @if (englishFlavorText()) {
+          <p class="field-label label-large">In-game description</p>
+          <p class="in-game-description">{{ englishFlavorText() | cleanFlavorText }}</p>
+        }
         @if (englishShortEffect()) {
+          <p class="field-label label-large">Summary</p>
           <p class="short-effect">{{ englishShortEffect() }}</p>
         }
-        <p>{{ englishEffect() }}</p>
+        @if (englishDetailedEffect()) {
+          <p class="field-label label-large">Effect</p>
+          <p>{{ englishDetailedEffect() }}</p>
+        }
+        @if (hasNoEffectInfo()) {
+          <p>No English effect available.</p>
+        }
       </mat-card-content>
     </mat-card>
 

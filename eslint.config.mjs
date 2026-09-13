@@ -25,7 +25,7 @@ export default [
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        projectService: true,
+        project: ['tsconfig.app.json', 'tsconfig.spec.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -52,6 +52,18 @@ export default [
     },
     rules: {
       ...angularTemplate.configs.recommended.rules,
+    },
+  },
+  {
+    name: 'typescript/spec-overrides',
+    files: ['**/*.spec.ts'],
+    rules: {
+      // Angular's testing APIs (e.g. `ComponentFixture.nativeElement`) are typed
+      // `any`, and test mocks intentionally use loose shapes for fixture data.
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
     },
   },
   {

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PokedexEntryComponent } from './pokedex-entry.component';
-import { PokemonSpecies } from '../../../../../shared/interfaces/pokeapi';
 import { RouterModule } from '@angular/router';
 
 describe('PokedexEntryComponent', () => {
@@ -62,7 +61,7 @@ describe('PokedexEntryComponent', () => {
           id: 1,
           name: 'bulbasaur',
           names: [{ language: { name: 'en' }, name: 'Bulbasaur' }],
-        } as PokemonSpecies);
+        });
         component.onImageLoad();
         fixture.detectChanges();
       });
