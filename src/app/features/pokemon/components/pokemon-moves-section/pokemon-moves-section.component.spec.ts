@@ -160,7 +160,7 @@ describe('PokemonMovesSectionComponent', () => {
     fixture.componentRef.setInput('versionGroupName', 'red-blue');
     fixture.detectChanges();
 
-    expect(component.getMoveCategoryIcon('physical')).toBe('explosion');
+    expect(component.getMoveCategoryIcon('physical')).toBe('swords');
     expect(component.getMoveCategoryIcon('special')).toBe('auto_awesome');
     expect(component.getMoveCategoryIcon('status')).toBe('tune');
     expect(component.getMoveCategoryIcon('unknown')).toBe('help_outline');
