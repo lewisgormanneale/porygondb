@@ -1,9 +1,8 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 import { NgOptimizedImage } from '@angular/common';
 import { ThemeStore } from './core/+state/theme.store';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -67,13 +66,6 @@ export class AppComponent implements OnInit {
   readonly isDrawerOpen = signal(true);
   readonly currentUrl = signal('');
   readonly isPokedexListRoute = signal(false);
-
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon(
-      'github',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/github.svg')
-    );
-  }
 
   ngOnInit(): void {
     this.currentUrl.set(this.router.url);
