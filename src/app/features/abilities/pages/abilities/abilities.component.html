@@ -19,15 +19,19 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   } @else {
     <mat-card appearance="outlined" class="abilities-list">
-      <mat-card-content>
-        <div class="abilities-grid">
-          @for (ability of paginatedAbilities(); track ability.name) {
-            <a class="ability-link" [routerLink]="['/abilities', ability.name]">
-              {{ ability.displayName }}
-            </a>
-          }
-        </div>
-      </mat-card-content>
+      <table mat-table [dataSource]="paginatedAbilities()" class="abilities-table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let ability">
+            <a class="ability-link" [routerLink]="['/abilities', ability.name]">{{
+              ability.displayName
+            }}</a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let ability; columns: displayedColumns" class="ability-row"></tr>
+      </table>
       <mat-paginator
         (page)="onPageChange($event)"
         [length]="filteredAbilities().length"
