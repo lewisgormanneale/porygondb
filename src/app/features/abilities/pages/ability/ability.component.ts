@@ -5,11 +5,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Ability, AbilityPokemon } from '../../../../shared/interfaces/pokeapi';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
+import { CleanFlavorTextPipe } from '../../../../shared/pipes/cleanFlavorText.pipe';
 import { catchError, of, take } from 'rxjs';
 
 @Component({
   selector: 'app-ability',
-  imports: [MatCardModule, MatProgressBarModule, RouterModule],
+  imports: [MatCardModule, MatProgressBarModule, RouterModule, CleanFlavorTextPipe],
   templateUrl: './ability.component.html',
   styleUrl: './ability.component.scss',
 })
@@ -33,14 +34,25 @@ export class AbilityComponent {
     return englishName || this.formatName(ability.name);
   });
 
-  readonly englishEffect = computed(() => {
+  readonly generationLabel = computed(() => {
     const ability = this.ability();
     if (!ability) {
       return '';
     }
 
-    const effectEntry = ability.effect_entries.find((entry) => entry.language.name === 'en');
-    return effectEntry?.effect || effectEntry?.short_effect || 'No English effect available.';
+    const romanNumeral = ability.generation.name.split('-')[1]?.toUpperCase();
+    return romanNumeral ? `Generation ${romanNumeral}` : this.formatName(ability.generation.name);
+  });
+
+  readonly englishFlavorText = computed(() => {
+    const ability = this.ability();
+    if (!ability) {
+      return '';
+    }
+
+    return (
+      ability.flavor_text_entries.find((entry) => entry.language.name === 'en')?.flavor_text ?? ''
+    );
   });
 
   readonly englishShortEffect = computed(() => {
@@ -51,6 +63,23 @@ export class AbilityComponent {
 
     const effectEntry = ability.effect_entries.find((entry) => entry.language.name === 'en');
     return effectEntry?.short_effect || '';
+  });
+
+  // Only shown when it adds information beyond the short effect, to avoid
+  // rendering the same text twice (PokeAPI sometimes leaves `effect` blank).
+  readonly englishDetailedEffect = computed(() => {
+    const ability = this.ability();
+    if (!ability) {
+      return '';
+    }
+
+    const effectEntry = ability.effect_entries.find((entry) => entry.language.name === 'en');
+    const effect = effectEntry?.effect || '';
+    return effect && effect !== this.englishShortEffect() ? effect : '';
+  });
+
+  readonly hasNoEffectInfo = computed(() => {
+    return !this.englishShortEffect() && !this.englishDetailedEffect();
   });
 
   readonly normalAbilityPokemon = computed(() => {
