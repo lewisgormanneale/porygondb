@@ -34,7 +34,11 @@
                       ) {
                         <tr>
                           @if (getMoveDetails(move.moveKey); as moveDetails) {
-                            <td>{{ move.moveName }}</td>
+                            <td>
+                              <a class="move-name-link" [routerLink]="['/moves', move.moveKey]">{{
+                                move.moveName
+                              }}</a>
+                            </td>
                             <td>
                               @if (move.learnMethodKey === 'machine') {
                                 -
@@ -61,7 +65,11 @@
                             <td>{{ formatStatValue(moveDetails.power) }}</td>
                             <td>{{ formatStatValue(moveDetails.accuracy) }}</td>
                           } @else {
-                            <td>{{ move.moveName }}</td>
+                            <td>
+                              <a class="move-name-link" [routerLink]="['/moves', move.moveKey]">{{
+                                move.moveName
+                              }}</a>
+                            </td>
                             <td>
                               @if (move.learnMethodKey === 'machine') {
                                 -

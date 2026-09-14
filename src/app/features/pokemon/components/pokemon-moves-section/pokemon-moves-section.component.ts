@@ -9,6 +9,7 @@ import {
   untracked,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { RouterModule } from '@angular/router';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
@@ -43,7 +44,14 @@ interface MoveMethodTab {
 
 @Component({
   selector: 'pokemon-moves-section',
-  imports: [MatTabsModule, MatCardModule, MatPaginatorModule, MatIconModule, TypeChipComponent],
+  imports: [
+    MatTabsModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatIconModule,
+    RouterModule,
+    TypeChipComponent,
+  ],
   templateUrl: './pokemon-moves-section.component.html',
   styleUrl: './pokemon-moves-section.component.scss',
 })

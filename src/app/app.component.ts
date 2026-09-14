@@ -163,7 +163,7 @@ export class AppComponent implements OnInit {
   private updateLayoutForRoute(url: string): void {
     const path = url.split('?')[0]?.split('#')[0] ?? '';
     this.isFullBleedListRoute.set(
-      /^\/pokedex\/[^/]+\/[^/]+$/.test(path) || /^\/(items|abilities)$/.test(path)
+      /^\/pokedex\/[^/]+\/[^/]+$/.test(path) || /^\/(items|abilities|moves)$/.test(path)
     );
   }
 }
