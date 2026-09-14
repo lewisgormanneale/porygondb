@@ -8,3 +8,4 @@
 export * from './common.interface';
 export * from './pokemon.interface';
 export * from './game.interface';
+export * from './item.interface';

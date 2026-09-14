@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-.abilities-page {
+.items-page {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -12,8 +12,8 @@
     height: calc(min(100vh, 100svh) - var(--mat-toolbar-mobile-height, 56px) - 32px);
   }
 
-  .abilities-header,
-  .abilities-list {
+  .items-header,
+  .items-list {
     @include mat.card-overrides(
       (
         outlined-container-color: var(--mat-sys-surface-container-low),
@@ -21,7 +21,7 @@
     );
   }
 
-  .abilities-header {
+  .items-header {
     flex-shrink: 0;
   }
 
@@ -30,7 +30,19 @@
     padding-top: 8px;
   }
 
-  .abilities-list {
+  .filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .filter-field {
+    flex: 1 1 180px;
+    min-width: 160px;
+  }
+
+  .items-list {
     flex: 1;
     min-height: 0;
     display: flex;
@@ -38,28 +50,38 @@
     overflow: hidden;
   }
 
-  .abilities-table-scroll {
+  .items-table-scroll {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
   }
 
-  .abilities-table {
+  .items-table {
     width: 100%;
   }
 
-  .ability-row:hover {
+  .item-row:hover {
     background-color: var(--mat-sys-surface-container-high);
   }
 
-  .ability-link {
-    display: block;
+  .item-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     color: var(--mat-sys-on-surface);
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  .item-sprite {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    flex-shrink: 0;
   }
 
   mat-paginator {

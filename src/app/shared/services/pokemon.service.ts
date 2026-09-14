@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import {
   Ability,
   EvolutionChain,
+  Item,
+  ItemAttribute,
+  ItemCategory,
   Move,
   NamedAPIResourceList,
   Pokemon,
@@ -104,5 +107,42 @@ export class PokemonService {
     if (offset !== undefined) params['offset'] = offset.toString();
     if (limit !== undefined) params['limit'] = limit.toString();
     return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/ability`, { params });
+  }
+
+  getItemByName(name: string): Observable<Item> {
+    return this.http.get<Item>(`${POKEAPI_BASE_URL}/item/${encodeURIComponent(name)}`);
+  }
+
+  getItemById(id: number): Observable<Item> {
+    return this.http.get<Item>(`${POKEAPI_BASE_URL}/item/${id}`);
+  }
+
+  listItems(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/item`, { params });
+  }
+
+  listItemCategories(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/item-category`, { params });
+  }
+
+  getItemCategoryByUrl(url: string): Observable<ItemCategory> {
+    return this.http.get<ItemCategory>(url);
+  }
+
+  listItemAttributes(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/item-attribute`, { params });
+  }
+
+  getItemAttributeByUrl(url: string): Observable<ItemAttribute> {
+    return this.http.get<ItemAttribute>(url);
   }
 }

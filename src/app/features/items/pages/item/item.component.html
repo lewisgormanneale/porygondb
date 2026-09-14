@@ -1,0 +1,78 @@
+<div class="item-page">
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @else if (item()) {
+    <mat-card appearance="outlined" class="item-summary">
+      <mat-card-header>
+        @if (spriteUrl()) {
+          <img [src]="spriteUrl()!" [alt]="displayName()" class="item-icon" mat-card-avatar />
+        }
+        <mat-card-title>{{ displayName() }}</mat-card-title>
+        <mat-card-subtitle>{{ categoryLabel() }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        @if (englishFlavorText()) {
+          <p class="field-label label-large">In-game description</p>
+          <p class="in-game-description">{{ englishFlavorText() | cleanFlavorText }}</p>
+        }
+        @if (englishShortEffect()) {
+          <p class="field-label label-large">Summary</p>
+          <p class="short-effect">{{ englishShortEffect() }}</p>
+        }
+        @if (englishDetailedEffect()) {
+          <p class="field-label label-large">Effect</p>
+          <p>{{ englishDetailedEffect() }}</p>
+        }
+        @if (hasNoEffectInfo()) {
+          <p>No English effect available.</p>
+        }
+
+        <p class="field-label label-large">Cost</p>
+        <p>{{ costLabel() }}</p>
+
+        @if (flingPowerLabel()) {
+          <p class="field-label label-large">Fling Power</p>
+          <p>{{ flingPowerLabel() }}</p>
+        }
+
+        @if (attributeLabels().length > 0) {
+          <p class="field-label label-large">Attributes</p>
+          <mat-chip-set>
+            @for (attribute of attributeLabels(); track attribute) {
+              <mat-chip>{{ attribute }}</mat-chip>
+            }
+          </mat-chip-set>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="item-pokemon-group">
+      <mat-card-header>
+        <mat-card-title>Pokémon that hold {{ displayName() }}:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (heldByPokemon().length === 0) {
+          <p>None listed.</p>
+        } @else {
+          <div class="pokemon-sprites-grid">
+            @for (entry of heldByPokemon(); track entry.pokemon.name) {
+              <a
+                [routerLink]="['/pokedex', 'national', 'national', entry.pokemon.name]"
+                (click)="onHolderPokemonClick($event, entry.pokemon.name)"
+                [attr.aria-label]="entry.pokemon.name"
+                [title]="entry.pokemon.name"
+                class="pokemon-sprite-link"
+              >
+                <img
+                  [src]="getPokemonSpriteUrl(entry.pokemon.url)"
+                  [alt]="entry.pokemon.name"
+                  class="pokemon-sprite"
+                />
+              </a>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
