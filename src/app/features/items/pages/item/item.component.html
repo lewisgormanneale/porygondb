@@ -1,0 +1,135 @@
+<div class="item-page">
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @else if (item()) {
+    <mat-card appearance="outlined" class="item-summary">
+      <mat-card-content>
+        <div class="item-heading">
+          <img
+            [src]="spriteUrl() || FALLBACK_ITEM_SPRITE_URL"
+            [alt]="displayName()"
+            class="item-icon"
+          />
+          <div>
+            <h2 class="item-title">{{ displayName() }}</h2>
+            <p class="item-subtitle">{{ categoryLabel() }}</p>
+          </div>
+        </div>
+
+        @if (englishFlavorText()) {
+          <p class="field-label label-large">In-game description</p>
+          <p class="in-game-description">{{ englishFlavorText() | cleanFlavorText }}</p>
+        }
+        @if (englishShortEffect()) {
+          <p class="field-label label-large">Summary</p>
+          <p class="short-effect">{{ englishShortEffect() }}</p>
+        }
+        @if (englishDetailedEffect()) {
+          <p class="field-label label-large">Effect</p>
+          <p>{{ englishDetailedEffect() }}</p>
+        }
+        @if (hasNoEffectInfo()) {
+          <p>No English effect available.</p>
+        }
+
+        @if (flingPowerLabel()) {
+          <p class="field-label label-large">Fling Power</p>
+          <p>{{ flingPowerLabel() }}</p>
+        }
+
+        @if (attributeLabels().length > 0) {
+          <p class="field-label label-large">Attributes</p>
+          <mat-chip-set>
+            @for (attribute of attributeLabels(); track attribute) {
+              <mat-chip>{{ attribute }}</mat-chip>
+            }
+          </mat-chip-set>
+        }
+
+        @if (machineVersionGroupLabels().length > 0) {
+          <p class="field-label label-large">Available as a TM/HM in</p>
+          <mat-chip-set>
+            @for (versionGroup of machineVersionGroupLabels(); track versionGroup) {
+              <mat-chip>{{ versionGroup }}</mat-chip>
+            }
+          </mat-chip-set>
+        }
+
+        @if (generationLabels().length > 0) {
+          <p class="field-label label-large">Indexed in</p>
+          <mat-chip-set>
+            @for (generation of generationLabels(); track generation) {
+              <mat-chip>{{ generation }}</mat-chip>
+            }
+          </mat-chip-set>
+        }
+
+        @if (hasBabyTrigger()) {
+          <p class="field-label label-large">Breeding</p>
+          <p>Held by a parent Pokémon, this item causes their offspring to hatch as a baby form.</p>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="item-prices">
+      <mat-card-header>
+        <mat-card-title>Prices</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (priceEntries().length === 0) {
+          <p>No price data available.</p>
+        } @else {
+          <div class="price-table-scroll">
+            <table class="price-table">
+              <thead>
+                <tr>
+                  <th>Version Group</th>
+                  <th>Buy</th>
+                  <th>Sell</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (price of priceEntries(); track price.versionGroupDisplayName) {
+                  <tr>
+                    <td>{{ price.versionGroupDisplayName }}</td>
+                    <td>{{ price.purchasePriceLabel }}</td>
+                    <td>{{ price.sellPriceLabel }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="item-pokemon-group">
+      <mat-card-header>
+        <mat-card-title>Pokémon that hold {{ displayName() }}:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (heldByPokemon().length === 0) {
+          <p>None listed.</p>
+        } @else {
+          <div class="pokemon-sprites-grid">
+            @for (entry of heldByPokemon(); track entry.pokemon.name) {
+              <a
+                [routerLink]="['/pokedex', 'national', 'national', entry.pokemon.name]"
+                (click)="onHolderPokemonClick($event, entry.pokemon.name)"
+                [attr.aria-label]="entry.pokemon.name"
+                [title]="entry.pokemon.name"
+                class="pokemon-sprite-link"
+              >
+                <img
+                  [src]="getPokemonSpriteUrl(entry.pokemon.url)"
+                  [alt]="entry.pokemon.name"
+                  class="pokemon-sprite"
+                />
+              </a>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

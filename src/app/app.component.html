@@ -52,6 +52,16 @@
           <mat-icon matListItemIcon>auto_fix_high</mat-icon>
           <span matListItemTitle>Abilities</span>
         </a>
+        <a
+          mat-list-item
+          [routerLink]="['/items']"
+          routerLinkActive="active-nav-item"
+          [routerLinkActiveOptions]="{ exact: false }"
+          (click)="onNavigationItemClick()"
+        >
+          <mat-icon matListItemIcon>inventory_2</mat-icon>
+          <span matListItemTitle>Items</span>
+        </a>
       </mat-nav-list>
     </div>
   </mat-drawer>
@@ -90,7 +100,7 @@
     </mat-toolbar>
 
     <main>
-      <div class="page-container" [class.page-container-full-bleed]="isPokedexListRoute()">
+      <div class="page-container" [class.page-container-full-bleed]="isFullBleedListRoute()">
         <router-outlet />
       </div>
     </main>

@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-.abilities-page {
+.items-page {
   display: flex;
   flex-direction: column;
   height: calc(min(100vh, 100svh) - var(--mat-toolbar-standard-height, 64px));
@@ -10,15 +10,17 @@
   }
 }
 
-.abilities-options {
+.items-options {
   display: flex;
   align-items: center;
-  padding: 8px 16px;
+  gap: 4px;
+  padding: 8px 8px 8px 16px;
   background-color: var(--mat-sys-secondary-container);
   flex-shrink: 0;
 
   .search-field {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
 
     @include mat.form-field-overrides(
       (
@@ -31,9 +33,34 @@
       color: var(--mat-sys-on-secondary-container);
     }
   }
+
+  .filter-toggle {
+    flex-shrink: 0;
+    color: var(--mat-sys-on-secondary-container);
+  }
 }
 
-.abilities-table-container {
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: var(--mat-sys-secondary-container);
+  flex-shrink: 0;
+
+  .filter-field {
+    flex: 1 1 180px;
+    min-width: 160px;
+
+    @include mat.form-field-overrides(
+      (
+        outlined-outline-color: var(--mat-sys-outline-variant),
+      )
+    );
+  }
+}
+
+.items-table-container {
   flex: 1;
   min-height: 0;
   display: flex;
@@ -41,29 +68,39 @@
   overflow: hidden;
 }
 
-.abilities-table-scroll {
+.items-table-scroll {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   background-color: var(--mat-sys-surface-container-low);
 }
 
-.abilities-table {
+.items-table {
   width: 100%;
 }
 
-.ability-row:hover {
+.item-row:hover {
   background-color: var(--mat-sys-surface-container-high);
 }
 
-.ability-link {
-  display: block;
+.item-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: var(--mat-sys-on-surface);
   text-decoration: none;
 
   &:hover {
     text-decoration: underline;
   }
+}
+
+.item-sprite {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
 }
 
 mat-paginator {

@@ -19,6 +19,16 @@ export const routes: Routes = [
         (m) => m.AbilityComponent
       ),
   },
+  {
+    path: 'items',
+    loadComponent: () =>
+      import('./features/items/pages/items/items.component').then((m) => m.ItemsComponent),
+  },
+  {
+    path: 'items/:name',
+    loadComponent: () =>
+      import('./features/items/pages/item/item.component').then((m) => m.ItemComponent),
+  },
   { path: 'pokedex/:versionGroupName/:pokedexName', component: PokedexComponent },
   { path: 'pokedex/:versionGroupName/:pokedexName/:name', component: PokemonComponent },
   { path: '**', component: PageNotFoundComponent },
