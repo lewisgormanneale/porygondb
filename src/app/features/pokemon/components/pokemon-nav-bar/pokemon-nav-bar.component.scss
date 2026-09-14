@@ -88,13 +88,20 @@
       height: 40px;
       box-sizing: border-box;
       justify-content: center;
+      gap: 0;
+
+      // The arrow icon is a direct flex child of this button, but Angular
+      // Material additionally wraps the (now-hidden) text label in its own
+      // ".mdc-button__label" span sibling — that empty wrapper still takes
+      // up a flex slot next to the icon, which is what was throwing the
+      // centering off. Removing it from the layout leaves the icon as the
+      // only flex item, so `justify-content: center` centers it for real.
+      ::ng-deep .mdc-button__label {
+        display: none;
+      }
 
       .material-icons {
         margin: 0;
-      }
-
-      .back-label {
-        display: none;
       }
     }
 
