@@ -9,6 +9,14 @@ import { Item, ItemHolderPokemon } from '../../../../shared/interfaces/pokeapi';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
 import { CleanFlavorTextPipe } from '../../../../shared/pipes/cleanFlavorText.pipe';
 
+export const FALLBACK_ITEM_SPRITE_URL = 'assets/images/question-mark.png';
+
+interface ItemPriceRow {
+  versionGroupDisplayName: string;
+  purchasePriceLabel: string;
+  sellPriceLabel: string;
+}
+
 @Component({
   selector: 'app-item',
   imports: [MatCardModule, MatChipsModule, MatProgressBarModule, RouterModule, CleanFlavorTextPipe],
@@ -20,6 +28,8 @@ export class ItemComponent {
   private readonly router = inject(Router);
   private readonly pokemonService = inject(PokemonService);
   private readonly destroyRef = inject(DestroyRef);
+
+  readonly FALLBACK_ITEM_SPRITE_URL = FALLBACK_ITEM_SPRITE_URL;
 
   readonly isLoading = signal(true);
   readonly item = signal<Item | null>(null);
@@ -78,12 +88,38 @@ export class ItemComponent {
     return !this.englishShortEffect() && !this.englishDetailedEffect();
   });
 
-  readonly costLabel = computed(() => {
+  readonly priceEntries = computed<ItemPriceRow[]>(() => {
     const item = this.item();
-    if (!item || item.cost <= 0) {
-      return 'Not sold in shops';
+    if (!item) {
+      return [];
     }
-    return `₽${item.cost.toLocaleString()}`;
+
+    return item.prices.map((price) => ({
+      versionGroupDisplayName: this.formatName(price.version_group.name),
+      purchasePriceLabel:
+        price.purchase_price !== null ? `₽${price.purchase_price.toLocaleString()}` : '—',
+      sellPriceLabel: price.sell_price !== null ? `₽${price.sell_price.toLocaleString()}` : '—',
+    }));
+  });
+
+  readonly hasBabyTrigger = computed(() => !!this.item()?.baby_trigger_for);
+
+  readonly machineVersionGroupLabels = computed(() => {
+    const item = this.item();
+    if (!item) {
+      return [];
+    }
+    return [...new Set(item.machines.map((entry) => this.formatName(entry.version_group.name)))];
+  });
+
+  readonly generationLabels = computed(() => {
+    const item = this.item();
+    if (!item) {
+      return [];
+    }
+    return [
+      ...new Set(item.game_indices.map((entry) => this.formatGenerationName(entry.generation.name))),
+    ];
   });
 
   readonly flingPowerLabel = computed(() => {
@@ -172,5 +208,10 @@ export class ItemComponent {
       .split('-')
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join(' ');
+  }
+
+  private formatGenerationName(name: string): string {
+    const romanNumeral = name.split('-')[1]?.toUpperCase();
+    return romanNumeral ? `Generation ${romanNumeral}` : this.formatName(name);
   }
 }

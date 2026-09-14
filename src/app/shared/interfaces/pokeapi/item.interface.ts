@@ -8,7 +8,6 @@ import { APIResource, GenerationGameIndex } from './pokemon.interface';
 export interface Item {
   id: number;
   name: string;
-  cost: number;
   fling_power: number | null;
   fling_effect: NamedAPIResource | null;
   attributes: NamedAPIResource[];
@@ -16,11 +15,19 @@ export interface Item {
   effect_entries: VerboseEffect[];
   flavor_text_entries: ItemFlavorText[];
   game_indices: GenerationGameIndex[];
+  prices: ItemPrice[];
   names: Name[];
   sprites: ItemSprites;
   held_by_pokemon: ItemHolderPokemon[];
   baby_trigger_for: APIResource | null;
   machines: ItemMachineVersionDetail[];
+}
+
+export interface ItemPrice {
+  purchase_price: number | null;
+  sell_price: number | null;
+  currency: NamedAPIResource;
+  version_group: NamedAPIResource;
 }
 
 export interface ItemSprites {

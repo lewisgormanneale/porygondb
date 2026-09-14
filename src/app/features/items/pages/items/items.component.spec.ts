@@ -4,7 +4,12 @@ import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
-import { ItemCategory, ItemAttribute, NamedAPIResourceList } from '../../../../shared/interfaces/pokeapi';
+import {
+  Item,
+  ItemCategory,
+  ItemAttribute,
+  NamedAPIResourceList,
+} from '../../../../shared/interfaces/pokeapi';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
 import { ItemsComponent } from './items.component';
 
@@ -26,6 +31,7 @@ describe('ItemsComponent', () => {
   const listItemAttributesMock = vi.fn();
   const getItemCategoryByUrlMock = vi.fn();
   const getItemAttributeByUrlMock = vi.fn();
+  const getItemByNameMock = vi.fn();
 
   const pokemonServiceStub = {
     listItems: listItemsMock,
@@ -33,6 +39,7 @@ describe('ItemsComponent', () => {
     listItemAttributes: listItemAttributesMock,
     getItemCategoryByUrl: getItemCategoryByUrlMock,
     getItemAttributeByUrl: getItemAttributeByUrlMock,
+    getItemByName: getItemByNameMock,
   };
 
   function setUp(): void {
@@ -73,6 +80,10 @@ describe('ItemsComponent', () => {
       },
     };
     getItemAttributeByUrlMock.mockImplementation((url: string) => of(attributes[url]));
+
+    getItemByNameMock.mockImplementation((name: string) =>
+      of({ sprites: { default: `https://pokeapi.co/sprites/items/${name}.png` } } as Item)
+    );
   }
 
   it('loads items and maps category, pocket and attribute filter data', () => {
@@ -185,5 +196,49 @@ describe('ItemsComponent', () => {
     expect(fixture.componentInstance.filteredItems().map((item) => item.name)).toEqual([
       'rare-candy',
     ]);
+  });
+
+  it('lazily fetches sprites only for items on the visible page, and caches them', () => {
+    setUp();
+    getItemByNameMock.mockClear();
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [ItemsComponent],
+      providers: [
+        provideRouter([]),
+        provideLocationMocks(),
+        { provide: PokemonService, useValue: pokemonServiceStub },
+      ],
+    }).createComponent(ItemsComponent);
+
+    fixture.detectChanges();
+
+    expect(getItemByNameMock).toHaveBeenCalledTimes(3);
+    expect(getItemByNameMock).toHaveBeenCalledWith('poke-ball');
+    expect(fixture.componentInstance.spriteUrlByItemName()['poke-ball']).toBe(
+      'https://pokeapi.co/sprites/items/poke-ball.png'
+    );
+
+    fixture.detectChanges();
+
+    expect(getItemByNameMock).toHaveBeenCalledTimes(3);
+  });
+
+  it('falls back to a placeholder sprite when the item has none', () => {
+    setUp();
+    getItemByNameMock.mockImplementation(() => of({ sprites: { default: null } } as Item));
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [ItemsComponent],
+      providers: [
+        provideRouter([]),
+        provideLocationMocks(),
+        { provide: PokemonService, useValue: pokemonServiceStub },
+      ],
+    }).createComponent(ItemsComponent);
+
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.spriteUrlByItemName()['poke-ball']).toBeNull();
   });
 });

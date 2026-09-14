@@ -1,4 +1,4 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -10,14 +10,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { forkJoin, from, of } from 'rxjs';
-import { mergeMap, switchMap, toArray } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, toArray } from 'rxjs/operators';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
 
-const ITEM_SPRITE_BASE_URL =
-  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items';
 const CATEGORY_DETAIL_CONCURRENCY = 8;
+const SPRITE_FETCH_CONCURRENCY = 8;
 
 export const ALL_FILTER_VALUE = 'all';
+export const FALLBACK_ITEM_SPRITE_URL = 'assets/images/question-mark.png';
 
 interface FilterOption {
   name: string;
@@ -27,7 +27,6 @@ interface FilterOption {
 interface ItemListItem {
   name: string;
   displayName: string;
-  spriteUrl: string;
   categoryName: string;
   categoryDisplayName: string;
   pocketName: string;
@@ -57,6 +56,7 @@ export class ItemsComponent {
   private readonly destroyRef = inject(DestroyRef);
 
   readonly ALL_FILTER_VALUE = ALL_FILTER_VALUE;
+  readonly FALLBACK_ITEM_SPRITE_URL = FALLBACK_ITEM_SPRITE_URL;
   readonly displayedColumns = ['item', 'category', 'pocket', 'attributes'];
 
   readonly isLoading = signal(true);
@@ -68,6 +68,7 @@ export class ItemsComponent {
   readonly categoryOptions = signal<FilterOption[]>([]);
   readonly pocketOptions = signal<FilterOption[]>([]);
   readonly attributeOptions = signal<FilterOption[]>([]);
+  readonly spriteUrlByItemName = signal<Record<string, string | null>>({});
   readonly pageEvent = signal<PageEvent>({
     pageIndex: 0,
     pageSize: 50,
@@ -187,7 +188,6 @@ export class ItemsComponent {
             return {
               name: entry.name,
               displayName: this.formatName(entry.name),
-              spriteUrl: `${ITEM_SPRITE_BASE_URL}/${entry.name}.png`,
               categoryName: category?.name ?? '',
               categoryDisplayName: category?.displayName ?? 'Unknown',
               pocketName: pocket?.name ?? '',
@@ -216,6 +216,13 @@ export class ItemsComponent {
         });
         this.isLoading.set(false);
       });
+
+    // Only the currently visible page's sprites are fetched (from the real item
+    // detail endpoint, which is authoritative), rather than guessing a sprite
+    // URL for every item up front and eating a 404 for every item that has none.
+    effect(() => {
+      this.ensureSpritesLoaded(this.paginatedItems());
+    });
   }
 
   onSearchInput(query: string): void {
@@ -246,7 +253,31 @@ export class ItemsComponent {
   }
 
   onSpriteError(event: Event): void {
-    (event.target as HTMLImageElement).style.visibility = 'hidden';
+    (event.target as HTMLImageElement).src = FALLBACK_ITEM_SPRITE_URL;
+  }
+
+  private ensureSpritesLoaded(pageItems: ItemListItem[]): void {
+    const cache = this.spriteUrlByItemName();
+    const pending = pageItems.filter((item) => !(item.name in cache));
+    if (pending.length === 0) {
+      return;
+    }
+
+    from(pending)
+      .pipe(
+        mergeMap(
+          (item) =>
+            this.pokemonService.getItemByName(item.name).pipe(
+              map((detail) => ({ name: item.name, spriteUrl: detail.sprites.default })),
+              catchError(() => of({ name: item.name, spriteUrl: null }))
+            ),
+          SPRITE_FETCH_CONCURRENCY
+        ),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(({ name, spriteUrl }) => {
+        this.spriteUrlByItemName.update((current) => ({ ...current, [name]: spriteUrl }));
+      });
   }
 
   private resetToFirstPage(): void {

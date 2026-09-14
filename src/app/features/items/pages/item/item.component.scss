@@ -8,6 +8,7 @@
   padding-bottom: 16px;
 
   .item-summary,
+  .item-prices,
   .item-pokemon-group {
     @include mat.card-overrides(
       (
@@ -20,13 +21,52 @@
     }
   }
 
+  .item-heading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
   .item-icon {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
     object-fit: contain;
-    border-radius: 4px;
-    background-color: var(--mat-sys-surface-container-high);
     image-rendering: pixelated;
+    flex-shrink: 0;
+  }
+
+  .item-title {
+    margin: 0;
+  }
+
+  .item-subtitle {
+    margin: 4px 0 0;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  .price-table-scroll {
+    max-height: 320px;
+    overflow-y: auto;
+  }
+
+  .price-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--mat-sys-outline-variant);
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background-color: var(--mat-sys-surface-container-low);
+      color: var(--mat-sys-on-surface-variant);
+    }
   }
 
   .field-label {

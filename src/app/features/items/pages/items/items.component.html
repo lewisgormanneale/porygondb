@@ -61,7 +61,7 @@
             <td mat-cell *matCellDef="let item">
               <a class="item-link" [routerLink]="['/items', item.name]">
                 <img
-                  [src]="item.spriteUrl"
+                  [src]="spriteUrlByItemName()[item.name] || FALLBACK_ITEM_SPRITE_URL"
                   [alt]="item.displayName"
                   (error)="onSpriteError($event)"
                   class="item-sprite"

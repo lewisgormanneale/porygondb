@@ -14,7 +14,6 @@ function createItemMock(overrides: Partial<Item> = {}): Item {
   return {
     id: 50,
     name: 'rare-candy',
-    cost: 4800,
     fling_power: null,
     fling_effect: null,
     attributes: [{ name: 'holdable', url: 'https://pokeapi.co/api/v2/item-attribute/5/' }],
@@ -33,7 +32,24 @@ function createItemMock(overrides: Partial<Item> = {}): Item {
         version_group: { name: 'sword-shield', url: 'https://pokeapi.co/api/v2/version-group/20/' },
       },
     ],
-    game_indices: [],
+    game_indices: [
+      { game_index: 45, generation: { name: 'generation-iv', url: 'https://pokeapi.co/api/v2/generation/4/' } },
+      { game_index: 45, generation: { name: 'generation-v', url: 'https://pokeapi.co/api/v2/generation/5/' } },
+    ],
+    prices: [
+      {
+        purchase_price: 4800,
+        sell_price: 2400,
+        currency: { name: 'poke-dollar', url: 'https://pokeapi.co/api/v2/currency/1/' },
+        version_group: { name: 'sword-shield', url: 'https://pokeapi.co/api/v2/version-group/20/' },
+      },
+      {
+        purchase_price: null,
+        sell_price: 2400,
+        currency: { name: 'poke-dollar', url: 'https://pokeapi.co/api/v2/currency/1/' },
+        version_group: { name: 'scarlet-violet', url: 'https://pokeapi.co/api/v2/version-group/25/' },
+      },
+    ],
     names: [
       {
         name: 'Rare Candy',
@@ -82,7 +98,11 @@ describe('ItemComponent', () => {
     expect(getItemByNameMock).toHaveBeenCalledWith('rare-candy');
     expect(fixture.componentInstance.displayName()).toBe('Rare Candy');
     expect(fixture.componentInstance.categoryLabel()).toBe('Vitamins');
-    expect(fixture.componentInstance.costLabel()).toBe('₽4,800');
+    expect(fixture.componentInstance.priceEntries()).toEqual([
+      { versionGroupDisplayName: 'Sword Shield', purchasePriceLabel: '₽4,800', sellPriceLabel: '₽2,400' },
+      { versionGroupDisplayName: 'Scarlet Violet', purchasePriceLabel: '—', sellPriceLabel: '₽2,400' },
+    ]);
+    expect(fixture.componentInstance.generationLabels()).toEqual(['Generation IV', 'Generation V']);
     expect(fixture.componentInstance.englishShortEffect()).toBe(
       'Raises a Pokémon’s level by one.'
     );
@@ -93,9 +113,9 @@ describe('ItemComponent', () => {
     ]);
   });
 
-  it('shows a not-sold cost label and fling power when present', () => {
+  it('shows no price data and fling power when present', () => {
     getItemByNameMock.mockReturnValue(
-      of(createItemMock({ cost: 0, fling_power: 30, fling_effect: null }))
+      of(createItemMock({ prices: [], fling_power: 30, fling_effect: null }))
     );
 
     const fixture = TestBed.configureTestingModule({
@@ -110,8 +130,28 @@ describe('ItemComponent', () => {
 
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.costLabel()).toBe('Not sold in shops');
+    expect(fixture.componentInstance.priceEntries()).toEqual([]);
     expect(fixture.componentInstance.flingPowerLabel()).toBe('30');
+  });
+
+  it('does not crash when the item has no baby-trigger, machine or prices data', () => {
+    getItemByNameMock.mockReturnValue(
+      of(createItemMock({ prices: [], machines: [], baby_trigger_for: null, game_indices: [] }))
+    );
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [ItemComponent],
+      providers: [
+        provideRouter([]),
+        provideLocationMocks(),
+        { provide: ActivatedRoute, useValue: { paramMap: paramMapSubject.asObservable() } },
+        { provide: PokemonService, useValue: pokemonServiceStub },
+      ],
+    }).createComponent(ItemComponent);
+
+    expect(() => fixture.detectChanges()).not.toThrow();
+    expect(fixture.componentInstance.hasBabyTrigger()).toBe(false);
+    expect(fixture.componentInstance.machineVersionGroupLabels()).toEqual([]);
   });
 
   it('navigates to species route when clicking rendered pokemon sprite link', () => {
