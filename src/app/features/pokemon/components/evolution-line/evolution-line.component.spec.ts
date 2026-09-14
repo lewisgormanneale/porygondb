@@ -94,8 +94,50 @@ describe('EvolutionLineComponent', () => {
     fixture.componentRef.setInput('pokedexName', 'kanto');
     fixture.detectChanges();
 
-    const methodText = fixture.nativeElement.querySelector('.evolution-method .method-text');
-    expect(methodText?.textContent).toContain('Level 16');
+    const methodIcon = fixture.nativeElement.querySelector('.evolution-connector .method-icon');
+    expect(methodIcon?.getAttribute('aria-label')).toBe('Level 16');
+    expect(methodIcon?.querySelector('mat-icon')?.textContent).toContain('trending_up');
+  });
+
+  it('renders an item sprite for an item-triggered evolution', () => {
+    evolutionLineSignal.set([
+      [{ speciesName: 'eevee', speciesId: 133, evolutionDetails: [] }],
+      [
+        {
+          speciesName: 'vaporeon',
+          speciesId: 134,
+          evolutionDetails: [
+            {
+              trigger: { name: 'use-item', url: '' },
+              item: { name: 'water-stone', url: '' },
+              min_level: null,
+              gender: null,
+              held_item: null,
+              known_move: null,
+              known_move_type: null,
+              location: null,
+              min_happiness: null,
+              min_beauty: null,
+              min_affection: null,
+              needs_overworld_rain: false,
+              party_species: null,
+              party_type: null,
+              relative_physical_stats: null,
+              time_of_day: '',
+              trade_species: null,
+              turn_upside_down: false,
+            },
+          ],
+        },
+      ],
+    ]);
+
+    fixture.componentRef.setInput('versionGroupName', 'red-blue');
+    fixture.componentRef.setInput('pokedexName', 'kanto');
+    fixture.detectChanges();
+
+    const itemSprite = fixture.nativeElement.querySelector('.method-item-sprite');
+    expect(itemSprite?.getAttribute('src')).toContain('water-stone.png');
   });
 
   it('builds sprite url from species id', () => {

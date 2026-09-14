@@ -140,3 +140,97 @@ export function formatEvolutionDetail(detail: EvolutionDetail): string {
 export function formatEvolutionDetails(details: EvolutionDetail[]): string[] {
   return details.map(formatEvolutionDetail);
 }
+
+/**
+ * PokeAPI's evolution-chain data occasionally contains multiple EvolutionDetail
+ * entries that describe the exact same requirement (a known data quirk, e.g. on
+ * Pikachu -> Raichu). Collapse entries that format to identical text so the UI
+ * doesn't show the same requirement twice.
+ */
+export function dedupeEvolutionDetails(details: EvolutionDetail[]): EvolutionDetail[] {
+  const seen = new Set<string>();
+  return details.filter((detail) => {
+    const text = formatEvolutionDetail(detail);
+    if (seen.has(text)) {
+      return false;
+    }
+    seen.add(text);
+    return true;
+  });
+}
+
+export type EvolutionMethodVisual =
+  { kind: 'item'; itemName: string } | { kind: 'icon'; icon: string };
+
+/**
+ * Picks a single representative icon (or item sprite) for an EvolutionDetail,
+ * used as a compact at-a-glance indicator alongside the full text description.
+ */
+export function getEvolutionMethodVisual(detail: EvolutionDetail): EvolutionMethodVisual {
+  if (detail.item) {
+    return { kind: 'item', itemName: detail.item.name };
+  }
+  if (detail.held_item) {
+    return { kind: 'item', itemName: detail.held_item.name };
+  }
+  if (detail.trigger.name === 'trade') {
+    return { kind: 'icon', icon: 'swap_horiz' };
+  }
+  if (detail.min_happiness) {
+    return { kind: 'icon', icon: 'favorite' };
+  }
+  if (detail.min_affection) {
+    return { kind: 'icon', icon: 'favorite' };
+  }
+  if (detail.min_beauty) {
+    return { kind: 'icon', icon: 'auto_awesome' };
+  }
+  if (detail.time_of_day === 'day') {
+    return { kind: 'icon', icon: 'wb_sunny' };
+  }
+  if (detail.time_of_day === 'night') {
+    return { kind: 'icon', icon: 'nights_stay' };
+  }
+  if (detail.known_move || detail.known_move_type) {
+    return { kind: 'icon', icon: 'bolt' };
+  }
+  if (detail.location) {
+    return { kind: 'icon', icon: 'place' };
+  }
+  if (detail.gender === 1) {
+    return { kind: 'icon', icon: 'female' };
+  }
+  if (detail.gender === 2) {
+    return { kind: 'icon', icon: 'male' };
+  }
+  if (detail.needs_overworld_rain) {
+    return { kind: 'icon', icon: 'water_drop' };
+  }
+
+  switch (detail.trigger.name) {
+    case 'trade':
+      return { kind: 'icon', icon: 'swap_horiz' };
+    case 'shed':
+      return { kind: 'icon', icon: 'content_copy' };
+    case 'three-critical-hits':
+    case 'take-damage':
+    case 'recoil-damage':
+      return { kind: 'icon', icon: 'whatshot' };
+    case 'tower-of-darkness':
+      return { kind: 'icon', icon: 'nights_stay' };
+    case 'tower-of-waters':
+      return { kind: 'icon', icon: 'water_drop' };
+    case 'agile-style-move':
+    case 'strong-style-move':
+      return { kind: 'icon', icon: 'bolt' };
+    case 'spin':
+      return { kind: 'icon', icon: 'sync' };
+    case 'event':
+    case 'other':
+      return { kind: 'icon', icon: 'help_outline' };
+    case 'level-up':
+      return { kind: 'icon', icon: 'trending_up' };
+    default:
+      return { kind: 'icon', icon: 'trending_up' };
+  }
+}

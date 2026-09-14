@@ -5,10 +5,43 @@
   <mat-card-content>
     @if (pokemonStore.evolutionLine().length > 1) {
       <div class="evolution-stages">
-        @for (stage of pokemonStore.evolutionLine(); track $index; let isLast = $last) {
+        @for (stage of pokemonStore.evolutionLine(); track $index; let isFirstStage = $first) {
           <div class="stage">
             @for (pokemon of stage; track pokemon.speciesId) {
-              <div class="evolution-pokemon-wrapper">
+              <div class="evolution-step">
+                @if (!isFirstStage) {
+                  <div class="evolution-connector">
+                    <div class="method-icons">
+                      @for (
+                        detail of dedupeEvolutionDetails(pokemon.evolutionDetails);
+                        track $index;
+                        let isLastDetail = $last
+                      ) {
+                        @let visual = getEvolutionMethodVisual(detail);
+                        <button
+                          type="button"
+                          class="method-icon"
+                          [matTooltip]="formatEvolutionDetail(detail)"
+                          [attr.aria-label]="formatEvolutionDetail(detail)"
+                        >
+                          @if (visual.kind === 'item') {
+                            <img
+                              class="method-item-sprite"
+                              [src]="getItemSpriteUrl(visual.itemName)"
+                              alt=""
+                            />
+                          } @else {
+                            <mat-icon aria-hidden="true">{{ visual.icon }}</mat-icon>
+                          }
+                        </button>
+                        @if (!isLastDetail) {
+                          <span class="method-or">or</span>
+                        }
+                      }
+                    </div>
+                    <span class="material-icons arrow-icon">arrow_forward</span>
+                  </div>
+                }
                 <a
                   class="evolution-pokemon"
                   [routerLink]="[
@@ -21,28 +54,9 @@
                   <img [src]="getSpriteUrl(pokemon.speciesId)" [alt]="pokemon.speciesName" />
                   <span class="label-medium">{{ pokemon.speciesName }}</span>
                 </a>
-                @if (pokemon.evolutionDetails.length > 0) {
-                  <div class="evolution-method">
-                    @for (
-                      method of formatEvolutionDetails(pokemon.evolutionDetails);
-                      track method;
-                      let isLastMethod = $last
-                    ) {
-                      <span class="method-text">{{ method }}</span>
-                      @if (!isLastMethod) {
-                        <span class="method-or">or</span>
-                      }
-                    }
-                  </div>
-                }
               </div>
             }
           </div>
-          @if (!isLast) {
-            <div class="arrow">
-              <span class="material-icons">arrow_forward</span>
-            </div>
-          }
         }
       </div>
     } @else {

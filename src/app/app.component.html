@@ -66,7 +66,10 @@
       <div class="drawer-footer">
         <button
           (click)="themeStore.toggleTheme()"
-          aria-label="Change Application Theme"
+          [attr.aria-label]="
+            themeStore.isDarkTheme() ? 'Switch to light mode' : 'Switch to dark mode'
+          "
+          [matTooltip]="themeStore.isDarkTheme() ? 'Switch to light mode' : 'Switch to dark mode'"
           mat-icon-button
         >
           @if (themeStore.isDarkTheme()) {
@@ -75,7 +78,6 @@
             <mat-icon>dark_mode</mat-icon>
           }
         </button>
-        <span class="body-small">{{ themeStore.isDarkTheme() ? 'Light mode' : 'Dark mode' }}</span>
       </div>
     </div>
   </mat-drawer>

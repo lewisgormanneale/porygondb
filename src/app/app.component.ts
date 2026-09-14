@@ -17,6 +17,7 @@ import { PokemonService } from './shared/services/pokemon.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { filter } from 'rxjs';
 import { NavigationEnd } from '@angular/router';
@@ -46,6 +47,7 @@ interface PokemonSearchOption {
     FormsModule,
     MatSidenavModule,
     MatListModule,
+    MatTooltipModule,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

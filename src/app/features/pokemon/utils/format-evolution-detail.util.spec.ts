@@ -1,5 +1,10 @@
 import type { EvolutionDetail } from '../../../shared/interfaces/pokeapi';
-import { formatEvolutionDetail, formatEvolutionDetails } from './format-evolution-detail.util';
+import {
+  dedupeEvolutionDetails,
+  formatEvolutionDetail,
+  formatEvolutionDetails,
+  getEvolutionMethodVisual,
+} from './format-evolution-detail.util';
 
 function buildDetail(overrides: Partial<EvolutionDetail> = {}): EvolutionDetail {
   return {
@@ -78,5 +83,71 @@ describe('formatEvolutionDetail', () => {
     ];
 
     expect(formatEvolutionDetails(details)).toEqual(['Level 20', 'Use Moon Stone']);
+  });
+});
+
+describe('dedupeEvolutionDetails', () => {
+  it('collapses entries that format to identical text', () => {
+    const thunderStone = buildDetail({
+      trigger: { name: 'use-item', url: 'https://pokeapi.co/api/v2/evolution-trigger/3/' },
+      item: { name: 'thunder-stone', url: 'https://pokeapi.co/api/v2/item/83/' },
+    });
+
+    const details = [thunderStone, { ...thunderStone }];
+
+    expect(dedupeEvolutionDetails(details)).toEqual([thunderStone]);
+  });
+
+  it('keeps distinct entries', () => {
+    const details = [
+      buildDetail({ min_level: 20 }),
+      buildDetail({
+        trigger: { name: 'use-item', url: 'https://pokeapi.co/api/v2/evolution-trigger/3/' },
+        item: { name: 'moon-stone', url: 'https://pokeapi.co/api/v2/item/81/' },
+      }),
+    ];
+
+    expect(dedupeEvolutionDetails(details)).toEqual(details);
+  });
+});
+
+describe('getEvolutionMethodVisual', () => {
+  it('represents an item-triggered evolution with the item sprite', () => {
+    const detail = buildDetail({
+      trigger: { name: 'use-item', url: 'https://pokeapi.co/api/v2/evolution-trigger/3/' },
+      item: { name: 'water-stone', url: 'https://pokeapi.co/api/v2/item/84/' },
+    });
+
+    expect(getEvolutionMethodVisual(detail)).toEqual({ kind: 'item', itemName: 'water-stone' });
+  });
+
+  it('represents a held-item evolution with the item sprite', () => {
+    const detail = buildDetail({
+      trigger: { name: 'trade', url: 'https://pokeapi.co/api/v2/evolution-trigger/2/' },
+      held_item: { name: 'kings-rock', url: 'https://pokeapi.co/api/v2/item/154/' },
+    });
+
+    expect(getEvolutionMethodVisual(detail)).toEqual({ kind: 'item', itemName: 'kings-rock' });
+  });
+
+  it('represents a friendship evolution with a heart icon', () => {
+    const detail = buildDetail({ min_happiness: 220 });
+
+    expect(getEvolutionMethodVisual(detail)).toEqual({ kind: 'icon', icon: 'favorite' });
+  });
+
+  it('represents a trade evolution with a swap icon', () => {
+    const detail = buildDetail({
+      trigger: { name: 'trade', url: 'https://pokeapi.co/api/v2/evolution-trigger/2/' },
+    });
+
+    expect(getEvolutionMethodVisual(detail)).toEqual({ kind: 'icon', icon: 'swap_horiz' });
+  });
+
+  it('falls back to a level icon for a plain level-up evolution', () => {
+    expect(getEvolutionMethodVisual(buildDetail({ min_level: 16 }))).toEqual({
+      kind: 'icon',
+      icon: 'trending_up',
+    });
   });
 });
