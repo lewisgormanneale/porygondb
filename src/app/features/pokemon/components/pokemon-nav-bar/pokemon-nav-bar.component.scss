@@ -82,8 +82,16 @@
     gap: 8px;
 
     .back-to-pokedex {
-      padding: 0 8px;
-      min-width: 0;
+      padding: 0;
+      min-width: 40px;
+      width: 40px;
+      height: 40px;
+      box-sizing: border-box;
+      justify-content: center;
+
+      .material-icons {
+        margin: 0;
+      }
 
       .back-label {
         display: none;

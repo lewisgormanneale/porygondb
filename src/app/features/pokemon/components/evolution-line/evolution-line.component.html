@@ -30,6 +30,8 @@
                               [src]="getItemSpriteUrl(visual.itemName)"
                               alt=""
                             />
+                          } @else if (visual.kind === 'level') {
+                            <span class="method-level" aria-hidden="true">{{ visual.level }}</span>
                           } @else {
                             <mat-icon aria-hidden="true">{{ visual.icon }}</mat-icon>
                           }

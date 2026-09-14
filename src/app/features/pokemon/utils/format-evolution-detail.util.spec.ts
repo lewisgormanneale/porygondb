@@ -144,10 +144,26 @@ describe('getEvolutionMethodVisual', () => {
     expect(getEvolutionMethodVisual(detail)).toEqual({ kind: 'icon', icon: 'swap_horiz' });
   });
 
-  it('falls back to a level icon for a plain level-up evolution', () => {
+  it('represents a level-up evolution with the level number', () => {
     expect(getEvolutionMethodVisual(buildDetail({ min_level: 16 }))).toEqual({
+      kind: 'level',
+      level: 16,
+    });
+  });
+
+  it('falls back to a level icon for a level-up evolution with no minimum level', () => {
+    expect(getEvolutionMethodVisual(buildDetail())).toEqual({
       kind: 'icon',
       icon: 'trending_up',
     });
+  });
+
+  it('prioritizes the level number over a known-move condition', () => {
+    const detail = buildDetail({
+      min_level: 30,
+      known_move: { name: 'rollout', url: 'https://pokeapi.co/api/v2/move/205/' },
+    });
+
+    expect(getEvolutionMethodVisual(detail)).toEqual({ kind: 'level', level: 30 });
   });
 });

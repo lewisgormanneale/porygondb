@@ -160,11 +160,15 @@ export function dedupeEvolutionDetails(details: EvolutionDetail[]): EvolutionDet
 }
 
 export type EvolutionMethodVisual =
-  { kind: 'item'; itemName: string } | { kind: 'icon'; icon: string };
+  | { kind: 'item'; itemName: string }
+  | { kind: 'level'; level: number }
+  | { kind: 'icon'; icon: string };
 
 /**
- * Picks a single representative icon (or item sprite) for an EvolutionDetail,
- * used as a compact at-a-glance indicator alongside the full text description.
+ * Picks a single representative icon (or item sprite, or level number) for an
+ * EvolutionDetail, used as a compact at-a-glance indicator alongside the full
+ * text description. A required level is shown as the number itself rather
+ * than a generic icon, since it's the single most decision-relevant detail.
  */
 export function getEvolutionMethodVisual(detail: EvolutionDetail): EvolutionMethodVisual {
   if (detail.item) {
@@ -172,6 +176,9 @@ export function getEvolutionMethodVisual(detail: EvolutionDetail): EvolutionMeth
   }
   if (detail.held_item) {
     return { kind: 'item', itemName: detail.held_item.name };
+  }
+  if (detail.trigger.name === 'level-up' && detail.min_level) {
+    return { kind: 'level', level: detail.min_level };
   }
   if (detail.trigger.name === 'trade') {
     return { kind: 'icon', icon: 'swap_horiz' };

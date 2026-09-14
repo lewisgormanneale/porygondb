@@ -89,14 +89,14 @@ describe('EvolutionLineComponent', () => {
     expect(noEvolutionMessage?.textContent).toContain('does not evolve');
   });
 
-  it('renders the evolution method for a stage that requires one', () => {
+  it('renders the required level number for a level-up evolution', () => {
     fixture.componentRef.setInput('versionGroupName', 'red-blue');
     fixture.componentRef.setInput('pokedexName', 'kanto');
     fixture.detectChanges();
 
     const methodIcon = fixture.nativeElement.querySelector('.evolution-connector .method-icon');
     expect(methodIcon?.getAttribute('aria-label')).toBe('Level 16');
-    expect(methodIcon?.querySelector('mat-icon')?.textContent).toContain('trending_up');
+    expect(methodIcon?.querySelector('.method-level')?.textContent).toContain('16');
   });
 
   it('renders an item sprite for an item-triggered evolution', () => {
