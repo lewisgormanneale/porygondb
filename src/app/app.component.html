@@ -1,14 +1,13 @@
 <mat-drawer-container class="app-shell" autosize>
   <mat-drawer class="app-drawer" [mode]="isMobile() ? 'over' : 'side'" [opened]="isDrawerOpen()">
     <div class="drawer-content">
-      <div class="drawer-header">
-        <span class="label-large">Menu</span>
-        @if (isMobile()) {
+      @if (isMobile()) {
+        <div class="drawer-header">
           <button mat-icon-button aria-label="Close menu" (click)="closeMenu()">
             <mat-icon>close</mat-icon>
           </button>
-        }
-      </div>
+        </div>
+      }
 
       <mat-form-field appearance="outline" subscriptSizing="dynamic" class="drawer-search-field">
         <mat-icon matPrefix>search</mat-icon>
@@ -63,6 +62,21 @@
           <span matListItemTitle>Items</span>
         </a>
       </mat-nav-list>
+
+      <div class="drawer-footer">
+        <button
+          (click)="themeStore.toggleTheme()"
+          aria-label="Change Application Theme"
+          mat-icon-button
+        >
+          @if (themeStore.isDarkTheme()) {
+            <mat-icon>light_mode</mat-icon>
+          } @else {
+            <mat-icon>dark_mode</mat-icon>
+          }
+        </button>
+        <span class="body-small">{{ themeStore.isDarkTheme() ? 'Light mode' : 'Dark mode' }}</span>
+      </div>
     </div>
   </mat-drawer>
 
@@ -82,20 +96,6 @@
           />
           <span>PorygonDB</span>
         </a>
-        <span class="spacer"></span>
-        <div class="toolbar-actions">
-          <button
-            (click)="themeStore.toggleTheme()"
-            aria-label="Change Application Theme"
-            mat-icon-button
-          >
-            @if (themeStore.isDarkTheme()) {
-              <mat-icon>light_mode</mat-icon>
-            } @else {
-              <mat-icon>dark_mode</mat-icon>
-            }
-          </button>
-        </div>
       </div>
     </mat-toolbar>
 

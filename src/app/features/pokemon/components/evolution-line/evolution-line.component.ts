@@ -2,6 +2,8 @@ import { Component, inject, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
+import { EvolutionDetail } from '../../../../shared/interfaces/pokeapi';
+import { formatEvolutionDetails } from '../../utils/format-evolution-detail.util';
 
 @Component({
   selector: 'evolution-line',
@@ -16,5 +18,9 @@ export class EvolutionLineComponent {
 
   getSpriteUrl(speciesId: number): string {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${speciesId}.png`;
+  }
+
+  formatEvolutionDetails(details: EvolutionDetail[]): string[] {
+    return formatEvolutionDetails(details);
   }
 }

@@ -3,6 +3,7 @@ import { patchState, signalStore, withComputed, withMethods, withState } from '@
 import {
   ChainLink,
   EvolutionChain,
+  EvolutionDetail,
   FlavorText,
   Pokemon,
   PokemonForm,
@@ -45,6 +46,7 @@ const initialState: PokemonState = {
 export interface EvolutionStage {
   speciesName: string;
   speciesId: number;
+  evolutionDetails: EvolutionDetail[];
 }
 
 export interface PokemonStatData {
@@ -127,6 +129,7 @@ export const PokemonStore = signalStore(
         stages[stageIndex].push({
           speciesName: link.species.name,
           speciesId,
+          evolutionDetails: link.evolution_details,
         });
         link.evolves_to.forEach((evo) => extractStages(evo, stageIndex + 1));
       };
