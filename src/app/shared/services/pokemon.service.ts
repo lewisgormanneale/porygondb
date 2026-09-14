@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   Ability,
   EvolutionChain,
+  Generation,
   Item,
   ItemAttribute,
   ItemCategory,
@@ -106,6 +107,17 @@ export class PokemonService {
     if (offset !== undefined) params['offset'] = offset.toString();
     if (limit !== undefined) params['limit'] = limit.toString();
     return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/type`, { params });
+  }
+
+  listGenerations(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/generation`, { params });
+  }
+
+  getGenerationByUrl(url: string): Observable<Generation> {
+    return this.http.get<Generation>(url);
   }
 
   getEvolutionChainById(id: number): Observable<EvolutionChain> {

@@ -3,13 +3,38 @@
     <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
       <mat-icon matPrefix>search</mat-icon>
       <mat-label>Search abilities</mat-label>
-      <input
-        matInput
-        [value]="searchValue()"
-        (input)="onSearchInput($any($event.target).value)"
-      />
+      <input matInput [value]="searchValue()" (input)="onSearchInput($any($event.target).value)" />
     </mat-form-field>
+    <button
+      mat-icon-button
+      (click)="toggleFilters()"
+      [attr.aria-expanded]="filtersExpanded()"
+      [matBadge]="activeFilterCount() || null"
+      matBadgeSize="small"
+      matBadgeColor="accent"
+      aria-label="Toggle filters"
+      class="filter-toggle"
+    >
+      <mat-icon>filter_list</mat-icon>
+    </button>
   </div>
+
+  @if (filtersExpanded()) {
+    <div class="filters-row">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Introduced In</mat-label>
+        <mat-select
+          [value]="selectedGeneration()"
+          (selectionChange)="onGenerationChange($event.value)"
+        >
+          <mat-option [value]="ALL_FILTER_VALUE">All generations</mat-option>
+          @for (option of generationOptions(); track option.name) {
+            <mat-option [value]="option.name">{{ option.displayName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  }
 
   @if (isLoading()) {
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
@@ -21,8 +46,24 @@
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let ability">
               <a class="ability-link" [routerLink]="['/abilities', ability.name]">{{
-                ability.displayName
+                getAbilityDetails(ability.name)?.displayName || ability.displayName
               }}</a>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="generation">
+            <th mat-header-cell *matHeaderCellDef>Introduced In</th>
+            <td mat-cell *matCellDef="let ability">{{ ability.generationDisplayName }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>In-game Description</th>
+            <td mat-cell *matCellDef="let ability" class="description-cell">
+              @if (getAbilityDetails(ability.name); as details) {
+                <span [title]="details.description || ''">{{ details.description || '—' }}</span>
+              } @else {
+                &hellip;
+              }
             </td>
           </ng-container>
 

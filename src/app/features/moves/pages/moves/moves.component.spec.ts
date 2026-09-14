@@ -6,6 +6,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
 import {
+  Generation,
   Move,
   MoveDamageClass,
   NamedAPIResourceList,
@@ -31,16 +32,20 @@ describe('MovesComponent', () => {
   const listMovesMock = vi.fn();
   const listTypesMock = vi.fn();
   const listMoveDamageClassesMock = vi.fn();
+  const listGenerationsMock = vi.fn();
   const getTypeByUrlMock = vi.fn();
   const getMoveDamageClassByUrlMock = vi.fn();
+  const getGenerationByUrlMock = vi.fn();
   const getMoveByNameMock = vi.fn();
 
   const pokemonServiceStub = {
     listMoves: listMovesMock,
     listTypes: listTypesMock,
     listMoveDamageClasses: listMoveDamageClassesMock,
+    listGenerations: listGenerationsMock,
     getTypeByUrl: getTypeByUrlMock,
     getMoveDamageClassByUrl: getMoveDamageClassByUrlMock,
+    getGenerationByUrl: getGenerationByUrlMock,
     getMoveByName: getMoveByNameMock,
   };
 
@@ -106,6 +111,36 @@ describe('MovesComponent', () => {
       },
     };
     getMoveDamageClassByUrlMock.mockImplementation((url: string) => of(damageClasses[url]));
+
+    listGenerationsMock.mockReturnValue(
+      of(createResourceList(['generation-i', 'generation-iv'], 'generation'))
+    );
+
+    const generations: Record<string, Generation> = {
+      'https://pokeapi.co/api/v2/generation/1/': {
+        id: 1,
+        name: 'generation-i',
+        abilities: [],
+        names: [],
+        main_region: { name: 'kanto', url: '' },
+        moves: [{ name: 'tackle', url: 'https://pokeapi.co/api/v2/move/33/' }],
+        pokemon_species: [],
+        types: [],
+        version_groups: [],
+      },
+      'https://pokeapi.co/api/v2/generation/2/': {
+        id: 4,
+        name: 'generation-iv',
+        abilities: [],
+        names: [],
+        main_region: { name: 'sinnoh', url: '' },
+        moves: [{ name: 'swords-dance', url: 'https://pokeapi.co/api/v2/move/14/' }],
+        pokemon_species: [],
+        types: [],
+        version_groups: [],
+      },
+    };
+    getGenerationByUrlMock.mockImplementation((url: string) => of(generations[url]));
 
     getMoveByNameMock.mockImplementation(() =>
       of({ power: 40, accuracy: 100, pp: 35 } as unknown as Move)
@@ -209,6 +244,27 @@ describe('MovesComponent', () => {
     ]);
   });
 
+  it('filters moves by generation and sorts generation options numerically', () => {
+    setUp();
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [MovesComponent],
+      providers: testProviders,
+    }).createComponent(MovesComponent);
+
+    fixture.detectChanges();
+
+    expect(
+      fixture.componentInstance.generationOptions().map((option) => option.displayName)
+    ).toEqual(['Generation I', 'Generation IV']);
+
+    fixture.componentInstance.onGenerationChange('generation-iv');
+
+    expect(fixture.componentInstance.filteredMoves().map((move) => move.name)).toEqual([
+      'swords-dance',
+    ]);
+  });
+
   it('lazily fetches move details only for moves on the visible page, and caches them', () => {
     setUp();
     getMoveByNameMock.mockClear();
@@ -260,6 +316,7 @@ describe('MovesComponent', () => {
 
     fixture.componentInstance.onTypeChange('electric');
     fixture.componentInstance.onDamageClassChange('special');
-    expect(fixture.componentInstance.activeFilterCount()).toBe(2);
+    fixture.componentInstance.onGenerationChange('generation-i');
+    expect(fixture.componentInstance.activeFilterCount()).toBe(3);
   });
 });

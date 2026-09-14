@@ -43,6 +43,19 @@
           }
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Introduced In</mat-label>
+        <mat-select
+          [value]="selectedGeneration()"
+          (selectionChange)="onGenerationChange($event.value)"
+        >
+          <mat-option [value]="ALL_FILTER_VALUE">All generations</mat-option>
+          @for (option of generationOptions(); track option.name) {
+            <mat-option [value]="option.name">{{ option.displayName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
     </div>
   }
 

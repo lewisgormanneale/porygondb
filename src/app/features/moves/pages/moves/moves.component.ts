@@ -26,6 +26,12 @@ interface FilterOption {
   displayName: string;
 }
 
+interface GenerationOption {
+  id: number;
+  name: string;
+  displayName: string;
+}
+
 interface MoveDetailSummary {
   power: number | null;
   accuracy: number | null;
@@ -39,6 +45,8 @@ interface MoveListItem {
   typeDisplayName: string;
   damageClassName: string;
   damageClassDisplayName: string;
+  generationName: string;
+  generationDisplayName: string;
 }
 
 @Component({
@@ -71,9 +79,11 @@ export class MovesComponent {
   readonly searchValue = signal('');
   readonly selectedType = signal(ALL_FILTER_VALUE);
   readonly selectedDamageClass = signal(ALL_FILTER_VALUE);
+  readonly selectedGeneration = signal(ALL_FILTER_VALUE);
   readonly moves = signal<MoveListItem[]>([]);
   readonly typeOptions = signal<FilterOption[]>([]);
   readonly damageClassOptions = signal<FilterOption[]>([]);
+  readonly generationOptions = signal<GenerationOption[]>([]);
   readonly moveDetailByName = signal<Record<string, MoveDetailSummary>>({});
   readonly filtersExpanded = signal(true);
   readonly pageEvent = signal<PageEvent>({
@@ -83,7 +93,7 @@ export class MovesComponent {
   });
 
   readonly activeFilterCount = computed(() => {
-    return [this.selectedType(), this.selectedDamageClass()].filter(
+    return [this.selectedType(), this.selectedDamageClass(), this.selectedGeneration()].filter(
       (value) => value !== ALL_FILTER_VALUE
     ).length;
   });
@@ -92,6 +102,7 @@ export class MovesComponent {
     const query = this.searchValue().trim().toLowerCase();
     const type = this.selectedType();
     const damageClass = this.selectedDamageClass();
+    const generation = this.selectedGeneration();
 
     return this.moves().filter((move) => {
       if (query && !move.name.includes(query) && !move.displayName.toLowerCase().includes(query)) {
@@ -101,6 +112,9 @@ export class MovesComponent {
         return false;
       }
       if (damageClass !== ALL_FILTER_VALUE && move.damageClassName !== damageClass) {
+        return false;
+      }
+      if (generation !== ALL_FILTER_VALUE && move.generationName !== generation) {
         return false;
       }
       return true;
@@ -128,9 +142,10 @@ export class MovesComponent {
       moves: this.pokemonService.listMoves(0, 10000),
       types: this.pokemonService.listTypes(0, 1000),
       damageClasses: this.pokemonService.listMoveDamageClasses(0, 1000),
+      generations: this.pokemonService.listGenerations(0, 100),
     })
       .pipe(
-        switchMap(({ moves, types, damageClasses }) =>
+        switchMap(({ moves, types, damageClasses, generations }) =>
           forkJoin({
             moves: of(moves),
             typeDetails: from(types.results).pipe(
@@ -147,11 +162,18 @@ export class MovesComponent {
               ),
               toArray()
             ),
+            generationDetails: from(generations.results).pipe(
+              mergeMap(
+                (generation) => this.pokemonService.getGenerationByUrl(generation.url),
+                FILTER_DETAIL_CONCURRENCY
+              ),
+              toArray()
+            ),
           })
         ),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(({ moves, typeDetails, damageClassDetails }) => {
+      .subscribe(({ moves, typeDetails, damageClassDetails, generationDetails }) => {
         const typeByMoveName = new Map<string, FilterOption>();
         const typeOptions: FilterOption[] = [];
 
@@ -182,10 +204,27 @@ export class MovesComponent {
           }
         }
 
+        const generationByMoveName = new Map<string, GenerationOption>();
+        const generationOptions: GenerationOption[] = [];
+
+        for (const generation of generationDetails) {
+          const generationOption: GenerationOption = {
+            id: generation.id,
+            name: generation.name,
+            displayName: this.formatGenerationLabel(generation.name),
+          };
+          generationOptions.push(generationOption);
+
+          for (const move of generation.moves) {
+            generationByMoveName.set(move.name, generationOption);
+          }
+        }
+
         const mapped: MoveListItem[] = moves.results
           .map((entry) => {
             const type = typeByMoveName.get(entry.name);
             const damageClass = damageClassByMoveName.get(entry.name);
+            const generation = generationByMoveName.get(entry.name);
 
             return {
               name: entry.name,
@@ -194,6 +233,8 @@ export class MovesComponent {
               typeDisplayName: type?.displayName ?? 'Unknown',
               damageClassName: damageClass?.name ?? '',
               damageClassDisplayName: damageClass?.displayName ?? 'Unknown',
+              generationName: generation?.name ?? '',
+              generationDisplayName: generation?.displayName ?? 'Unknown',
             };
           })
           .sort((a, b) => a.name.localeCompare(b.name));
@@ -205,6 +246,7 @@ export class MovesComponent {
         this.damageClassOptions.set(
           damageClassOptions.sort((a, b) => a.displayName.localeCompare(b.displayName))
         );
+        this.generationOptions.set(generationOptions.sort((a, b) => a.id - b.id));
         this.pageEvent.set({
           ...this.pageEvent(),
           length: mapped.length,
@@ -235,6 +277,11 @@ export class MovesComponent {
 
   onDamageClassChange(damageClass: string): void {
     this.selectedDamageClass.set(damageClass);
+    this.resetToFirstPage();
+  }
+
+  onGenerationChange(generation: string): void {
+    this.selectedGeneration.set(generation);
     this.resetToFirstPage();
   }
 
@@ -298,5 +345,10 @@ export class MovesComponent {
       .split('-')
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join(' ');
+  }
+
+  private formatGenerationLabel(name: string): string {
+    const romanNumeral = name.split('-')[1]?.toUpperCase();
+    return romanNumeral ? `Generation ${romanNumeral}` : this.formatName(name);
   }
 }
