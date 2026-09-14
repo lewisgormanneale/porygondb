@@ -16,11 +16,10 @@
   }
 
   .pokedex-entries {
-    display: flex;
-    justify-content: center;
-    align-items: start;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     align-content: start;
-    flex-wrap: wrap;
+    justify-content: center;
     height: 100%;
     gap: 10px;
     overflow-y: scroll;
@@ -29,7 +28,16 @@
 
     .entry {
       height: 200px;
-      width: 160px;
+    }
+
+    @media (max-width: 599px) {
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 6px;
+      padding: 6px;
+
+      .entry {
+        height: 150px;
+      }
     }
 
     mat-paginator {

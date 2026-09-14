@@ -13,7 +13,7 @@
 .abilities-options {
   display: flex;
   align-items: center;
-  padding: 8px 16px;
+  padding: 4px 16px;
   background-color: var(--mat-sys-secondary-container);
   flex-shrink: 0;
 
@@ -23,6 +23,8 @@
     @include mat.form-field-overrides(
       (
         outlined-outline-color: var(--mat-sys-outline-variant),
+        container-height: 40px,
+        container-vertical-padding: 8px,
       )
     );
 

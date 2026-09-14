@@ -5,8 +5,10 @@
 
 .pokemon-nav-bar {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding: 12px 16px;
   margin-bottom: 8px;
   box-sizing: border-box;
@@ -71,5 +73,51 @@
     padding: 0 8px;
     min-width: 60px;
     text-align: center;
+  }
+}
+
+@media (max-width: 599px) {
+  .pokemon-nav-bar {
+    padding: 8px 12px;
+    gap: 8px;
+
+    .back-to-pokedex {
+      padding: 0;
+      min-width: 40px;
+      width: 40px;
+      height: 40px;
+      box-sizing: border-box;
+      justify-content: center;
+      gap: 0;
+
+      // The arrow icon is a direct flex child of this button, but Angular
+      // Material additionally wraps the (now-hidden) text label in its own
+      // ".mdc-button__label" span sibling — that empty wrapper still takes
+      // up a flex slot next to the icon, which is what was throwing the
+      // centering off. Removing it from the layout leaves the icon as the
+      // only flex item, so `justify-content: center` centers it for real.
+      ::ng-deep .mdc-button__label {
+        display: none;
+      }
+
+      .material-icons {
+        margin: 0;
+      }
+    }
+
+    .pokemon-navigation {
+      gap: 4px;
+    }
+
+    .pokemon-sprite,
+    .sprite-placeholder {
+      width: 32px;
+      height: 32px;
+    }
+
+    .position-indicator {
+      min-width: 44px;
+      padding: 0 4px;
+    }
   }
 }
