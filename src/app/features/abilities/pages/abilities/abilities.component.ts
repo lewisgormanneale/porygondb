@@ -17,6 +17,9 @@ import { PokemonService } from '../../../../shared/services/pokemon.service';
 
 const GENERATION_DETAIL_CONCURRENCY = 8;
 const ABILITY_DETAIL_FETCH_CONCURRENCY = 8;
+// Abilities weren't introduced as a game mechanic until Generation III, so
+// Generations I and II never have any and are excluded from the filter.
+const EARLIEST_ABILITY_GENERATION_ID = 3;
 
 export const ALL_FILTER_VALUE = 'all';
 
@@ -141,6 +144,10 @@ export class AbilitiesComponent {
         const generationOptions: GenerationOption[] = [];
 
         for (const generation of generationDetails) {
+          if (generation.id < EARLIEST_ABILITY_GENERATION_ID) {
+            continue;
+          }
+
           const generationOption: GenerationOption = {
             id: generation.id,
             name: generation.name,

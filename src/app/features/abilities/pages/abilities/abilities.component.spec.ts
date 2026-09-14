@@ -55,6 +55,9 @@ describe('AbilitiesComponent', () => {
     );
 
     const generations: Record<string, Generation> = {
+      // Real PokeAPI data never lists abilities under Generation I (they
+      // weren't introduced as a mechanic until Generation III), but this
+      // ability entry exercises that the component excludes it anyway.
       'https://pokeapi.co/api/v2/generation/1/': {
         id: 1,
         name: 'generation-i',
@@ -120,7 +123,6 @@ describe('AbilitiesComponent', () => {
     expect(adaptability?.generationDisplayName).toBe('Generation III');
 
     expect(fixture.componentInstance.generationOptions().map((option) => option.name)).toEqual([
-      'generation-i',
       'generation-iii',
     ]);
 
@@ -170,11 +172,30 @@ describe('AbilitiesComponent', () => {
 
     fixture.detectChanges();
 
-    fixture.componentInstance.onGenerationChange('generation-i');
+    fixture.componentInstance.onGenerationChange('generation-iii');
 
     expect(fixture.componentInstance.filteredAbilities().map((entry) => entry.name)).toEqual([
-      'stench',
+      'adaptability',
+      'overgrow',
     ]);
+  });
+
+  it('excludes Generations I and II from the Introduced In filter, since abilities did not exist yet', () => {
+    setUp();
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [AbilitiesComponent],
+      providers: testProviders,
+    }).createComponent(AbilitiesComponent);
+
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.generationOptions().map((option) => option.name)).toEqual([
+      'generation-iii',
+    ]);
+
+    const stench = fixture.componentInstance.abilities().find((entry) => entry.name === 'stench');
+    expect(stench?.generationDisplayName).toBe('Unknown');
   });
 
   it('updates pagination state and paginated entries on page change', () => {
