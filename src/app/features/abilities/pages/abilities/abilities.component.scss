@@ -3,66 +3,69 @@
 .abilities-page {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  height: calc(min(100vh, 100svh) - var(--mat-toolbar-standard-height, 64px) - 32px);
-  padding-top: 16px;
-  padding-bottom: 16px;
+  height: calc(min(100vh, 100svh) - var(--mat-toolbar-standard-height, 64px));
 
   @media (max-width: 599px) {
-    height: calc(min(100vh, 100svh) - var(--mat-toolbar-mobile-height, 56px) - 32px);
+    height: calc(min(100vh, 100svh) - var(--mat-toolbar-mobile-height, 56px));
   }
+}
 
-  .abilities-header,
-  .abilities-list {
-    @include mat.card-overrides(
-      (
-        outlined-container-color: var(--mat-sys-surface-container-low),
-      )
-    );
-  }
-
-  .abilities-header {
-    flex-shrink: 0;
-  }
+.abilities-options {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: var(--mat-sys-secondary-container);
+  flex-shrink: 0;
 
   .search-field {
     width: 100%;
-    padding-top: 8px;
-  }
 
-  .abilities-list {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+    @include mat.form-field-overrides(
+      (
+        outlined-outline-color: var(--mat-sys-outline-variant),
+      )
+    );
 
-  .abilities-table-scroll {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-  }
-
-  .abilities-table {
-    width: 100%;
-  }
-
-  .ability-row:hover {
-    background-color: var(--mat-sys-surface-container-high);
-  }
-
-  .ability-link {
-    display: block;
-    color: var(--mat-sys-on-surface);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
+    mat-icon {
+      margin-right: 4px;
+      color: var(--mat-sys-on-secondary-container);
     }
   }
+}
 
-  mat-paginator {
-    flex-shrink: 0;
+.abilities-table-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.abilities-table-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+.abilities-table {
+  width: 100%;
+}
+
+.ability-row:hover {
+  background-color: var(--mat-sys-surface-container-high);
+}
+
+.ability-link {
+  display: block;
+  color: var(--mat-sys-on-surface);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
   }
+}
+
+mat-paginator {
+  flex-shrink: 0;
 }

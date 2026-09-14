@@ -1,59 +1,69 @@
 <div class="items-page">
-  <mat-card appearance="outlined" class="items-header">
-    <mat-card-header>
-      <mat-card-title>Items</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
-        <mat-label>Search items</mat-label>
-        <input
-          matInput
-          [value]="searchValue()"
-          (input)="onSearchInput($any($event.target).value)"
-        />
+  <div class="items-options">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-label>Search items</mat-label>
+      <input
+        matInput
+        [value]="searchValue()"
+        (input)="onSearchInput($any($event.target).value)"
+      />
+    </mat-form-field>
+    <button
+      mat-icon-button
+      (click)="toggleFilters()"
+      [attr.aria-expanded]="filtersExpanded()"
+      [matBadge]="activeFilterCount() || null"
+      matBadgeSize="small"
+      matBadgeColor="accent"
+      aria-label="Toggle filters"
+      class="filter-toggle"
+    >
+      <mat-icon>filter_list</mat-icon>
+    </button>
+  </div>
+
+  @if (filtersExpanded()) {
+    <div class="filters-row">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Category</mat-label>
+        <mat-select [value]="selectedCategory()" (selectionChange)="onCategoryChange($event.value)">
+          <mat-option [value]="ALL_FILTER_VALUE">All categories</mat-option>
+          @for (option of categoryOptions(); track option.name) {
+            <mat-option [value]="option.name">{{ option.displayName }}</mat-option>
+          }
+        </mat-select>
       </mat-form-field>
 
-      <div class="filters-row">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
-          <mat-label>Category</mat-label>
-          <mat-select [value]="selectedCategory()" (selectionChange)="onCategoryChange($event.value)">
-            <mat-option [value]="ALL_FILTER_VALUE">All categories</mat-option>
-            @for (option of categoryOptions(); track option.name) {
-              <mat-option [value]="option.name">{{ option.displayName }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Pocket</mat-label>
+        <mat-select [value]="selectedPocket()" (selectionChange)="onPocketChange($event.value)">
+          <mat-option [value]="ALL_FILTER_VALUE">All pockets</mat-option>
+          @for (option of pocketOptions(); track option.name) {
+            <mat-option [value]="option.name">{{ option.displayName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
 
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
-          <mat-label>Pocket</mat-label>
-          <mat-select [value]="selectedPocket()" (selectionChange)="onPocketChange($event.value)">
-            <mat-option [value]="ALL_FILTER_VALUE">All pockets</mat-option>
-            @for (option of pocketOptions(); track option.name) {
-              <mat-option [value]="option.name">{{ option.displayName }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
-          <mat-label>Attribute</mat-label>
-          <mat-select
-            [value]="selectedAttribute()"
-            (selectionChange)="onAttributeChange($event.value)"
-          >
-            <mat-option [value]="ALL_FILTER_VALUE">All attributes</mat-option>
-            @for (option of attributeOptions(); track option.name) {
-              <mat-option [value]="option.name">{{ option.displayName }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </mat-card-content>
-  </mat-card>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Attribute</mat-label>
+        <mat-select
+          [value]="selectedAttribute()"
+          (selectionChange)="onAttributeChange($event.value)"
+        >
+          <mat-option [value]="ALL_FILTER_VALUE">All attributes</mat-option>
+          @for (option of attributeOptions(); track option.name) {
+            <mat-option [value]="option.name">{{ option.displayName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  }
 
   @if (isLoading()) {
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   } @else {
-    <mat-card appearance="outlined" class="items-list">
+    <div class="items-table-container">
       <div class="items-table-scroll">
         <table mat-table [dataSource]="paginatedItems()" class="items-table">
           <ng-container matColumnDef="item">
@@ -109,6 +119,6 @@
         [showFirstLastButtons]="true"
         aria-label="Item pagination"
       ></mat-paginator>
-    </mat-card>
+    </div>
   }
 </div>

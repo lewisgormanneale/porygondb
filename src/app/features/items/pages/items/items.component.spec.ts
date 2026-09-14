@@ -1,7 +1,8 @@
 import { provideLocationMocks } from '@angular/common/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
 import {
@@ -42,7 +43,19 @@ describe('ItemsComponent', () => {
     getItemByName: getItemByNameMock,
   };
 
+  const breakpointState$ = new BehaviorSubject<{ matches: boolean }>({ matches: false });
+  const breakpointObserverStub = {
+    observe: vi.fn(() => breakpointState$.asObservable()),
+  };
+  const testProviders = [
+    provideRouter([]),
+    provideLocationMocks(),
+    { provide: PokemonService, useValue: pokemonServiceStub },
+    { provide: BreakpointObserver, useValue: breakpointObserverStub },
+  ];
+
   function setUp(): void {
+    breakpointState$.next({ matches: false });
     listItemsMock.mockReturnValue(
       of(createResourceList(['poke-ball', 'potion', 'rare-candy'], 'item'))
     );
@@ -94,11 +107,7 @@ describe('ItemsComponent', () => {
 
     const fixture = TestBed.configureTestingModule({
       imports: [ItemsComponent],
-      providers: [
-        provideRouter([]),
-        provideLocationMocks(),
-        { provide: PokemonService, useValue: pokemonServiceStub },
-      ],
+      providers: testProviders,
     }).createComponent(ItemsComponent);
 
     fixture.detectChanges();
@@ -136,11 +145,7 @@ describe('ItemsComponent', () => {
 
     const fixture = TestBed.configureTestingModule({
       imports: [ItemsComponent],
-      providers: [
-        provideRouter([]),
-        provideLocationMocks(),
-        { provide: PokemonService, useValue: pokemonServiceStub },
-      ],
+      providers: testProviders,
     }).createComponent(ItemsComponent);
 
     fixture.detectChanges();
@@ -164,11 +169,7 @@ describe('ItemsComponent', () => {
 
     const fixture = TestBed.configureTestingModule({
       imports: [ItemsComponent],
-      providers: [
-        provideRouter([]),
-        provideLocationMocks(),
-        { provide: PokemonService, useValue: pokemonServiceStub },
-      ],
+      providers: testProviders,
     }).createComponent(ItemsComponent);
 
     fixture.detectChanges();
@@ -185,11 +186,7 @@ describe('ItemsComponent', () => {
 
     const fixture = TestBed.configureTestingModule({
       imports: [ItemsComponent],
-      providers: [
-        provideRouter([]),
-        provideLocationMocks(),
-        { provide: PokemonService, useValue: pokemonServiceStub },
-      ],
+      providers: testProviders,
     }).createComponent(ItemsComponent);
 
     fixture.detectChanges();
@@ -207,11 +204,7 @@ describe('ItemsComponent', () => {
 
     const fixture = TestBed.configureTestingModule({
       imports: [ItemsComponent],
-      providers: [
-        provideRouter([]),
-        provideLocationMocks(),
-        { provide: PokemonService, useValue: pokemonServiceStub },
-      ],
+      providers: testProviders,
     }).createComponent(ItemsComponent);
 
     fixture.detectChanges();
@@ -235,11 +228,7 @@ describe('ItemsComponent', () => {
 
     const fixture = TestBed.configureTestingModule({
       imports: [ItemsComponent],
-      providers: [
-        provideRouter([]),
-        provideLocationMocks(),
-        { provide: PokemonService, useValue: pokemonServiceStub },
-      ],
+      providers: testProviders,
     }).createComponent(ItemsComponent);
 
     fixture.detectChanges();
@@ -261,11 +250,7 @@ describe('ItemsComponent', () => {
 
     const fixture = TestBed.configureTestingModule({
       imports: [ItemsComponent],
-      providers: [
-        provideRouter([]),
-        provideLocationMocks(),
-        { provide: PokemonService, useValue: pokemonServiceStub },
-      ],
+      providers: testProviders,
     }).createComponent(ItemsComponent);
 
     fixture.detectChanges();
@@ -281,5 +266,51 @@ describe('ItemsComponent', () => {
       'Potion',
       'Rare Candy',
     ]);
+  });
+
+  it('defaults filters to expanded on larger screens', () => {
+    setUp();
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [ItemsComponent],
+      providers: testProviders,
+    }).createComponent(ItemsComponent);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.filtersExpanded()).toBe(true);
+  });
+
+  it('defaults filters to collapsed on handsets', () => {
+    setUp();
+    breakpointState$.next({ matches: true });
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [ItemsComponent],
+      providers: testProviders,
+    }).createComponent(ItemsComponent);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.filtersExpanded()).toBe(false);
+  });
+
+  it('toggles the filters panel and tracks the active filter count', () => {
+    setUp();
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [ItemsComponent],
+      providers: testProviders,
+    }).createComponent(ItemsComponent);
+
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.filtersExpanded()).toBe(true);
+    expect(fixture.componentInstance.activeFilterCount()).toBe(0);
+
+    fixture.componentInstance.toggleFilters();
+    expect(fixture.componentInstance.filtersExpanded()).toBe(false);
+
+    fixture.componentInstance.onCategoryChange('standard-balls');
+    fixture.componentInstance.onAttributeChange('holdable');
+    expect(fixture.componentInstance.activeFilterCount()).toBe(2);
   });
 });

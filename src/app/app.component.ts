@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
   readonly isMobile = signal(false);
   readonly isDrawerOpen = signal(true);
   readonly currentUrl = signal('');
-  readonly isPokedexListRoute = signal(false);
+  readonly isFullBleedListRoute = signal(false);
 
   ngOnInit(): void {
     this.currentUrl.set(this.router.url);
@@ -160,6 +160,8 @@ export class AppComponent implements OnInit {
 
   private updateLayoutForRoute(url: string): void {
     const path = url.split('?')[0]?.split('#')[0] ?? '';
-    this.isPokedexListRoute.set(/^\/pokedex\/[^/]+\/[^/]+$/.test(path));
+    this.isFullBleedListRoute.set(
+      /^\/pokedex\/[^/]+\/[^/]+$/.test(path) || /^\/(items|abilities)$/.test(path)
+    );
   }
 }

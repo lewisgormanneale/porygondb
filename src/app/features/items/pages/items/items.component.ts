@@ -1,8 +1,11 @@
 import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatCardModule } from '@angular/material/card';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -43,9 +46,11 @@ interface ItemListItem {
 @Component({
   selector: 'app-items',
   imports: [
-    MatCardModule,
+    MatBadgeModule,
+    MatButtonModule,
     MatChipsModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatPaginatorModule,
     MatProgressBarModule,
@@ -59,6 +64,7 @@ interface ItemListItem {
 export class ItemsComponent {
   private readonly pokemonService = inject(PokemonService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly breakpointObserver = inject(BreakpointObserver);
 
   readonly ALL_FILTER_VALUE = ALL_FILTER_VALUE;
   readonly FALLBACK_ITEM_SPRITE_URL = FALLBACK_ITEM_SPRITE_URL;
@@ -74,10 +80,17 @@ export class ItemsComponent {
   readonly pocketOptions = signal<FilterOption[]>([]);
   readonly attributeOptions = signal<FilterOption[]>([]);
   readonly itemDetailByName = signal<Record<string, ItemDetailSummary>>({});
+  readonly filtersExpanded = signal(true);
   readonly pageEvent = signal<PageEvent>({
     pageIndex: 0,
     pageSize: 50,
     length: 0,
+  });
+
+  readonly activeFilterCount = computed(() => {
+    return [this.selectedCategory(), this.selectedPocket(), this.selectedAttribute()].filter(
+      (value) => value !== ALL_FILTER_VALUE
+    ).length;
   });
 
   readonly filteredItems = computed(() => {
@@ -115,6 +128,15 @@ export class ItemsComponent {
   });
 
   constructor() {
+    // Filters default open on larger screens and collapsed on handsets, where
+    // three selects otherwise push the table below the fold.
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((state) => {
+        this.filtersExpanded.set(!state.matches);
+      });
+
     forkJoin({
       items: this.pokemonService.listItems(0, 10000),
       categories: this.pokemonService.listItemCategories(0, 1000),
@@ -228,6 +250,10 @@ export class ItemsComponent {
     effect(() => {
       this.ensureItemDetailsLoaded(this.paginatedItems());
     });
+  }
+
+  toggleFilters(): void {
+    this.filtersExpanded.update((expanded) => !expanded);
   }
 
   onSearchInput(query: string): void {
