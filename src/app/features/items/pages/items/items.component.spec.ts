@@ -82,7 +82,10 @@ describe('ItemsComponent', () => {
     getItemAttributeByUrlMock.mockImplementation((url: string) => of(attributes[url]));
 
     getItemByNameMock.mockImplementation((name: string) =>
-      of({ sprites: { default: `https://pokeapi.co/sprites/items/${name}.png` } } as Item)
+      of({
+        sprites: { default: `https://pokeapi.co/sprites/items/${name}.png` },
+        names: [],
+      } as unknown as Item)
     );
   }
 
@@ -198,7 +201,7 @@ describe('ItemsComponent', () => {
     ]);
   });
 
-  it('lazily fetches sprites only for items on the visible page, and caches them', () => {
+  it('lazily fetches item details only for items on the visible page, and caches them', () => {
     setUp();
     getItemByNameMock.mockClear();
 
@@ -215,7 +218,7 @@ describe('ItemsComponent', () => {
 
     expect(getItemByNameMock).toHaveBeenCalledTimes(3);
     expect(getItemByNameMock).toHaveBeenCalledWith('poke-ball');
-    expect(fixture.componentInstance.spriteUrlByItemName()['poke-ball']).toBe(
+    expect(fixture.componentInstance.itemDetailByName()['poke-ball']?.spriteUrl).toBe(
       'https://pokeapi.co/sprites/items/poke-ball.png'
     );
 
@@ -226,7 +229,9 @@ describe('ItemsComponent', () => {
 
   it('falls back to a placeholder sprite when the item has none', () => {
     setUp();
-    getItemByNameMock.mockImplementation(() => of({ sprites: { default: null } } as Item));
+    getItemByNameMock.mockImplementation(
+      () => of({ sprites: { default: null }, names: [] } as unknown as Item)
+    );
 
     const fixture = TestBed.configureTestingModule({
       imports: [ItemsComponent],
@@ -239,6 +244,42 @@ describe('ItemsComponent', () => {
 
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.spriteUrlByItemName()['poke-ball']).toBeNull();
+    expect(fixture.componentInstance.itemDetailByName()['poke-ball']?.spriteUrl).toBeNull();
+  });
+
+  it('swaps the slug-based name for the proper English name once fetched', () => {
+    setUp();
+    getItemByNameMock.mockImplementation((name: string) =>
+      of({
+        sprites: { default: `https://pokeapi.co/sprites/items/${name}.png` },
+        names:
+          name === 'poke-ball'
+            ? [{ name: 'Poké Ball', language: { name: 'en', url: '' } }]
+            : [],
+      } as unknown as Item)
+    );
+
+    const fixture = TestBed.configureTestingModule({
+      imports: [ItemsComponent],
+      providers: [
+        provideRouter([]),
+        provideLocationMocks(),
+        { provide: PokemonService, useValue: pokemonServiceStub },
+      ],
+    }).createComponent(ItemsComponent);
+
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.itemDetailByName()['poke-ball']?.displayName).toBe(
+      'Poké Ball'
+    );
+
+    const hostElement: HTMLElement = fixture.nativeElement;
+    const links = Array.from(hostElement.querySelectorAll('a[href^="/items/"]'));
+    expect(links.map((link) => link.textContent?.trim())).toEqual([
+      'Poké Ball',
+      'Potion',
+      'Rare Candy',
+    ]);
   });
 });

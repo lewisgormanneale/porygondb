@@ -61,12 +61,12 @@
             <td mat-cell *matCellDef="let item">
               <a class="item-link" [routerLink]="['/items', item.name]">
                 <img
-                  [src]="spriteUrlByItemName()[item.name] || FALLBACK_ITEM_SPRITE_URL"
-                  [alt]="item.displayName"
+                  [src]="itemDetailByName()[item.name]?.spriteUrl || FALLBACK_ITEM_SPRITE_URL"
+                  [alt]="itemDetailByName()[item.name]?.displayName || item.displayName"
                   (error)="onSpriteError($event)"
                   class="item-sprite"
                 />
-                <span>{{ item.displayName }}</span>
+                <span>{{ itemDetailByName()[item.name]?.displayName || item.displayName }}</span>
               </a>
             </td>
           </ng-container>

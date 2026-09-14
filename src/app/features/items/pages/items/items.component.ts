@@ -14,7 +14,7 @@ import { catchError, map, mergeMap, switchMap, toArray } from 'rxjs/operators';
 import { PokemonService } from '../../../../shared/services/pokemon.service';
 
 const CATEGORY_DETAIL_CONCURRENCY = 8;
-const SPRITE_FETCH_CONCURRENCY = 8;
+const ITEM_DETAIL_FETCH_CONCURRENCY = 8;
 
 export const ALL_FILTER_VALUE = 'all';
 export const FALLBACK_ITEM_SPRITE_URL = 'assets/images/question-mark.png';
@@ -22,6 +22,11 @@ export const FALLBACK_ITEM_SPRITE_URL = 'assets/images/question-mark.png';
 interface FilterOption {
   name: string;
   displayName: string;
+}
+
+interface ItemDetailSummary {
+  spriteUrl: string | null;
+  displayName: string | null;
 }
 
 interface ItemListItem {
@@ -68,7 +73,7 @@ export class ItemsComponent {
   readonly categoryOptions = signal<FilterOption[]>([]);
   readonly pocketOptions = signal<FilterOption[]>([]);
   readonly attributeOptions = signal<FilterOption[]>([]);
-  readonly spriteUrlByItemName = signal<Record<string, string | null>>({});
+  readonly itemDetailByName = signal<Record<string, ItemDetailSummary>>({});
   readonly pageEvent = signal<PageEvent>({
     pageIndex: 0,
     pageSize: 50,
@@ -217,11 +222,11 @@ export class ItemsComponent {
         this.isLoading.set(false);
       });
 
-    // Only the currently visible page's sprites are fetched (from the real item
-    // detail endpoint, which is authoritative), rather than guessing a sprite
-    // URL for every item up front and eating a 404 for every item that has none.
+    // Only the currently visible page's item details are fetched (sprite and
+    // proper English name), rather than guessing a sprite URL and formatting
+    // a display name from the slug for every item up front.
     effect(() => {
-      this.ensureSpritesLoaded(this.paginatedItems());
+      this.ensureItemDetailsLoaded(this.paginatedItems());
     });
   }
 
@@ -256,8 +261,8 @@ export class ItemsComponent {
     (event.target as HTMLImageElement).src = FALLBACK_ITEM_SPRITE_URL;
   }
 
-  private ensureSpritesLoaded(pageItems: ItemListItem[]): void {
-    const cache = this.spriteUrlByItemName();
+  private ensureItemDetailsLoaded(pageItems: ItemListItem[]): void {
+    const cache = this.itemDetailByName();
     const pending = pageItems.filter((item) => !(item.name in cache));
     if (pending.length === 0) {
       return;
@@ -268,15 +273,22 @@ export class ItemsComponent {
         mergeMap(
           (item) =>
             this.pokemonService.getItemByName(item.name).pipe(
-              map((detail) => ({ name: item.name, spriteUrl: detail.sprites.default })),
-              catchError(() => of({ name: item.name, spriteUrl: null }))
+              map((detail) => ({
+                name: item.name,
+                spriteUrl: detail.sprites.default,
+                displayName: detail.names.find((entry) => entry.language.name === 'en')?.name ?? null,
+              })),
+              catchError(() => of({ name: item.name, spriteUrl: null, displayName: null }))
             ),
-          SPRITE_FETCH_CONCURRENCY
+          ITEM_DETAIL_FETCH_CONCURRENCY
         ),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(({ name, spriteUrl }) => {
-        this.spriteUrlByItemName.update((current) => ({ ...current, [name]: spriteUrl }));
+      .subscribe(({ name, spriteUrl, displayName }) => {
+        this.itemDetailByName.update((current) => ({
+          ...current,
+          [name]: { spriteUrl, displayName },
+        }));
       });
   }
 
