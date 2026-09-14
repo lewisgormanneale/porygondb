@@ -1,0 +1,110 @@
+@use '@angular/material' as mat;
+
+.moves-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(min(100vh, 100svh) - var(--mat-toolbar-standard-height, 64px));
+
+  @media (max-width: 599px) {
+    height: calc(min(100vh, 100svh) - var(--mat-toolbar-mobile-height, 56px));
+  }
+}
+
+.moves-options {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px 4px 16px;
+  background-color: var(--mat-sys-secondary-container);
+  flex-shrink: 0;
+
+  .search-field {
+    flex: 1;
+    min-width: 0;
+
+    @include mat.form-field-overrides(
+      (
+        outlined-outline-color: var(--mat-sys-outline-variant),
+        container-height: 40px,
+        container-vertical-padding: 8px,
+      )
+    );
+
+    mat-icon {
+      margin-right: 4px;
+      color: var(--mat-sys-on-secondary-container);
+    }
+  }
+
+  .filter-toggle {
+    flex-shrink: 0;
+    color: var(--mat-sys-on-secondary-container);
+  }
+}
+
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 4px 16px;
+  background-color: var(--mat-sys-secondary-container);
+  flex-shrink: 0;
+
+  .filter-field {
+    flex: 1 1 180px;
+    min-width: 160px;
+
+    @include mat.form-field-overrides(
+      (
+        outlined-outline-color: var(--mat-sys-outline-variant),
+        container-height: 40px,
+        container-vertical-padding: 8px,
+      )
+    );
+  }
+}
+
+.moves-table-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.moves-table-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+.moves-table {
+  width: 100%;
+  min-width: 640px;
+
+  th.mat-mdc-header-cell,
+  td.mat-mdc-cell {
+    &:nth-child(n + 4) {
+      text-align: center;
+    }
+  }
+}
+
+.move-row:hover {
+  background-color: var(--mat-sys-surface-container-high);
+}
+
+.move-link {
+  display: block;
+  color: var(--mat-sys-on-surface);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+mat-paginator {
+  flex-shrink: 0;
+}

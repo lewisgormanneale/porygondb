@@ -1,0 +1,116 @@
+<div class="move-page">
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @else if (move()) {
+    <mat-card appearance="outlined" class="move-summary">
+      <mat-card-header>
+        <mat-card-title>{{ displayName() }}</mat-card-title>
+        <mat-card-subtitle>{{ generationLabel() }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="move-heading-chips">
+          <type-chip [typeName]="move()!.type.name"></type-chip>
+          <span class="damage-class-chip">
+            <mat-icon fontSet="material-symbols-outlined" class="move-class-icon">{{
+              damageClassIcon()
+            }}</mat-icon>
+            {{ damageClassDisplayName() }}
+          </span>
+        </div>
+
+        <div class="move-stats-grid">
+          <div class="move-stat">
+            <p class="field-label label-large">Power</p>
+            <p>{{ formatStatValue(move()!.power) }}</p>
+          </div>
+          <div class="move-stat">
+            <p class="field-label label-large">Accuracy</p>
+            <p>{{ formatStatValue(move()!.accuracy) }}</p>
+          </div>
+          <div class="move-stat">
+            <p class="field-label label-large">PP</p>
+            <p>{{ formatStatValue(move()!.pp) }}</p>
+          </div>
+          <div class="move-stat">
+            <p class="field-label label-large">Priority</p>
+            <p>{{ move()!.priority }}</p>
+          </div>
+          <div class="move-stat">
+            <p class="field-label label-large">Target</p>
+            <p>{{ targetLabel() }}</p>
+          </div>
+        </div>
+
+        @if (englishFlavorText()) {
+          <p class="field-label label-large">In-game description</p>
+          <p class="in-game-description">{{ englishFlavorText() }}</p>
+        }
+        @if (englishShortEffect()) {
+          <p class="field-label label-large">Summary</p>
+          <p class="short-effect">{{ englishShortEffect() }}</p>
+        }
+        @if (englishDetailedEffect()) {
+          <p class="field-label label-large">Effect</p>
+          <p>{{ englishDetailedEffect() }}</p>
+        }
+        @if (hasNoEffectInfo()) {
+          <p>No English effect available.</p>
+        }
+
+        @if (metaRows().length > 0) {
+          <p class="field-label label-large">Additional Effects</p>
+          <mat-chip-set>
+            @for (row of metaRows(); track row.label) {
+              <mat-chip>{{ row.label }}: {{ row.value }}</mat-chip>
+            }
+          </mat-chip-set>
+        }
+
+        @if (statChangeLabels().length > 0) {
+          <p class="field-label label-large">Stat Changes</p>
+          <mat-chip-set>
+            @for (statChange of statChangeLabels(); track statChange.label) {
+              <mat-chip [class.stat-increase]="statChange.isPositive">{{
+                statChange.label
+              }}</mat-chip>
+            }
+          </mat-chip-set>
+        }
+
+        @if (machineVersionGroupLabels().length > 0) {
+          <p class="field-label label-large">Available as a TM/HM in</p>
+          <mat-chip-set>
+            @for (versionGroup of machineVersionGroupLabels(); track versionGroup) {
+              <mat-chip>{{ versionGroup }}</mat-chip>
+            }
+          </mat-chip-set>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="move-pokemon-group">
+      <mat-card-header>
+        <mat-card-title>Pokémon that can learn {{ displayName() }}:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (learnedByPokemon().length === 0) {
+          <p>None listed.</p>
+        } @else {
+          <div class="pokemon-sprites-grid">
+            @for (entry of learnedByPokemon(); track entry.name) {
+              <a
+                [routerLink]="['/pokedex', 'national', 'national', entry.name]"
+                (click)="onLearnedByPokemonClick($event, entry.name)"
+                [attr.aria-label]="entry.name"
+                [title]="entry.name"
+                class="pokemon-sprite-link"
+              >
+                <img [src]="getSpriteUrl(entry.url)" [alt]="entry.name" class="pokemon-sprite" />
+              </a>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

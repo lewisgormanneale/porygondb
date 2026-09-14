@@ -1,0 +1,115 @@
+@use '@angular/material' as mat;
+
+.move-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  .move-summary,
+  .move-pokemon-group {
+    @include mat.card-overrides(
+      (
+        outlined-container-color: var(--mat-sys-surface-container-low),
+      )
+    );
+
+    mat-card-content {
+      padding-top: 8px;
+    }
+  }
+
+  .move-heading-chips {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .damage-class-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  .move-class-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+  }
+
+  .move-stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 32px;
+    margin-bottom: 16px;
+  }
+
+  .move-stat {
+    p:first-child {
+      margin-bottom: 0;
+    }
+
+    p:last-child {
+      margin-top: 4px;
+      margin-bottom: 0;
+    }
+  }
+
+  .field-label {
+    color: var(--mat-sys-on-surface-variant);
+    margin-bottom: 4px;
+
+    &:not(:first-child) {
+      margin-top: 16px;
+    }
+  }
+
+  .short-effect {
+    margin-bottom: 8px;
+  }
+
+  .stat-increase {
+    @include mat.chips-overrides(
+      (
+        elevated-container-color: var(--mat-sys-tertiary-container),
+        label-text-color: var(--mat-sys-on-tertiary-container),
+      )
+    );
+  }
+
+  .pokemon-sprites-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pokemon-sprite-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    background-color: var(--mat-sys-surface-container);
+    text-decoration: none;
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container-high);
+    }
+  }
+
+  .pokemon-sprite {
+    width: 40px;
+    height: 40px;
+    image-rendering: pixelated;
+  }
+}

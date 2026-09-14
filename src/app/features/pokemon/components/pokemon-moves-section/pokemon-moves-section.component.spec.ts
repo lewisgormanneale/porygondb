@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import { provideLocationMocks } from '@angular/common/testing';
+import { provideRouter } from '@angular/router';
 import type { PageEvent } from '@angular/material/paginator';
 import { PokemonMovesSectionComponent } from './pokemon-moves-section.component';
 import { PokemonStore } from '../../../../shared/+state/pokemon.store';
@@ -58,6 +60,8 @@ describe('PokemonMovesSectionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PokemonMovesSectionComponent],
       providers: [
+        provideRouter([]),
+        provideLocationMocks(),
         { provide: PokemonStore, useValue: pokemonStoreStub },
         { provide: PokemonService, useValue: pokemonServiceStub },
         { provide: ThemeStore, useValue: themeStoreStub },
@@ -154,6 +158,12 @@ describe('PokemonMovesSectionComponent', () => {
     expect(visibleMoveDetails?.accuracy).toBe(100);
 
     expect(fixture.nativeElement.querySelector('type-chip')).not.toBeNull();
+
+    const moveLink: HTMLAnchorElement | null = fixture.nativeElement.querySelector(
+      'a[href="/moves/quick-attack"]'
+    );
+    expect(moveLink).not.toBeNull();
+    expect(moveLink?.textContent?.trim()).toBe('Quick Attack');
   });
 
   it('maps move category keys to icons', () => {

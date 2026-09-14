@@ -29,6 +29,15 @@
       min-width: 170px;
     }
 
+    .move-name-link {
+      color: var(--mat-sys-on-surface);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     th:nth-child(2),
     td:nth-child(2) {
       width: 72px;

@@ -8,6 +8,7 @@ import {
   ItemAttribute,
   ItemCategory,
   Move,
+  MoveDamageClass,
   NamedAPIResourceList,
   Pokemon,
   PokemonForm,
@@ -60,6 +61,26 @@ export class PokemonService {
     return this.http.get<Move>(`${POKEAPI_BASE_URL}/move/${encodeURIComponent(name)}`);
   }
 
+  listMoves(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/move`, { params });
+  }
+
+  listMoveDamageClasses(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/move-damage-class`, {
+      params,
+    });
+  }
+
+  getMoveDamageClassByUrl(url: string): Observable<MoveDamageClass> {
+    return this.http.get<MoveDamageClass>(url);
+  }
+
   getStatByName(name: string): Observable<Stat> {
     return this.http.get<Stat>(`${POKEAPI_BASE_URL}/stat/${encodeURIComponent(name)}`);
   }
@@ -74,6 +95,17 @@ export class PokemonService {
 
   getTypeById(id: number): Observable<Type> {
     return this.http.get<Type>(`${POKEAPI_BASE_URL}/type/${id}`);
+  }
+
+  getTypeByUrl(url: string): Observable<Type> {
+    return this.http.get<Type>(url);
+  }
+
+  listTypes(offset?: number, limit?: number): Observable<NamedAPIResourceList> {
+    const params: Record<string, string> = {};
+    if (offset !== undefined) params['offset'] = offset.toString();
+    if (limit !== undefined) params['limit'] = limit.toString();
+    return this.http.get<NamedAPIResourceList>(`${POKEAPI_BASE_URL}/type`, { params });
   }
 
   getEvolutionChainById(id: number): Observable<EvolutionChain> {
